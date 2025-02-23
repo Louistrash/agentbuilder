@@ -14,21 +14,21 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           className="bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
           onClick={() => onActionClick("products")}
         >
-          Products
+          Producten
         </Button>
         <Button
           variant="outline"
           className="bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
           onClick={() => onActionClick("book")}
         >
-          Book Appointment
+          Afspraak Maken
         </Button>
         <Button
           variant="outline"
           className="bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
           onClick={() => onActionClick("sleep")}
         >
-          Sleep Tips
+          Slaaptips
         </Button>
         <Button
           variant="outline"

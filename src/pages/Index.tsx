@@ -27,11 +27,11 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // Initial welcome message
+    // Initial welcome message in Dutch
     setMessages([
       {
         content:
-          "Welcome to ArchiboldBeckers.nl and Bedroom.nl. I'm Archibot, your personal sleep consultant. How can I assist you today?",
+          "Welkom bij ArchiboldBeckers.nl en Bedroom.nl. Ik ben Archibot, uw persoonlijke slaapadviseur. Hoe kan ik u vandaag helpen?",
         isBot: true,
         role: 'assistant'
       },
@@ -55,7 +55,7 @@ const Index = () => {
 
     try {
       const chatMessages = messages
-        .filter(msg => msg.role) // Only include messages with roles
+        .filter(msg => msg.role)
         .concat(userMessage)
         .map(msg => ({
           role: msg.role,
@@ -77,8 +77,8 @@ const Index = () => {
       console.error('Error:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to get response from AI. Please try again.",
+        title: "Fout",
+        description: "Kon geen antwoord krijgen van de AI. Probeer het opnieuw.",
       });
     } finally {
       setIsTyping(false);
@@ -88,11 +88,11 @@ const Index = () => {
   const handleQuickAction = (action: string) => {
     const actionMessages: Record<string, string> = {
       products:
-        "Tell me about your luxury mattresses and the materials you use.",
-      book: "I'd like to schedule a showroom visit. What are the available times?",
-      sleep: "Can you give me some expert sleep tips?",
+        "Vertel me over uw luxe matrassen en de materialen die u gebruikt.",
+      book: "Ik wil graag een showroom bezoek inplannen. Wat zijn de beschikbare tijden?",
+      sleep: "Kunt u mij expert slaaptips geven?",
       contact:
-        "What are your contact details and showroom location?",
+        "Wat zijn uw contactgegevens en de locatie van de showroom?",
     };
 
     handleSend(actionMessages[action]);
