@@ -33,6 +33,47 @@ export type Database = {
         }
         Relationships: []
       }
+      training_files: {
+        Row: {
+          content_type: string
+          created_at: string
+          file_path: string
+          filename: string
+          id: string
+          processed: boolean | null
+          profile_id: string
+          size: number
+        }
+        Insert: {
+          content_type: string
+          created_at?: string
+          file_path: string
+          filename: string
+          id?: string
+          processed?: boolean | null
+          profile_id: string
+          size: number
+        }
+        Update: {
+          content_type?: string
+          created_at?: string
+          file_path?: string
+          filename?: string
+          id?: string
+          processed?: boolean | null
+          profile_id?: string
+          size?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_files_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
