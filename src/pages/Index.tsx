@@ -12,6 +12,7 @@ import { LogOut } from "lucide-react";
 interface Message {
   content: string;
   isBot: boolean;
+  role?: 'user' | 'assistant';
 }
 
 const Index = () => {
@@ -32,6 +33,7 @@ const Index = () => {
         content:
           "Welcome to ArchiboldBeckers.nl and Bedroom.nl. I'm Archibot, your personal sleep consultant. How can I assist you today?",
         isBot: true,
+        role: 'assistant'
       },
     ]);
   }, []);
@@ -47,43 +49,53 @@ const Index = () => {
 
   const handleSend = async (message: string) => {
     // Add user message
-    setMessages((prev) => [...prev, { content: message, isBot: false }]);
+    const userMessage = { content: message, isBot: false, role: 'user' as const };
+    setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
-    // Simulate bot response (replace with actual API call later)
-    setTimeout(() => {
-      const response = generateResponse(message);
-      setMessages((prev) => [...prev, { content: response, isBot: true }]);
+    try {
+      const chatMessages = messages
+        .filter(msg => msg.role) // Only include messages with roles
+        .concat(userMessage)
+        .map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }));
+
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: { messages: chatMessages }
+      });
+
+      if (error) throw error;
+
+      const botResponse = data.choices[0].message.content;
+      setMessages((prev) => [
+        ...prev,
+        { content: botResponse, isBot: true, role: 'assistant' }
+      ]);
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to get response from AI. Please try again.",
+      });
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   const handleQuickAction = (action: string) => {
     const actionMessages: Record<string, string> = {
       products:
-        "Our luxury mattresses are handcrafted using the finest natural materials, including horsehair, vicuña wool, cashmere, and silk. Would you like to learn more about a specific product?",
-      book: "I'd be happy to help you schedule a showroom visit. When would you like to come in?",
-      sleep: "Here are some expert sleep tips: 1. Maintain a consistent sleep schedule\n2. Create a relaxing bedtime routine\n3. Ensure your bedroom is cool and dark\n4. Invest in quality bedding\n\nWould you like more specific advice?",
+        "Tell me about your luxury mattresses and the materials you use.",
+      book: "I'd like to schedule a showroom visit. What are the available times?",
+      sleep: "Can you give me some expert sleep tips?",
       contact:
-        "You can reach us at our showroom:\nAddress: [Showroom Address]\nPhone: [Phone Number]\nEmail: [Email]\n\nWould you like me to help you schedule a visit?",
+        "What are your contact details and showroom location?",
     };
 
-    handleSend(action);
-  };
-
-  const generateResponse = (message: string): string => {
-    // Simple response logic (replace with actual AI implementation)
-    const lowercaseMessage = message.toLowerCase();
-    if (lowercaseMessage.includes("price")) {
-      return "Our luxury mattresses are custom-made to your specifications. Prices vary based on size and materials. Would you like to schedule a consultation to discuss your specific needs?";
-    }
-    if (lowercaseMessage.includes("material")) {
-      return "We use only the finest natural materials in our mattresses, including:\n- Premium horsehair\n- Vicuña wool\n- Pure cashmere\n- Natural silk\n- Calico pocket springs\n\nWould you like to learn more about any specific material?";
-    }
-    if (lowercaseMessage.includes("delivery")) {
-      return "We offer white-glove delivery service for all our mattresses. Our team will personally deliver and set up your new mattress, ensuring everything is perfect. Would you like to know more about our delivery process?";
-    }
-    return "I understand you're interested in learning more. Could you please specify what aspect of our luxury mattresses you'd like to know about?";
+    handleSend(actionMessages[action]);
   };
 
   return (
