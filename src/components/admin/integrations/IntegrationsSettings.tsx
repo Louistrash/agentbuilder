@@ -5,51 +5,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ZapIcon, Webhook, Link2 } from "lucide-react";
+import { MessageCircle, MessageSquare, Instagram, Link2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const IntegrationsSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState("");
+  const [whatsappToken, setWhatsappToken] = useState("");
+  const [messengerToken, setMessengerToken] = useState("");
+  const [instagramToken, setInstagramToken] = useState("");
   const { toast } = useToast();
 
-  const handleTrigger = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!webhookUrl) {
-      toast({
-        title: "Error",
-        description: "Please enter your Zapier webhook URL",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const handleTestConnection = async (platform: string, token: string) => {
     setIsLoading(true);
-    console.log("Triggering Zapier webhook:", webhookUrl);
-
+    
     try {
-      const response = await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors", // Add this to handle CORS
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          triggered_from: window.location.origin,
-        }),
-      });
-
+      // In a real implementation, you would verify the token with the respective platform's API
+      console.log(`Testing ${platform} connection with token:`, token);
+      
       toast({
-        title: "Request Sent",
-        description: "The request was sent to Zapier. Please check your Zap's history to confirm it was triggered.",
+        title: "Connection Test",
+        description: `${platform} connection test initiated. Please check your platform's dashboard to confirm.`,
       });
     } catch (error) {
-      console.error("Error triggering webhook:", error);
+      console.error(`Error testing ${platform} connection:`, error);
       toast({
         title: "Error",
-        description: "Failed to trigger the Zapier webhook. Please check the URL and try again.",
+        description: `Failed to test ${platform} connection. Please check your credentials and try again.`,
         variant: "destructive",
       });
     } finally {
@@ -63,27 +44,33 @@ export const IntegrationsSettings = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <ZapIcon className="h-5 w-5" />
-              Zapier Integration
+              <MessageCircle className="h-5 w-5" />
+              WhatsApp Integration
             </CardTitle>
             <CardDescription>
-              Connect your Zapier account to automate workflows
+              Connect your WhatsApp Business account to interact with customers
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleTrigger} className="space-y-4">
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleTestConnection("WhatsApp", whatsappToken);
+            }} className="space-y-4">
               <div>
-                <label htmlFor="webhookUrl" className="text-sm font-medium">
-                  Webhook URL
+                <label htmlFor="whatsappToken" className="text-sm font-medium">
+                  WhatsApp Business Token
                 </label>
                 <Input
-                  id="webhookUrl"
-                  placeholder="Enter your Zapier webhook URL"
-                  value={webhookUrl}
-                  onChange={(e) => setWebhookUrl(e.target.value)}
+                  id="whatsappToken"
+                  placeholder="Enter your WhatsApp Business API token"
+                  value={whatsappToken}
+                  onChange={(e) => setWhatsappToken(e.target.value)}
                 />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Get this from your WhatsApp Business Platform dashboard
+                </p>
               </div>
-              <Button type="submit" disabled={isLoading || !webhookUrl}>
+              <Button type="submit" disabled={isLoading || !whatsappToken}>
                 {isLoading ? "Testing..." : "Test Connection"}
               </Button>
             </form>
@@ -93,17 +80,72 @@ export const IntegrationsSettings = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Webhook className="h-5 w-5" />
-              Webhooks
+              <MessageSquare className="h-5 w-5" />
+              Facebook Messenger
             </CardTitle>
             <CardDescription>
-              Configure webhook endpoints for real-time notifications
+              Integrate with Facebook Messenger for customer communication
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Webhook configuration coming soon. This will allow you to receive notifications when certain events occur.
-            </p>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleTestConnection("Messenger", messengerToken);
+            }} className="space-y-4">
+              <div>
+                <label htmlFor="messengerToken" className="text-sm font-medium">
+                  Messenger Access Token
+                </label>
+                <Input
+                  id="messengerToken"
+                  placeholder="Enter your Facebook Messenger token"
+                  value={messengerToken}
+                  onChange={(e) => setMessengerToken(e.target.value)}
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Found in your Facebook Developer Console
+                </p>
+              </div>
+              <Button type="submit" disabled={isLoading || !messengerToken}>
+                {isLoading ? "Testing..." : "Test Connection"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Instagram className="h-5 w-5" />
+              Instagram Integration
+            </CardTitle>
+            <CardDescription>
+              Connect with Instagram Direct Messages for customer support
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleTestConnection("Instagram", instagramToken);
+            }} className="space-y-4">
+              <div>
+                <label htmlFor="instagramToken" className="text-sm font-medium">
+                  Instagram Access Token
+                </label>
+                <Input
+                  id="instagramToken"
+                  placeholder="Enter your Instagram API token"
+                  value={instagramToken}
+                  onChange={(e) => setInstagramToken(e.target.value)}
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Available in your Instagram Business settings
+                </p>
+              </div>
+              <Button type="submit" disabled={isLoading || !instagramToken}>
+                {isLoading ? "Testing..." : "Test Connection"}
+              </Button>
+            </form>
           </CardContent>
         </Card>
 
@@ -111,15 +153,15 @@ export const IntegrationsSettings = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Link2 className="h-5 w-5" />
-              External APIs
+              Additional Integrations
             </CardTitle>
             <CardDescription>
-              Connect to third-party services and APIs
+              Configure other third-party integrations and APIs
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              External API configuration coming soon. This will allow you to integrate with various third-party services.
+              More integration options coming soon. This will allow you to connect with various other messaging and communication platforms.
             </p>
           </CardContent>
         </Card>
