@@ -68,8 +68,8 @@ export const FileUpload = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full p-4 border-t border-luxury-100">
-      <label className="flex items-center gap-2 cursor-pointer">
+    <div className="w-full p-4 border-t border-luxury-100 bg-white">
+      <label className="flex items-center justify-center cursor-pointer">
         <input
           type="file"
           accept=".txt,.pdf"
@@ -80,7 +80,7 @@ export const FileUpload = () => {
         <Button
           variant="outline"
           disabled={isUploading}
-          className="bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
+          className="w-full max-w-md bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
         >
           <Upload className="h-4 w-4 mr-2" />
           {isUploading ? "Bezig met AI training..." : "Upload bestand voor AI training"}
