@@ -108,6 +108,7 @@ export type Database = {
           created_at: string
           id: string
           logo_url: string | null
+          number_of_quick_actions: number | null
           updated_at: string
           welcome_message: string
         }
@@ -117,6 +118,7 @@ export type Database = {
           created_at?: string
           id?: string
           logo_url?: string | null
+          number_of_quick_actions?: number | null
           updated_at?: string
           welcome_message?: string
         }
@@ -126,6 +128,7 @@ export type Database = {
           created_at?: string
           id?: string
           logo_url?: string | null
+          number_of_quick_actions?: number | null
           updated_at?: string
           welcome_message?: string
         }

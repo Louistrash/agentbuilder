@@ -24,13 +24,14 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
   }, []);
 
   const fetchSettings = async () => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('bot_settings')
-      .select('number_of_quick_actions')
+      .select('*')
       .single();
 
-    if (!error && data) {
-      setMaxActions(data.number_of_quick_actions || 4);
+    if (data) {
+      // Safely access the property and provide a default value
+      setMaxActions(data.number_of_quick_actions ?? 4);
     }
   };
 
