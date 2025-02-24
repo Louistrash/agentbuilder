@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,7 +21,6 @@ const Admin = () => {
 
   useEffect(() => {
     const checkAdmin = async () => {
-      // If not logged in, redirect to auth page
       if (!user) {
         navigate('/auth');
         return;

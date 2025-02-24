@@ -12,6 +12,7 @@ export type Database = {
       bot_settings: {
         Row: {
           bot_name: string
+          chat_settings: Json | null
           created_at: string
           id: string
           logo_url: string | null
@@ -20,6 +21,7 @@ export type Database = {
         }
         Insert: {
           bot_name?: string
+          chat_settings?: Json | null
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -28,6 +30,7 @@ export type Database = {
         }
         Update: {
           bot_name?: string
+          chat_settings?: Json | null
           created_at?: string
           id?: string
           logo_url?: string | null
