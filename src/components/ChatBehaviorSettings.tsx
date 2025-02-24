@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
 
 type BotSettings = Database['public']['Tables']['bot_settings']['Row'];
+type Json = Database['public']['Tables']['bot_settings']['Row']['chat_settings'];
 
 interface ChatSettings {
   maxMessagesPerChat: number;
@@ -94,17 +95,18 @@ export const ChatBehaviorSettings = () => {
         throw new Error('No settings record found');
       }
 
-      const chatSettings: ChatSettings = {
+      // Create the settings object that matches the Json type
+      const chatSettingsData = {
         maxMessagesPerChat: parseInt(settings.maxMessagesPerChat),
         responseDelay: parseInt(settings.responseDelay),
         aiPersonality: settings.aiPersonality,
         fallbackMessage: settings.fallbackMessage,
-      };
+      } as unknown as Json;
 
       const { error } = await supabase
         .from('bot_settings')
         .update({
-          chat_settings: chatSettings
+          chat_settings: chatSettingsData
         })
         .eq('id', existingSettings.id);
 
