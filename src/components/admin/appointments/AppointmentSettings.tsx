@@ -2,38 +2,16 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
-
-interface TimeSlot {
-  start: string;
-  end: string;
-}
-
-interface Settings {
-  available_days: number[];
-  time_slots: TimeSlot[];
-  max_appointments_per_day: number;
-  min_notice_hours: number;
-  max_advance_days: number;
-  appointment_duration: number;
-  break_between_appointments: number;
-}
+import { AvailableDays } from "./components/AvailableDays";
+import { BusinessHours } from "./components/BusinessHours";
+import { NumericSetting } from "./components/NumericSetting";
+import { AppointmentSettings as Settings, DEFAULT_SETTINGS, TimeSlot } from "./types";
 
 export const AppointmentSettings = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [settings, setSettings] = useState<Settings>({
-    available_days: [1, 2, 3, 4, 5],
-    time_slots: [{ start: "09:00", end: "17:00" }],
-    max_appointments_per_day: 8,
-    min_notice_hours: 24,
-    max_advance_days: 30,
-    appointment_duration: 60,
-    break_between_appointments: 15
-  });
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   useEffect(() => {
     loadSettings();
@@ -48,14 +26,18 @@ export const AppointmentSettings = () => {
 
       if (error) throw error;
       if (data) {
-        // Parse the JSON time_slots field
         const timeSlots = Array.isArray(data.time_slots) 
-          ? data.time_slots 
-          : [{ start: "09:00", end: "17:00" }];
+          ? (data.time_slots as TimeSlot[])
+          : DEFAULT_SETTINGS.time_slots;
 
         setSettings({
-          ...data,
+          available_days: data.available_days || DEFAULT_SETTINGS.available_days,
           time_slots: timeSlots,
+          max_appointments_per_day: data.max_appointments_per_day,
+          min_notice_hours: data.min_notice_hours,
+          max_advance_days: data.max_advance_days,
+          appointment_duration: data.appointment_duration,
+          break_between_appointments: data.break_between_appointments,
         });
       }
     } catch (error) {
@@ -75,7 +57,10 @@ export const AppointmentSettings = () => {
     try {
       const { error } = await supabase
         .from('appointment_settings')
-        .update(settings)
+        .update({
+          ...settings,
+          time_slots: settings.time_slots as any // Required for Supabase JSON column
+        })
         .eq('id', '00000000-0000-0000-0000-000000000000');
 
       if (error) throw error;
@@ -105,15 +90,12 @@ export const AppointmentSettings = () => {
     }));
   };
 
-  const weekDays = [
-    { value: 1, label: "Mon" },
-    { value: 2, label: "Tue" },
-    { value: 3, label: "Wed" },
-    { value: 4, label: "Thu" },
-    { value: 5, label: "Fri" },
-    { value: 6, label: "Sat" },
-    { value: 0, label: "Sun" },
-  ];
+  const handleTimeSlotChange = (field: keyof TimeSlot, value: string) => {
+    setSettings(prev => ({
+      ...prev,
+      time_slots: [{ ...prev.time_slots[0], [field]: value }]
+    }));
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -121,119 +103,58 @@ export const AppointmentSettings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Available Days</h3>
-        <div className="flex flex-wrap gap-4">
-          {weekDays.map(({ value, label }) => (
-            <div key={value} className="flex items-center space-x-2">
-              <Switch
-                id={`day-${value}`}
-                checked={settings.available_days.includes(value)}
-                onCheckedChange={() => toggleDay(value)}
-              />
-              <Label htmlFor={`day-${value}`}>{label}</Label>
-            </div>
-          ))}
-        </div>
-      </div>
+      <AvailableDays 
+        availableDays={settings.available_days}
+        onToggleDay={toggleDay}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="businessHours">Business Hours</Label>
-          <div className="flex items-center space-x-2">
-            <Input
-              id="startTime"
-              type="time"
-              value={settings.time_slots[0].start}
-              onChange={(e) => setSettings(prev => ({
-                ...prev,
-                time_slots: [{ ...prev.time_slots[0], start: e.target.value }]
-              }))}
-            />
-            <span>to</span>
-            <Input
-              id="endTime"
-              type="time"
-              value={settings.time_slots[0].end}
-              onChange={(e) => setSettings(prev => ({
-                ...prev,
-                time_slots: [{ ...prev.time_slots[0], end: e.target.value }]
-              }))}
-            />
-          </div>
-        </div>
+        <BusinessHours
+          timeSlot={settings.time_slots[0]}
+          onTimeChange={handleTimeSlotChange}
+        />
 
-        <div className="space-y-2">
-          <Label htmlFor="maxAppointments">Max Appointments per Day</Label>
-          <Input
-            id="maxAppointments"
-            type="number"
-            min="1"
-            value={settings.max_appointments_per_day}
-            onChange={(e) => setSettings(prev => ({
-              ...prev,
-              max_appointments_per_day: parseInt(e.target.value)
-            }))}
-          />
-        </div>
+        <NumericSetting
+          id="maxAppointments"
+          label="Max Appointments per Day"
+          value={settings.max_appointments_per_day}
+          onChange={(value) => setSettings(prev => ({ ...prev, max_appointments_per_day: value }))}
+          min={1}
+        />
 
-        <div className="space-y-2">
-          <Label htmlFor="appointmentDuration">Appointment Duration (minutes)</Label>
-          <Input
-            id="appointmentDuration"
-            type="number"
-            min="15"
-            step="15"
-            value={settings.appointment_duration}
-            onChange={(e) => setSettings(prev => ({
-              ...prev,
-              appointment_duration: parseInt(e.target.value)
-            }))}
-          />
-        </div>
+        <NumericSetting
+          id="appointmentDuration"
+          label="Appointment Duration (minutes)"
+          value={settings.appointment_duration}
+          onChange={(value) => setSettings(prev => ({ ...prev, appointment_duration: value }))}
+          min={15}
+          step={15}
+        />
 
-        <div className="space-y-2">
-          <Label htmlFor="breakBetween">Break Between Appointments (minutes)</Label>
-          <Input
-            id="breakBetween"
-            type="number"
-            min="0"
-            step="5"
-            value={settings.break_between_appointments}
-            onChange={(e) => setSettings(prev => ({
-              ...prev,
-              break_between_appointments: parseInt(e.target.value)
-            }))}
-          />
-        </div>
+        <NumericSetting
+          id="breakBetween"
+          label="Break Between Appointments (minutes)"
+          value={settings.break_between_appointments}
+          onChange={(value) => setSettings(prev => ({ ...prev, break_between_appointments: value }))}
+          min={0}
+          step={5}
+        />
 
-        <div className="space-y-2">
-          <Label htmlFor="minNotice">Minimum Notice (hours)</Label>
-          <Input
-            id="minNotice"
-            type="number"
-            min="0"
-            value={settings.min_notice_hours}
-            onChange={(e) => setSettings(prev => ({
-              ...prev,
-              min_notice_hours: parseInt(e.target.value)
-            }))}
-          />
-        </div>
+        <NumericSetting
+          id="minNotice"
+          label="Minimum Notice (hours)"
+          value={settings.min_notice_hours}
+          onChange={(value) => setSettings(prev => ({ ...prev, min_notice_hours: value }))}
+          min={0}
+        />
 
-        <div className="space-y-2">
-          <Label htmlFor="maxAdvance">Maximum Advance Booking (days)</Label>
-          <Input
-            id="maxAdvance"
-            type="number"
-            min="1"
-            value={settings.max_advance_days}
-            onChange={(e) => setSettings(prev => ({
-              ...prev,
-              max_advance_days: parseInt(e.target.value)
-            }))}
-          />
-        </div>
+        <NumericSetting
+          id="maxAdvance"
+          label="Maximum Advance Booking (days)"
+          value={settings.max_advance_days}
+          onChange={(value) => setSettings(prev => ({ ...prev, max_advance_days: value }))}
+          min={1}
+        />
       </div>
 
       <div className="flex justify-end">
