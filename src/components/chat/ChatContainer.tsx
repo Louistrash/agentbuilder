@@ -72,8 +72,8 @@ export const ChatContainer = ({
         ref={headerRef}
         className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm border-b border-gray-200 md:hidden"
       >
-        <div className="px-4 py-3 flex justify-center">
-          <span className="text-gray-500 text-sm font-medium">
+        <div className="px-4 py-3 flex">
+          <span className="text-gray-500 text-sm font-medium ml-2">
             {format(currentTime, 'h:mm a')}
           </span>
         </div>
