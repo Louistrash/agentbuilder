@@ -58,7 +58,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#E5DDD5] flex flex-col">
       {/* Header */}
-      <div className="bg-[#008069] text-white p-4 sticky top-0 z-50">
+      <div className="bg-white/[0.37] backdrop-blur-sm text-gray-800 p-4 sticky top-0 z-50">
         <div className="max-w-3xl mx-auto flex justify-between items-center px-[9px]">
           <div className="flex items-center gap-3">
             <img
@@ -77,7 +77,7 @@ const Index = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate('/admin')}
-                className="text-white hover:bg-white/10"
+                className="text-gray-800 hover:bg-black/10"
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -86,7 +86,7 @@ const Index = () => {
               variant="ghost"
               size="icon"
               onClick={handleLogout}
-              className="text-white hover:bg-white/10"
+              className="text-gray-800 hover:bg-black/10"
             >
               <LogOut className="h-4 w-4" />
             </Button>
