@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +14,7 @@ import { AppointmentCalendar } from "@/components/admin/appointments/Appointment
 import { AnalyticsOverview } from "@/components/admin/analytics/AnalyticsOverview";
 import { ChatMetricsChart } from "@/components/admin/analytics/ChatMetricsChart";
 import { TopQueriesTable } from "@/components/admin/analytics/TopQueriesTable";
+import { IntegrationsSettings } from "@/components/admin/integrations/IntegrationsSettings";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -123,9 +125,11 @@ const Admin = () => {
 
             <TabsContent value="integrations" className="mt-0">
               <div className="space-y-6">
-                <h2 className="text-xl font-semibold">Integrations & API Settings</h2>
-                <p className="text-gray-600">Manage external integrations and API access.</p>
-                {/* Integration settings will go here */}
+                <div>
+                  <h2 className="text-xl font-semibold">Integrations & API Settings</h2>
+                  <p className="text-gray-600">Manage external integrations and API connections.</p>
+                </div>
+                <IntegrationsSettings />
               </div>
             </TabsContent>
           </div>
