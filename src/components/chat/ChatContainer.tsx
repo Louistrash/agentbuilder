@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useWhatsApp } from "@/hooks/useWhatsApp";
 import { Share } from "lucide-react";
+
 interface ChatContainerProps {
   messages: Array<{
     content: string;
@@ -16,6 +17,7 @@ interface ChatContainerProps {
   onSend: (message: string) => void;
   onQuickAction: (action: string) => void;
 }
+
 export const ChatContainer = ({
   messages,
   isTyping,
@@ -30,14 +32,17 @@ export const ChatContainer = ({
     sendMessage,
     isLoading
   } = useWhatsApp();
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth"
     });
   };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   const handleShareViaWhatsApp = async () => {
     try {
       await sendMessage(phoneNumber, selectedMessage);
@@ -47,6 +52,7 @@ export const ChatContainer = ({
       console.error('Failed to share via WhatsApp:', error);
     }
   };
+
   return <div className="chat-container relative h-screen flex flex-col">
       <div className="absolute inset-0 overflow-y-auto my-[139px] mx-[21px]">
         {messages.map((message, index) => <div key={index} className="flex items-start gap-2 group">
@@ -71,8 +77,8 @@ export const ChatContainer = ({
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-10">
-        <div className="max-w-3xl mx-auto px-[25px] md:px-[33px]">
-          <div className="chat-input-container rounded-xl mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg py-[19px] my-[27px] mx-[5px]">
+        <div className="max-w-3xl mx-auto px-1">
+          <div className="chat-input-container rounded-xl mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg py-[19px] my-[27px] mx-[4px] w-[calc(100%-8px)]">
             <div className="chat-input-wrapper space-y-4">
               <div className="overflow-x-auto pb-2">
                 <QuickActions onActionClick={onQuickAction} />
