@@ -43,15 +43,25 @@
 /* Mobile-first responsive classes */
 .chat-container {
   @apply relative flex flex-col w-full h-[100dvh] md:h-[600px] md:max-w-2xl mx-auto bg-white/80 backdrop-blur-lg md:rounded-2xl shadow-lg border border-luxury-100;
+  @apply overflow-hidden; /* Prevent container from scrolling */
 }
 
 .messages-container {
-  @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4 pb-[160px] md:pb-[140px];
+  @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
+  @apply pb-[calc(140px+env(safe-area-inset-bottom))] md:pb-[140px]; /* Dynamic padding for footer */
+  @apply relative; /* Ensure proper stacking context */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 .chat-input-container {
-  @apply fixed md:absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-luxury-100 z-10;
-  @apply md:mx-auto md:max-w-2xl md:rounded-b-2xl;
+  @apply fixed md:absolute bottom-0 left-0 right-0;
+  @apply bg-white/95 backdrop-blur-lg border-t border-luxury-100;
+  @apply z-10 md:mx-auto md:max-w-2xl md:rounded-b-2xl;
+  @apply transform transition-transform duration-200 ease-in-out;
+  @apply shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.1)];
+  height: auto;
+  min-height: 140px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .message {
@@ -72,11 +82,4 @@
 
 .typing-indicator span {
   @apply w-2 h-2 bg-luxury-300 rounded-full animate-pulse;
-}
-
-/* Add safe area padding for mobile devices */
-@supports(padding: max(0px)) {
-  .chat-input-container {
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-  }
 }
