@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +9,7 @@ import { LogOut, Home, Settings, MessageSquare, Calendar, BarChart3, Link2 } fro
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { QuickActionsSettings } from "@/components/QuickActionsSettings";
 import { useToast } from "@/hooks/use-toast";
+import { ChatBehaviorSettings } from "@/components/ChatBehaviorSettings";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -163,7 +163,7 @@ const Admin = () => {
               <div className="space-y-6">
                 <h2 className="text-xl font-semibold">Chat Behavior & AI Responses</h2>
                 <p className="text-gray-600">Configure how Archibot interacts with users.</p>
-                {/* Chat behavior settings will go here */}
+                <ChatBehaviorSettings />
               </div>
             </TabsContent>
 
