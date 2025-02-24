@@ -43,7 +43,7 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
 
   return (
     <div className="chat-container">
-      <div className="messages-container">
+      <div className="messages-container mb-[60%]">
         {messages.map((message, index) => (
           <div key={index} className="flex items-start gap-2 group">
             <ChatMessage
