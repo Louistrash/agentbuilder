@@ -37,39 +37,44 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow: hidden; /* Prevent body scroll */
+    position: fixed; /* Fix for iOS Safari */
+    width: 100%;
+    height: 100%;
   }
 }
 
 /* Mobile-first responsive classes */
 .chat-container {
-  @apply relative flex flex-col w-full h-screen md:h-[600px] md:max-w-2xl mx-auto bg-white/80 backdrop-blur-lg md:rounded-2xl shadow-lg border border-luxury-100;
+  @apply relative flex flex-col w-full h-[100dvh] md:h-[600px] md:max-w-2xl mx-auto bg-white/80 backdrop-blur-lg md:rounded-2xl shadow-lg border border-luxury-100;
   @apply overflow-hidden;
-  height: -webkit-fill-available; /* iOS Safari fix */
+  position: fixed; /* Fix for iOS Safari */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%; /* Full height */
 }
 
 .messages-container {
   @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
-  height: calc(100vh - 140px); /* Adjusted height to account for increased footer space */
-  height: calc(-webkit-fill-available - 140px); /* iOS Safari fix */
   @apply relative;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+  padding-bottom: 160px; /* Account for fixed footer */
 }
 
 .chat-input-container {
   @apply fixed bottom-0 left-0 right-0 w-full md:absolute;
-  @apply bg-white border-t border-luxury-100;
-  @apply z-[9999]; /* Highest z-index to ensure visibility */
+  @apply bg-white/95 backdrop-blur-sm border-t border-luxury-100;
+  @apply z-[9999];
   @apply md:max-w-2xl md:mx-auto md:rounded-b-2xl;
-  height: 140px; /* Increased height */
-  @apply shadow-lg;
-  position: sticky; /* iOS Safari fix */
-  bottom: env(safe-area-inset-bottom); /* iOS Safari fix */
+  @apply transform transition-all duration-200 ease-in-out;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .chat-input-wrapper {
-  @apply h-full flex flex-col justify-between p-4;
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom)); /* Added more padding at the bottom */
+  @apply p-4 space-y-3;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
 }
 
 .message {
