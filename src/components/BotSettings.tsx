@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Image, Save } from "lucide-react";
 
@@ -49,6 +50,7 @@ export const BotSettings = () => {
       .update({
         bot_name: settings.bot_name,
         logo_url: settings.logo_url,
+        welcome_message: settings.welcome_message,
       })
       .eq('id', settings.id);
 
@@ -133,6 +135,22 @@ export const BotSettings = () => {
             onChange={(e) => setSettings({ ...settings, bot_name: e.target.value })}
             placeholder="Enter bot name"
           />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="welcomeMessage" className="text-sm font-medium text-gray-700">
+            Welcome Message
+          </label>
+          <Textarea
+            id="welcomeMessage"
+            value={settings.welcome_message}
+            onChange={(e) => setSettings({ ...settings, welcome_message: e.target.value })}
+            placeholder="Enter welcome message"
+            className="min-h-[100px] resize-y"
+          />
+          <p className="text-sm text-gray-500">
+            This message will be shown to users when they first start a conversation.
+          </p>
         </div>
 
         <div className="space-y-2">
