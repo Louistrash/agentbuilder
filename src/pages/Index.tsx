@@ -64,11 +64,11 @@ const Index = () => {
           <div className="flex items-center gap-3">
             <img 
               src={logoUrl || "/placeholder.svg"} 
-              alt="Logo" 
+              alt="Archibot AI Logo" 
               className="w-[70px] h-[70px] object-contain"
             />
             <div className="flex flex-col items-start">
-              <h1 className="text-lg font-semibold text-[#18344A]">Archibed AI</h1>
+              <h1 className="text-lg font-semibold text-[#18344A]">Archibot AI</h1>
               <p className="text-sm text-[#18344A]/80">Luxury Sleep Coach</p>
             </div>
           </div>
