@@ -16,6 +16,22 @@ interface ChatSettings {
   fallbackMessage: string;
 }
 
+// Type guard to check if an object is a valid ChatSettings
+function isChatSettings(obj: any): obj is ChatSettings {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'maxMessagesPerChat' in obj &&
+    typeof obj.maxMessagesPerChat === 'number' &&
+    'responseDelay' in obj &&
+    typeof obj.responseDelay === 'number' &&
+    'aiPersonality' in obj &&
+    typeof obj.aiPersonality === 'string' &&
+    'fallbackMessage' in obj &&
+    typeof obj.fallbackMessage === 'string'
+  );
+}
+
 export const ChatBehaviorSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -39,14 +55,22 @@ export const ChatBehaviorSettings = () => {
 
       if (error) throw error;
       
-      if (data?.chat_settings && typeof data.chat_settings === 'object' && !Array.isArray(data.chat_settings)) {
-        const chatSettings = data.chat_settings as ChatSettings;
-        setSettings({
-          maxMessagesPerChat: chatSettings.maxMessagesPerChat.toString(),
-          responseDelay: chatSettings.responseDelay.toString(),
-          aiPersonality: chatSettings.aiPersonality,
-          fallbackMessage: chatSettings.fallbackMessage,
-        });
+      if (data?.chat_settings && typeof data.chat_settings === 'object') {
+        if (isChatSettings(data.chat_settings)) {
+          setSettings({
+            maxMessagesPerChat: data.chat_settings.maxMessagesPerChat.toString(),
+            responseDelay: data.chat_settings.responseDelay.toString(),
+            aiPersonality: data.chat_settings.aiPersonality,
+            fallbackMessage: data.chat_settings.fallbackMessage,
+          });
+        } else {
+          console.error('Invalid chat settings format:', data.chat_settings);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Invalid chat settings format in database.",
+          });
+        }
       }
     } catch (error) {
       console.error('Error loading chat settings:', error);
@@ -70,15 +94,17 @@ export const ChatBehaviorSettings = () => {
         throw new Error('No settings record found');
       }
 
+      const chatSettings: ChatSettings = {
+        maxMessagesPerChat: parseInt(settings.maxMessagesPerChat),
+        responseDelay: parseInt(settings.responseDelay),
+        aiPersonality: settings.aiPersonality,
+        fallbackMessage: settings.fallbackMessage,
+      };
+
       const { error } = await supabase
         .from('bot_settings')
         .update({
-          chat_settings: {
-            maxMessagesPerChat: parseInt(settings.maxMessagesPerChat),
-            responseDelay: parseInt(settings.responseDelay),
-            aiPersonality: settings.aiPersonality,
-            fallbackMessage: settings.fallbackMessage,
-          }
+          chat_settings: chatSettings
         })
         .eq('id', existingSettings.id);
 
