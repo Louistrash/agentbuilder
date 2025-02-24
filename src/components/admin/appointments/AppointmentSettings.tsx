@@ -18,14 +18,14 @@ export const AppointmentSettings = () => {
     loadSettings();
   }, []);
 
-  const validateTimeSlot = (slot: Json): slot is TimeSlot => {
+  const validateTimeSlot = (slot: unknown): slot is TimeSlot => {
     return (
       typeof slot === 'object' &&
       slot !== null &&
       'start' in slot &&
       'end' in slot &&
-      typeof slot.start === 'string' &&
-      typeof slot.end === 'string'
+      typeof (slot as any).start === 'string' &&
+      typeof (slot as any).end === 'string'
     );
   };
 
@@ -34,7 +34,7 @@ export const AppointmentSettings = () => {
       return DEFAULT_SETTINGS.time_slots;
     }
 
-    const validSlots = data.filter(validateTimeSlot);
+    const validSlots = data.filter((slot): slot is TimeSlot => validateTimeSlot(slot));
     return validSlots.length > 0 ? validSlots : DEFAULT_SETTINGS.time_slots;
   };
 
@@ -72,11 +72,16 @@ export const AppointmentSettings = () => {
   const handleSave = async () => {
     setIsLoading(true);
     try {
+      const timeSlotJson: Json[] = settings.time_slots.map(slot => ({
+        start: slot.start,
+        end: slot.end
+      }));
+
       const { error } = await supabase
         .from('appointment_settings')
         .update({
           ...settings,
-          time_slots: settings.time_slots as Json // Required for Supabase JSON column
+          time_slots: timeSlotJson
         })
         .eq('id', '00000000-0000-0000-0000-000000000000');
 
