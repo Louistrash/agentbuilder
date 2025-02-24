@@ -29,32 +29,12 @@ export const ChatContainer = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState("");
-  const [headerPosition, setHeaderPosition] = useState(0);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
   
   const {
     sendMessage,
     isLoading
   } = useWhatsApp();
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const currentScrollY = e.currentTarget.scrollTop;
-    
-    if (currentScrollY < lastScrollY) {
-      // Scrolling up
-      if (currentScrollY > 7) {
-        setHeaderPosition(-40); // Move header up
-      }
-    } else {
-      // Scrolling down
-      if (currentScrollY > 14) {
-        setHeaderPosition(0); // Return header to original position
-      }
-    }
-    
-    setLastScrollY(currentScrollY);
-  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -80,8 +60,7 @@ export const ChatContainer = ({
     <div className="chat-container relative h-screen flex flex-col">
       <div 
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-20 bg-white/80 backdrop-blur-sm border-b border-gray-200 transition-transform duration-300 md:hidden"
-        style={{ transform: `translateY(${headerPosition}px)` }}
+        className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm border-b border-gray-200 md:hidden"
       >
         <div className="px-4 py-3">
           <h1 className="text-lg font-semibold">Chat</h1>
@@ -89,8 +68,7 @@ export const ChatContainer = ({
       </div>
 
       <div 
-        className="absolute inset-0 overflow-y-auto md:my-[139px] md:mx-[21px] my-[100px] mx-[12px]"
-        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto md:my-[139px] md:mx-[21px] my-[20px] mx-[12px]"
       >
         {messages.map((message, index) => (
           <div key={index} className="flex items-start gap-2 group">
@@ -120,7 +98,7 @@ export const ChatContainer = ({
         <div ref={messagesEndRef} className="h-[180px] md:h-[200px]" />
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="sticky bottom-0 z-10 bg-[#E5DDD5]">
         <div className="max-w-[1400px] w-full mx-auto px-2 md:px-4">
           <div className="chat-input-container rounded-xl mb-3 md:mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg py-4 md:py-6 px-3 md:px-6">
             <div className="chat-input-wrapper space-y-3 md:space-y-4">
