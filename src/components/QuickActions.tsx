@@ -54,7 +54,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           key={action.id}
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 md:flex-1 min-w-0
+          className="flex items-center gap-2 md:flex-1 min-w-0 md:min-w-[200px]
                      backdrop-blur-sm border border-gray-200/50
                      text-[#18344A] rounded-2xl 
                      transition-all duration-200 ease-out px-4 py-2 h-auto min-h-[40px]
