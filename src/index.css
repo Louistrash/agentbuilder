@@ -42,11 +42,15 @@
 
 /* Mobile-first responsive classes */
 .chat-container {
-  @apply relative w-full h-[100dvh] md:h-[600px] md:max-w-2xl mx-auto bg-white/80 backdrop-blur-lg md:rounded-2xl shadow-lg border border-luxury-100;
+  @apply relative flex flex-col w-full h-[100dvh] md:h-[600px] md:max-w-2xl mx-auto bg-white/80 backdrop-blur-lg md:rounded-2xl shadow-lg border border-luxury-100;
 }
 
 .messages-container {
-  @apply h-[calc(100%-140px)] overflow-y-auto p-4 md:p-6 space-y-4;
+  @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
+}
+
+.chat-input-container {
+  @apply bg-white/80 backdrop-blur-sm border-t border-luxury-100 mt-auto;
 }
 
 .message {
@@ -59,10 +63,6 @@
 
 .user-message {
   @apply bg-luxury-900 text-white rounded-2xl rounded-tr-sm p-3 md:p-4 max-w-[85%] md:max-w-[80%] ml-auto text-sm md:text-base;
-}
-
-.quick-actions {
-  @apply fixed md:absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-white/80 backdrop-blur-sm border-t border-luxury-100 md:rounded-b-2xl;
 }
 
 .typing-indicator {

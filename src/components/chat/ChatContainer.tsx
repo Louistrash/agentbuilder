@@ -74,7 +74,7 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="border-t border-luxury-100 bg-white/80 backdrop-blur-sm sticky bottom-0 left-0 right-0">
+      <div className="chat-input-container">
         <QuickActions onActionClick={onQuickAction} />
         <ChatInput onSend={onSend} />
       </div>
