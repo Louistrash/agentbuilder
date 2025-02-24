@@ -7,7 +7,7 @@ import { ChatInput } from "@/components/ChatInput";
 import { QuickActions } from "@/components/QuickActions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 
 interface Message {
   content: string;
@@ -18,6 +18,7 @@ interface Message {
 const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -27,6 +28,20 @@ const Index = () => {
   };
 
   useEffect(() => {
+    const checkAdminStatus = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', user.id)
+          .single();
+        
+        setIsAdmin(!!profile?.is_admin);
+      }
+    };
+
+    checkAdminStatus();
     // Initial welcome message in Dutch
     setMessages([
       {
@@ -101,14 +116,25 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-luxury-50 p-4 flex items-center justify-center">
       <div className="chat-container relative bg-white rounded-lg shadow-lg w-full max-w-2xl overflow-hidden">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-4 right-4 z-10"
-          onClick={handleLogout}
-        >
-          <LogOut className="h-4 w-4" />
-        </Button>
+        <div className="absolute top-4 right-4 z-10 flex gap-2">
+          {isAdmin && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/admin')}
+              className="text-luxury-600 hover:text-luxury-800"
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4" />
+          </Button>
+        </div>
         <div className="messages-container max-h-[60vh] overflow-y-auto">
           {messages.map((message, index) => (
             <ChatMessage
