@@ -30,7 +30,6 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
       .single();
 
     if (data) {
-      // Safely access the property and provide a default value
       setMaxActions(data.number_of_quick_actions ?? 4);
     }
   };
@@ -55,8 +54,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           variant="outline"
           size="sm"
           className="bg-white/50 backdrop-blur-sm border border-gray-200 hover:bg-gray-50 
-                     text-[#18344A] shadow-sm rounded-2xl transition-all 
-                     active:scale-95 w-full md:flex-1"
+                     text-[#18344A] shadow-sm rounded-2xl w-full md:flex-1"
           onClick={() => onActionClick(action.action)}
         >
           {action.text}
