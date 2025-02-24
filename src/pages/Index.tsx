@@ -58,7 +58,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#E5DDD5] flex flex-col">
       {/* Header */}
-      <div className="bg-white/[0.12] backdrop-blur-sm text-gray-800 p-4 sticky top-0 z-50">
+      <div className="bg-white/[0.86] backdrop-blur-sm text-gray-800 p-4 sticky top-0 z-50">
         <div className="max-w-3xl mx-auto flex justify-between items-center px-[9px]">
           <div className="flex items-center gap-3">
             <img
