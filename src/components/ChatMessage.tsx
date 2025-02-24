@@ -24,7 +24,7 @@ export const ChatMessage = ({ content, isBot = false }: ChatMessageProps) => {
         </Avatar>
       )}
       <div className={cn(
-        "px-4 py-2.5 rounded-2xl max-w-[85%] break-words text-left",
+        "px-4 py-2 rounded-2xl break-words text-left w-[95%]",
         isBot 
           ? "bg-white text-gray-800" 
           : "bg-[#D3E4FD] text-gray-800 shadow-sm transition-all duration-200" +
