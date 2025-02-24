@@ -14,6 +14,7 @@ const Index = () => {
   const { isAdmin } = useAdmin();
   const { messages, isTyping, sendMessage, initializeChat, endSession } = useChat();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
     const setupChat = async () => {
@@ -23,6 +24,9 @@ const Index = () => {
 
     setupChat();
     fetchLogo();
+    
+    // Show welcome message with a slight delay for smooth animation
+    setTimeout(() => setShowWelcome(true), 100);
   }, []);
 
   const fetchLogo = async () => {
@@ -100,8 +104,8 @@ const Index = () => {
         <p className="text-sm text-[#18344A]/70">vrijdag 11:41pm</p>
       </div>
 
-      {/* Chat Container */}
-      <div className="flex-1 md:p-4 mt-8">
+      {/* Welcome Message */}
+      <div className={`flex-1 md:p-4 mt-8 transition-all duration-500 ease-out transform ${showWelcome ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
         <ChatContainer
           messages={messages}
           isTyping={isTyping}
