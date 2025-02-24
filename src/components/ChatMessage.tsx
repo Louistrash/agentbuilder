@@ -32,7 +32,7 @@ export const ChatMessage = ({ content, isBot = false }: ChatMessageProps) => {
             " bg-gradient-to-br from-[#D3E4FD] to-[#E8F0FD]" +
             " border border-white/20"
       )}>
-        {content}
+        {content.match(/.{1,24}(\s|$)/g)?.join('\n') || content}
       </div>
     </div>
   );
