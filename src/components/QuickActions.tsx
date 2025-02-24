@@ -92,7 +92,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
         ))}
       </div>
       {canScroll && (
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 
                       bg-white/80 rounded-full shadow-md pointer-events-none md:block hidden">
           <ChevronRight className="h-4 w-4 text-gray-600 animate-pulse" />
         </div>
