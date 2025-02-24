@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -7,7 +7,12 @@ import { Upload } from "lucide-react";
 
 export const FileUpload = () => {
   const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -63,29 +68,31 @@ export const FileUpload = () => {
     } finally {
       setIsUploading(false);
       // Reset the input
-      event.target.value = '';
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
   return (
     <div className="w-full p-4 border-t border-luxury-100 bg-white">
-      <label className="flex items-center justify-center cursor-pointer">
-        <input
-          type="file"
-          accept=".txt,.pdf"
-          onChange={handleFileUpload}
-          disabled={isUploading}
-          className="hidden"
-        />
-        <Button
-          variant="outline"
-          disabled={isUploading}
-          className="w-full max-w-md bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
-        >
-          <Upload className="h-4 w-4 mr-2" />
-          {isUploading ? "Bezig met AI training..." : "Upload bestand voor AI training"}
-        </Button>
-      </label>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".txt,.pdf"
+        onChange={handleFileUpload}
+        disabled={isUploading}
+        className="hidden"
+      />
+      <Button
+        variant="outline"
+        disabled={isUploading}
+        onClick={handleButtonClick}
+        className="w-full max-w-md bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
+      >
+        <Upload className="h-4 w-4 mr-2" />
+        {isUploading ? "Bezig met AI training..." : "Upload bestand voor AI training"}
+      </Button>
     </div>
   );
 };
