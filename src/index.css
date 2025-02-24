@@ -49,6 +49,7 @@
 .messages-container {
   @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
   @apply pb-[calc(140px+env(safe-area-inset-bottom))] md:pb-[140px]; /* Dynamic padding for footer */
+  height: calc(100% - 140px); /* Subtract footer height */
   @apply relative; /* Ensure proper stacking context */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
@@ -56,12 +57,16 @@
 .chat-input-container {
   @apply fixed md:absolute bottom-0 left-0 right-0;
   @apply bg-white/95 backdrop-blur-lg border-t border-luxury-100;
-  @apply z-10 md:mx-auto md:max-w-2xl md:rounded-b-2xl;
-  @apply transform transition-transform duration-200 ease-in-out;
+  @apply z-50; /* Increased z-index to ensure it stays on top */
+  @apply md:mx-auto md:max-w-2xl md:rounded-b-2xl;
+  height: 140px; /* Fixed height */
   @apply shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.1)];
-  height: auto;
-  min-height: 140px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  @apply md:absolute; /* Only absolute on desktop */
 }
 
 .message {
