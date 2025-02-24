@@ -72,7 +72,7 @@ export const ChatContainer = ({
 
       <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 z-10">
         <div className="max-w-3xl mx-auto px-[25px] md:px-[33px]">
-          <div className="chat-input-container py-4">
+          <div className="chat-input-container py-4 rounded-sm mx-0 my-[31px] px-[9px]">
             <div className="chat-input-wrapper space-y-4">
               <div className="overflow-x-auto pb-2">
                 <QuickActions onActionClick={onQuickAction} />
