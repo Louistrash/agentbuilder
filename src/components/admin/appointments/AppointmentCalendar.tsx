@@ -36,7 +36,14 @@ export const AppointmentCalendar = () => {
         .order('start_time');
 
       if (error) throw error;
-      setAppointments(data || []);
+      
+      // Type check the status before setting the state
+      const typedAppointments = (data || []).map(apt => ({
+        ...apt,
+        status: apt.status as 'pending' | 'confirmed' | 'cancelled' | 'completed'
+      }));
+      
+      setAppointments(typedAppointments);
     } catch (error) {
       console.error('Error loading appointments:', error);
       toast({

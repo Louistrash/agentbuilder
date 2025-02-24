@@ -7,10 +7,25 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 
+interface TimeSlot {
+  start: string;
+  end: string;
+}
+
+interface Settings {
+  available_days: number[];
+  time_slots: TimeSlot[];
+  max_appointments_per_day: number;
+  min_notice_hours: number;
+  max_advance_days: number;
+  appointment_duration: number;
+  break_between_appointments: number;
+}
+
 export const AppointmentSettings = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Settings>({
     available_days: [1, 2, 3, 4, 5],
     time_slots: [{ start: "09:00", end: "17:00" }],
     max_appointments_per_day: 8,
@@ -32,7 +47,17 @@ export const AppointmentSettings = () => {
         .single();
 
       if (error) throw error;
-      if (data) setSettings(data);
+      if (data) {
+        // Parse the JSON time_slots field
+        const timeSlots = Array.isArray(data.time_slots) 
+          ? data.time_slots 
+          : [{ start: "09:00", end: "17:00" }];
+
+        setSettings({
+          ...data,
+          time_slots: timeSlots,
+        });
+      }
     } catch (error) {
       console.error('Error loading settings:', error);
       toast({
