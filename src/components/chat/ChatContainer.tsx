@@ -111,7 +111,7 @@ export const ChatContainer = ({
       </div>
 
       <div className="sticky bottom-0 z-10 bg-[#E5DDD5]">
-        <div className="max-w-[1400px] w-full mx-auto px-2 md:px-4">
+        <div className="max-w-[1440px] w-full mx-auto px-2 md:px-4">
           <div className="chat-input-container rounded-xl mb-3 md:mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg py-4 md:py-6 px-3 md:px-6">
             <div className="chat-input-wrapper space-y-3 md:space-y-4">
               <div className="overflow-x-auto pb-1 md:pb-2">
