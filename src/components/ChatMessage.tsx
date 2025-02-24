@@ -1,33 +1,23 @@
 
-import { useState } from "react";
-import { Avatar } from "@/components/ui/avatar";
+import React from "react";
 import { cn } from "@/lib/utils";
 
 interface ChatMessageProps {
   content: string;
-  isBot?: boolean;
+  isBot: boolean;
 }
 
-export const ChatMessage = ({ content, isBot = false }: ChatMessageProps) => {
-  const [isVisible] = useState(true);
-
+export const ChatMessage = ({ content, isBot }: ChatMessageProps) => {
   return (
-    <div className={cn("message", isBot ? "justify-start" : "justify-end")}>
-      {isBot && (
-        <Avatar className="w-8 h-8 border-2 border-luxury-100">
-          <div className="w-full h-full bg-luxury-100 flex items-center justify-center text-luxury-900 text-xs font-medium">
-            AB
-          </div>
-        </Avatar>
+    <div
+      className={cn(
+        "px-4 py-2 rounded-lg max-w-[85%] text-sm",
+        isBot
+          ? "bg-white text-[#18344A]/60 self-start" // Changed opacity to 60% (40% lower)
+          : "bg-[#18344A] text-white self-end"
       )}
-      <div
-        className={cn(
-          isBot ? "bot-message" : "user-message",
-          isVisible && "animate-fade-up"
-        )}
-      >
-        {content}
-      </div>
+    >
+      {content}
     </div>
   );
 };
