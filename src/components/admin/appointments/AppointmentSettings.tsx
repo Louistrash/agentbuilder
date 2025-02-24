@@ -7,6 +7,7 @@ import { AvailableDays } from "./components/AvailableDays";
 import { BusinessHours } from "./components/BusinessHours";
 import { NumericSetting } from "./components/NumericSetting";
 import { AppointmentSettings as Settings, DEFAULT_SETTINGS, TimeSlot } from "./types";
+import { Json } from "@/integrations/supabase/types";
 
 export const AppointmentSettings = () => {
   const { toast } = useToast();
