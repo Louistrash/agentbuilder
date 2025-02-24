@@ -29,10 +29,32 @@ export const ChatContainer = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState("");
+  const [headerPosition, setHeaderPosition] = useState(0);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const headerRef = useRef<HTMLDivElement>(null);
+  
   const {
     sendMessage,
     isLoading
   } = useWhatsApp();
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const currentScrollY = e.currentTarget.scrollTop;
+    
+    if (currentScrollY < lastScrollY) {
+      // Scrolling up
+      if (currentScrollY > 7) {
+        setHeaderPosition(-40); // Move header up
+      }
+    } else {
+      // Scrolling down
+      if (currentScrollY > 14) {
+        setHeaderPosition(0); // Return header to original position
+      }
+    }
+    
+    setLastScrollY(currentScrollY);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -54,26 +76,47 @@ export const ChatContainer = ({
     }
   };
 
-  return <div className="chat-container relative h-screen flex flex-col">
-      <div className="absolute inset-0 overflow-y-auto md:my-[139px] md:mx-[21px] my-[100px] mx-[12px]">
-        {messages.map((message, index) => <div key={index} className="flex items-start gap-2 group">
+  return (
+    <div className="chat-container relative h-screen flex flex-col">
+      <div 
+        ref={headerRef}
+        className="fixed top-0 left-0 right-0 z-20 bg-white/80 backdrop-blur-sm border-b border-gray-200 transition-transform duration-300 md:hidden"
+        style={{ transform: `translateY(${headerPosition}px)` }}
+      >
+        <div className="px-4 py-3">
+          <h1 className="text-lg font-semibold">Chat</h1>
+        </div>
+      </div>
+
+      <div 
+        className="absolute inset-0 overflow-y-auto md:my-[139px] md:mx-[21px] my-[100px] mx-[12px]"
+        onScroll={handleScroll}
+      >
+        {messages.map((message, index) => (
+          <div key={index} className="flex items-start gap-2 group">
             <ChatMessage content={message.content} isBot={message.isBot} />
-            {!message.isBot && <Button variant="ghost" size="icon" className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity" onClick={() => {
-          setSelectedMessage(message.content);
-          setIsShareDialogOpen(true);
-        }}>
+            {!message.isBot && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                onClick={() => {
+                  setSelectedMessage(message.content);
+                  setIsShareDialogOpen(true);
+                }}
+              >
                 <Share className="h-4 w-4" />
-              </Button>}
-          </div>)}
-        {isTyping && <div className="typing-indicator">
+              </Button>
+            )}
+          </div>
+        ))}
+        {isTyping && (
+          <div className="typing-indicator">
             <span></span>
-            <span style={{
-          animationDelay: "0.2s"
-        }}></span>
-            <span style={{
-          animationDelay: "0.4s"
-        }}></span>
-          </div>}
+            <span style={{ animationDelay: "0.2s" }}></span>
+            <span style={{ animationDelay: "0.4s" }}></span>
+          </div>
+        )}
         <div ref={messagesEndRef} className="h-[180px] md:h-[200px]" />
       </div>
 
@@ -102,17 +145,27 @@ export const ChatContainer = ({
               <label htmlFor="phoneNumber" className="text-sm font-medium">
                 Phone Number
               </label>
-              <Input id="phoneNumber" placeholder="Enter phone number with country code (e.g., +31612345678)" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
+              <Input 
+                id="phoneNumber" 
+                placeholder="Enter phone number with country code (e.g., +31612345678)" 
+                value={phoneNumber} 
+                onChange={e => setPhoneNumber(e.target.value)} 
+              />
             </div>
             <div>
               <label className="text-sm font-medium">Message</label>
               <p className="mt-1 text-sm text-muted-foreground">{selectedMessage}</p>
             </div>
-            <Button onClick={handleShareViaWhatsApp} disabled={!phoneNumber || isLoading} className="w-full">
+            <Button 
+              onClick={handleShareViaWhatsApp} 
+              disabled={!phoneNumber || isLoading} 
+              className="w-full"
+            >
               {isLoading ? "Sending..." : "Send"}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </div>;
+    </div>
+  );
 };
