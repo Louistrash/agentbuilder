@@ -10,6 +10,9 @@ import { AdminTabs } from "@/components/admin/AdminTabs";
 import { GeneralSettings } from "@/components/admin/GeneralSettings";
 import { AppointmentSettings } from "@/components/admin/appointments/AppointmentSettings";
 import { AppointmentCalendar } from "@/components/admin/appointments/AppointmentCalendar";
+import { AnalyticsOverview } from "@/components/admin/analytics/AnalyticsOverview";
+import { ChatMetricsChart } from "@/components/admin/analytics/ChatMetricsChart";
+import { TopQueriesTable } from "@/components/admin/analytics/TopQueriesTable";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -104,9 +107,17 @@ const Admin = () => {
 
             <TabsContent value="analytics" className="mt-0">
               <div className="space-y-6">
-                <h2 className="text-xl font-semibold">Analytics & Performance</h2>
-                <p className="text-gray-600">View chat history and performance metrics.</p>
-                {/* Analytics content will go here */}
+                <div>
+                  <h2 className="text-xl font-semibold">Analytics & Performance</h2>
+                  <p className="text-gray-600">View chat statistics and user engagement metrics.</p>
+                </div>
+                
+                <AnalyticsOverview />
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <ChatMetricsChart />
+                  <TopQueriesTable />
+                </div>
               </div>
             </TabsContent>
 
