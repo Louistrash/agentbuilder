@@ -1,8 +1,13 @@
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { QuickActions } from "@/components/QuickActions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useWhatsApp } from "@/hooks/useWhatsApp";
+import { Share } from "lucide-react";
 
 interface ChatContainerProps {
   messages: Array<{ content: string; isBot: boolean }>;
@@ -13,6 +18,10 @@ interface ChatContainerProps {
 
 export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: ChatContainerProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState("");
+  const { sendMessage, isLoading } = useWhatsApp();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -22,15 +31,39 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
     scrollToBottom();
   }, [messages]);
 
+  const handleShareViaWhatsApp = async () => {
+    try {
+      await sendMessage(phoneNumber, selectedMessage);
+      setIsShareDialogOpen(false);
+      setPhoneNumber("");
+    } catch (error) {
+      console.error('Failed to share via WhatsApp:', error);
+    }
+  };
+
   return (
     <>
       <div className="messages-container max-h-[60vh] overflow-y-auto p-4">
         {messages.map((message, index) => (
-          <ChatMessage
-            key={index}
-            content={message.content}
-            isBot={message.isBot}
-          />
+          <div key={index} className="flex items-start gap-2 group">
+            <ChatMessage
+              content={message.content}
+              isBot={message.isBot}
+            />
+            {!message.isBot && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                onClick={() => {
+                  setSelectedMessage(message.content);
+                  setIsShareDialogOpen(true);
+                }}
+              >
+                <Share className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         ))}
         {isTyping && (
           <div className="typing-indicator">
@@ -45,6 +78,38 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
         <QuickActions onActionClick={onQuickAction} />
         <ChatInput onSend={onSend} />
       </div>
+
+      <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Share via WhatsApp</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="phoneNumber" className="text-sm font-medium">
+                Phone Number
+              </label>
+              <Input
+                id="phoneNumber"
+                placeholder="Enter phone number with country code (e.g., +31612345678)"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Message</label>
+              <p className="mt-1 text-sm text-muted-foreground">{selectedMessage}</p>
+            </div>
+            <Button 
+              onClick={handleShareViaWhatsApp}
+              disabled={!phoneNumber || isLoading}
+              className="w-full"
+            >
+              {isLoading ? "Sending..." : "Send"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
