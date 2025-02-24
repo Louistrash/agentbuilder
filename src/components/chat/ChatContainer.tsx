@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useWhatsApp } from "@/hooks/useWhatsApp";
 import { Share } from "lucide-react";
+import { format } from "date-fns";
 
 interface ChatContainerProps {
   messages: Array<{
@@ -29,12 +30,21 @@ export const ChatContainer = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState("");
+  const [currentTime, setCurrentTime] = useState(new Date());
   const headerRef = useRef<HTMLDivElement>(null);
   
   const {
     sendMessage,
     isLoading
   } = useWhatsApp();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -62,8 +72,10 @@ export const ChatContainer = ({
         ref={headerRef}
         className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm border-b border-gray-200 md:hidden"
       >
-        <div className="px-4 py-3">
-          <h1 className="text-lg font-semibold">Chat</h1>
+        <div className="px-4 py-3 flex justify-center">
+          <span className="text-gray-500 text-sm font-medium">
+            {format(currentTime, 'h:mm a')}
+          </span>
         </div>
       </div>
 
