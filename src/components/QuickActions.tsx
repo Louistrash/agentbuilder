@@ -39,13 +39,13 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col md:flex-row gap-2">
       {actions.map((action) => (
         <Button
           key={action.id}
           variant="outline"
           size="sm"
-          className="bg-white/50 backdrop-blur-sm border-luxury-200 hover:bg-luxury-100 flex-1 shadow-sm"
+          className="bg-white/50 backdrop-blur-sm border-luxury-200 hover:bg-luxury-100 shadow-sm w-full md:flex-1"
           onClick={() => onActionClick(action.action)}
         >
           {action.text}
