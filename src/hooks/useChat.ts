@@ -111,7 +111,7 @@ export const useChat = () => {
     setSessionId(session.id);
 
     const welcomeMessage = {
-      content: "Welkom bij ArchiboldBeckers.nl en Bedroom.nl. Ik ben Archibot, uw persoonlijke slaapadviseur. Hoe kan ik u vandaag helpen?",
+      content: "Hallo, ik ben Archibot, uw persoonlijke slaapadviseur. Ik help u graag met het vinden van de perfecte matras of het beantwoorden van vragen over een gezonde nachtrust. Waarmee kan ik u van dienst zijn?",
       isBot: true,
       role: 'assistant' as const
     };
