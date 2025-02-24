@@ -83,7 +83,7 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
-  padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px);
+  padding-bottom: max(env(safe-area-inset-bottom, 26px), 26px); /* Increased padding at the bottom */
 }
 
 .chat-input-wrapper {
