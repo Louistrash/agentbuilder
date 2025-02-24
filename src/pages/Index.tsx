@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -63,12 +64,12 @@ const Index = () => {
           <div className="flex items-center gap-3">
             <img 
               src={logoUrl || "/placeholder.svg"} 
-              alt="Archibot AI Logo" 
+              alt="Logo" 
               className="w-[70px] h-[70px] object-contain"
             />
             <div className="flex flex-col items-start">
-              <h1 className="text-lg font-semibold text-luxury-900">Archibot AI</h1>
-              <p className="text-sm text-luxury-600">Luxury Sleep Coach</p>
+              <h1 className="text-lg font-semibold text-[#18344A]">Archibed AI</h1>
+              <p className="text-sm text-[#18344A]/80">Luxury Sleep Coach</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -77,7 +78,7 @@ const Index = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate('/admin')}
-                className="text-luxury-600 hover:text-luxury-800"
+                className="text-[#18344A]/80 hover:text-[#18344A]"
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -86,6 +87,7 @@ const Index = () => {
               variant="ghost"
               size="icon"
               onClick={handleLogout}
+              className="text-[#18344A]/80 hover:text-[#18344A]"
             >
               <LogOut className="h-4 w-4" />
             </Button>
