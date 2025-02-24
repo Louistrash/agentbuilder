@@ -46,11 +46,12 @@
 }
 
 .messages-container {
-  @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
+  @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4 pb-[160px] md:pb-[140px];
 }
 
 .chat-input-container {
-  @apply bg-white/80 backdrop-blur-sm border-t border-luxury-100 mt-auto;
+  @apply fixed md:absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-luxury-100 z-10;
+  @apply md:mx-auto md:max-w-2xl md:rounded-b-2xl;
 }
 
 .message {
@@ -75,7 +76,7 @@
 
 /* Add safe area padding for mobile devices */
 @supports(padding: max(0px)) {
-  .chat-container {
+  .chat-input-container {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 }
