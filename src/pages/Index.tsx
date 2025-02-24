@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { QuickActions } from "@/components/QuickActions";
-import { FileUpload } from "@/components/FileUpload";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut } from "lucide-react";
@@ -129,7 +128,6 @@ const Index = () => {
         </div>
         <div className="border-t border-luxury-100">
           <QuickActions onActionClick={handleQuickAction} />
-          <FileUpload />
           <ChatInput onSend={handleSend} />
         </div>
       </div>
