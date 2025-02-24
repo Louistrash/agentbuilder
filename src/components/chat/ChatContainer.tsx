@@ -5,7 +5,7 @@ import { ChatInput } from "@/components/ChatInput";
 import { QuickActions } from "@/components/QuickActions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useWhatsApp } from "@/hooks/useWhatsApp";
 import { Share } from "lucide-react";
 
@@ -42,8 +42,8 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
   };
 
   return (
-    <>
-      <div className="messages-container max-h-[60vh] overflow-y-auto p-4">
+    <div className="chat-container">
+      <div className="messages-container">
         {messages.map((message, index) => (
           <div key={index} className="flex items-start gap-2 group">
             <ChatMessage
@@ -54,7 +54,7 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
               <Button
                 variant="ghost"
                 size="icon"
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                 onClick={() => {
                   setSelectedMessage(message.content);
                   setIsShareDialogOpen(true);
@@ -74,13 +74,13 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="border-t border-luxury-100">
+      <div className="border-t border-luxury-100 bg-white/80 backdrop-blur-sm sticky bottom-0 left-0 right-0">
         <QuickActions onActionClick={onQuickAction} />
         <ChatInput onSend={onSend} />
       </div>
 
       <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Share via WhatsApp</DialogTitle>
           </DialogHeader>
@@ -110,6 +110,6 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 };

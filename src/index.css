@@ -40,28 +40,29 @@
   }
 }
 
+/* Mobile-first responsive classes */
 .chat-container {
-  @apply relative w-full max-w-2xl mx-auto h-[600px] bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg border border-luxury-100;
+  @apply relative w-full h-[100dvh] md:h-[600px] md:max-w-2xl mx-auto bg-white/80 backdrop-blur-lg md:rounded-2xl shadow-lg border border-luxury-100;
 }
 
 .messages-container {
-  @apply h-[calc(100%-140px)] overflow-y-auto p-6 space-y-4;
+  @apply h-[calc(100%-140px)] overflow-y-auto p-4 md:p-6 space-y-4;
 }
 
 .message {
-  @apply flex items-start space-x-4 animate-fade-up;
+  @apply flex items-start space-x-2 md:space-x-4 animate-fade-up;
 }
 
 .bot-message {
-  @apply bg-luxury-50 text-luxury-900 rounded-2xl rounded-tl-sm p-4 max-w-[80%];
+  @apply bg-luxury-50 text-luxury-900 rounded-2xl rounded-tl-sm p-3 md:p-4 max-w-[85%] md:max-w-[80%] text-sm md:text-base;
 }
 
 .user-message {
-  @apply bg-luxury-900 text-white rounded-2xl rounded-tr-sm p-4 max-w-[80%] ml-auto;
+  @apply bg-luxury-900 text-white rounded-2xl rounded-tr-sm p-3 md:p-4 max-w-[85%] md:max-w-[80%] ml-auto text-sm md:text-base;
 }
 
 .quick-actions {
-  @apply absolute bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-sm border-t border-luxury-100 rounded-b-2xl;
+  @apply fixed md:absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-white/80 backdrop-blur-sm border-t border-luxury-100 md:rounded-b-2xl;
 }
 
 .typing-indicator {
@@ -70,4 +71,11 @@
 
 .typing-indicator span {
   @apply w-2 h-2 bg-luxury-300 rounded-full animate-pulse;
+}
+
+/* Add safe area padding for mobile devices */
+@supports(padding: max(0px)) {
+  .chat-container {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
 }
