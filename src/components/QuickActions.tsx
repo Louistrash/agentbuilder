@@ -54,7 +54,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           key={action.id}
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 md:flex-1 min-w-0 md:min-w-[200px]
+          className="flex items-center gap-2 md:flex-1 min-w-0 md:min-w-[200px] whitespace-normal
                      backdrop-blur-sm border border-gray-200/50
                      text-[#18344A] rounded-2xl 
                      transition-all duration-200 ease-out px-4 py-2 h-auto min-h-[40px]
@@ -72,7 +72,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           onClick={() => onActionClick(action.action)}
         >
           <MessageSquare className="h-4 w-4 shrink-0 md:hidden" />
-          <span className="truncate">{action.text}</span>
+          <span>{action.text}</span>
         </Button>
       ))}
     </div>
