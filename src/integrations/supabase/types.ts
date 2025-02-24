@@ -9,6 +9,98 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      appointment_settings: {
+        Row: {
+          appointment_duration: number | null
+          available_days: number[] | null
+          break_between_appointments: number | null
+          created_at: string
+          id: string
+          max_advance_days: number | null
+          max_appointments_per_day: number | null
+          min_notice_hours: number | null
+          time_slots: Json | null
+          updated_at: string
+        }
+        Insert: {
+          appointment_duration?: number | null
+          available_days?: number[] | null
+          break_between_appointments?: number | null
+          created_at?: string
+          id?: string
+          max_advance_days?: number | null
+          max_appointments_per_day?: number | null
+          min_notice_hours?: number | null
+          time_slots?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          appointment_duration?: number | null
+          available_days?: number[] | null
+          break_between_appointments?: number | null
+          created_at?: string
+          id?: string
+          max_advance_days?: number | null
+          max_appointments_per_day?: number | null
+          min_notice_hours?: number | null
+          time_slots?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      appointments: {
+        Row: {
+          appointment_date: string
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          end_time: string
+          id: string
+          notes: string | null
+          profile_id: string | null
+          start_time: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          appointment_date: string
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          end_time: string
+          id?: string
+          notes?: string | null
+          profile_id?: string | null
+          start_time: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          appointment_date?: string
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          end_time?: string
+          id?: string
+          notes?: string | null
+          profile_id?: string | null
+          start_time?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bot_settings: {
         Row: {
           bot_name: string

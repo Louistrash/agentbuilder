@@ -8,6 +8,8 @@ import { ChatBehaviorSettings } from "@/components/ChatBehaviorSettings";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { GeneralSettings } from "@/components/admin/GeneralSettings";
+import { AppointmentSettings } from "@/components/admin/appointments/AppointmentSettings";
+import { AppointmentCalendar } from "@/components/admin/appointments/AppointmentCalendar";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -86,9 +88,17 @@ const Admin = () => {
 
             <TabsContent value="appointments" className="mt-0">
               <div className="space-y-6">
-                <h2 className="text-xl font-semibold">Appointment Management</h2>
-                <p className="text-gray-600">Configure showroom appointments and lead collection.</p>
-                {/* Appointment settings will go here */}
+                <section className="space-y-4">
+                  <h2 className="text-xl font-semibold">Appointment Settings</h2>
+                  <p className="text-gray-600">Configure appointment booking rules and availability.</p>
+                  <AppointmentSettings />
+                </section>
+
+                <section className="space-y-4 mt-8">
+                  <h2 className="text-xl font-semibold">Appointment Calendar</h2>
+                  <p className="text-gray-600">View and manage scheduled appointments.</p>
+                  <AppointmentCalendar />
+                </section>
               </div>
             </TabsContent>
 
