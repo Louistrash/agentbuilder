@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
@@ -7,37 +8,29 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useWhatsApp } from "@/hooks/useWhatsApp";
 import { Share } from "lucide-react";
+
 interface ChatContainerProps {
-  messages: Array<{
-    content: string;
-    isBot: boolean;
-  }>;
+  messages: Array<{ content: string; isBot: boolean }>;
   isTyping: boolean;
   onSend: (message: string) => void;
   onQuickAction: (action: string) => void;
 }
-export const ChatContainer = ({
-  messages,
-  isTyping,
-  onSend,
-  onQuickAction
-}: ChatContainerProps) => {
+
+export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: ChatContainerProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState("");
-  const {
-    sendMessage,
-    isLoading
-  } = useWhatsApp();
+  const { sendMessage, isLoading } = useWhatsApp();
+
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth"
-    });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   const handleShareViaWhatsApp = async () => {
     try {
       await sendMessage(phoneNumber, selectedMessage);
@@ -47,32 +40,44 @@ export const ChatContainer = ({
       console.error('Failed to share via WhatsApp:', error);
     }
   };
-  return <div className="chat-container relative h-screen flex flex-col">
+
+  return (
+    <div className="chat-container relative h-screen flex flex-col">
       <div className="absolute inset-0 overflow-y-auto my-[139px] mx-[21px]">
-        {messages.map((message, index) => <div key={index} className="flex items-start gap-2 group">
-            <ChatMessage content={message.content} isBot={message.isBot} />
-            {!message.isBot && <Button variant="ghost" size="icon" className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity" onClick={() => {
-          setSelectedMessage(message.content);
-          setIsShareDialogOpen(true);
-        }}>
+        {messages.map((message, index) => (
+          <div key={index} className="flex items-start gap-2 group">
+            <ChatMessage
+              content={message.content}
+              isBot={message.isBot}
+            />
+            {!message.isBot && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                onClick={() => {
+                  setSelectedMessage(message.content);
+                  setIsShareDialogOpen(true);
+                }}
+              >
                 <Share className="h-4 w-4" />
-              </Button>}
-          </div>)}
-        {isTyping && <div className="typing-indicator">
+              </Button>
+            )}
+          </div>
+        ))}
+        {isTyping && (
+          <div className="typing-indicator">
             <span></span>
-            <span style={{
-          animationDelay: "0.2s"
-        }}></span>
-            <span style={{
-          animationDelay: "0.4s"
-        }}></span>
-          </div>}
+            <span style={{ animationDelay: "0.2s" }}></span>
+            <span style={{ animationDelay: "0.4s" }}></span>
+          </div>
+        )}
         <div ref={messagesEndRef} className="h-[200px]" />
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 z-10">
+      <div className="fixed bottom-0 left-0 right-0 z-10">
         <div className="max-w-3xl mx-auto px-[25px] md:px-[33px]">
-          <div className="chat-input-container py-4 rounded-sm mx-0 my-[31px] px-[9px]">
+          <div className="chat-input-container py-4 rounded-xl mx-4 mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg">
             <div className="chat-input-wrapper space-y-4">
               <div className="overflow-x-auto pb-2">
                 <QuickActions onActionClick={onQuickAction} />
@@ -93,17 +98,27 @@ export const ChatContainer = ({
               <label htmlFor="phoneNumber" className="text-sm font-medium">
                 Phone Number
               </label>
-              <Input id="phoneNumber" placeholder="Enter phone number with country code (e.g., +31612345678)" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
+              <Input
+                id="phoneNumber"
+                placeholder="Enter phone number with country code (e.g., +31612345678)"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
             </div>
             <div>
               <label className="text-sm font-medium">Message</label>
               <p className="mt-1 text-sm text-muted-foreground">{selectedMessage}</p>
             </div>
-            <Button onClick={handleShareViaWhatsApp} disabled={!phoneNumber || isLoading} className="w-full">
+            <Button 
+              onClick={handleShareViaWhatsApp}
+              disabled={!phoneNumber || isLoading}
+              className="w-full"
+            >
               {isLoading ? "Sending..." : "Send"}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </div>;
+    </div>
+  );
 };
