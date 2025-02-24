@@ -30,7 +30,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
       <Button
         type="submit"
         size="icon"
-        className="bg-[#00A884] hover:bg-[#00A884]/90 rounded-full w-10 h-10 flex items-center justify-center"
+        className="bg-[#18344A] hover:bg-[#18344A]/90 rounded-full w-10 h-10 flex items-center justify-center"
       >
         <Send className="h-5 w-5" />
       </Button>
