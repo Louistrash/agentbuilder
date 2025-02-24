@@ -274,6 +274,36 @@ export type Database = {
         }
         Relationships: []
       }
+      integration_settings: {
+        Row: {
+          api_token: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          platform: string
+          settings: Json | null
+          updated_at: string
+        }
+        Insert: {
+          api_token?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          platform: string
+          settings?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          api_token?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          platform?: string
+          settings?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
