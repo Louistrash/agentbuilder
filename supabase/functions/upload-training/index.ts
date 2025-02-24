@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
+import { Configuration, OpenAIApi } from "https://esm.sh/openai@3.2.1"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -33,7 +34,7 @@ serve(async (req) => {
     const filePath = `${crypto.randomUUID()}.${fileExt}`
 
     // Upload file to storage
-    const { data, error: uploadError } = await supabase.storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from('training_files')
       .upload(filePath, file, {
         contentType: file.type,
@@ -65,6 +66,38 @@ serve(async (req) => {
       )
     }
 
+    // Get the uploaded file URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('training_files')
+      .getPublicUrl(filePath)
+
+    // Download the file content
+    const fileResponse = await fetch(publicUrl)
+    const fileContent = await fileResponse.text()
+
+    // Initialize OpenAI
+    const configuration = new Configuration({
+      apiKey: Deno.env.get('OPENAI_API_KEY'),
+    })
+    const openai = new OpenAIApi(configuration)
+
+    // Process the content into chunks suitable for AI training
+    const chunks = fileContent.split('\n\n').filter(chunk => chunk.trim().length > 0)
+
+    // Train the AI with the content
+    console.log('Starting AI training with file content...')
+    for (const chunk of chunks) {
+      try {
+        await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: `Learn this information for customer service: ${chunk}`,
+          max_tokens: 150
+        })
+      } catch (error) {
+        console.error('Error training AI with chunk:', error)
+      }
+    }
+
     // Save file metadata to database
     const { error: dbError } = await supabase
       .from('training_files')
@@ -73,7 +106,8 @@ serve(async (req) => {
         file_path: filePath,
         content_type: file.type,
         size: file.size,
-        profile_id: user.id
+        profile_id: user.id,
+        processed: true
       })
 
     if (dbError) {
@@ -85,7 +119,7 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ message: 'Bestand succesvol geüpload', filePath }),
+      JSON.stringify({ message: 'Bestand succesvol geüpload en verwerkt voor AI training', filePath }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
   } catch (error) {

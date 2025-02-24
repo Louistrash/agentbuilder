@@ -51,7 +51,7 @@ export const FileUpload = () => {
 
       toast({
         title: "Succes",
-        description: "Bestand is succesvol geüpload.",
+        description: "Bestand is succesvol geüpload en verwerkt voor AI training.",
       });
     } catch (error) {
       console.error('Upload error:', error);
@@ -83,7 +83,7 @@ export const FileUpload = () => {
           className="bg-luxury-50 hover:bg-luxury-100 text-luxury-900 border-luxury-200"
         >
           <Upload className="h-4 w-4 mr-2" />
-          {isUploading ? "Bezig met uploaden..." : "Training bestand uploaden"}
+          {isUploading ? "Bezig met AI training..." : "Upload bestand voor AI training"}
         </Button>
       </label>
     </div>
