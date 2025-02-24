@@ -75,8 +75,10 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
         <div ref={messagesEndRef} />
       </div>
       <div className="chat-input-container">
-        <QuickActions onActionClick={onQuickAction} />
-        <ChatInput onSend={onSend} />
+        <div className="chat-input-wrapper">
+          <QuickActions onActionClick={onQuickAction} />
+          <ChatInput onSend={onSend} />
+        </div>
       </div>
 
       <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>

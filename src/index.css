@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -47,18 +48,24 @@
 
 .messages-container {
   @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
-  padding-bottom: calc(160px + env(safe-area-inset-bottom));
+  height: calc(100% - 120px); /* Fixed height accounting for footer */
+  padding-bottom: 2rem;
   @apply relative;
   -webkit-overflow-scrolling: touch;
 }
 
 .chat-input-container {
   @apply fixed bottom-0 left-0 right-0 w-full md:absolute;
-  @apply bg-white/95 backdrop-blur-lg border-t border-luxury-100;
+  @apply bg-white border-t border-luxury-100;
   @apply z-50;
   @apply md:max-w-2xl md:mx-auto md:rounded-b-2xl;
-  @apply py-3 px-4;
-  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  height: 120px; /* Fixed height */
+  @apply shadow-lg;
+}
+
+.chat-input-wrapper {
+  @apply h-full flex flex-col justify-between p-4;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
 }
 
 .message {

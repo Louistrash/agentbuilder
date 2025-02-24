@@ -26,7 +26,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
       .from('quick_actions')
       .select('*')
       .order('order_index')
-      .limit(3); // Limit to 3 quick actions
+      .limit(2); // Limit to 2 quick actions
 
     if (error) {
       console.error('Error loading quick actions:', error);
@@ -39,12 +39,13 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 mb-3">
+    <div className="flex gap-2 mb-2">
       {actions.map((action) => (
         <Button
           key={action.id}
           variant="outline"
-          className="bg-luxury-50 border-luxury-200 hover:bg-luxury-100"
+          size="sm"
+          className="bg-luxury-50 border-luxury-200 hover:bg-luxury-100 flex-1"
           onClick={() => onActionClick(action.action)}
         >
           {action.text}
