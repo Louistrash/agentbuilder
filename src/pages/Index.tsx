@@ -19,6 +19,7 @@ const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [sessionId, setSessionId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -28,8 +29,9 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
+    const initializeChat = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (user) {
         const { data: profile } = await supabase
           .from('profiles')
@@ -39,18 +41,48 @@ const Index = () => {
         
         setIsAdmin(!!profile?.is_admin);
       }
+
+      // Create new chat session
+      const { data: session, error } = await supabase
+        .from('chat_sessions')
+        .insert([
+          {
+            visitor_id: user?.id || 'anonymous',
+            platform: 'web',
+            device_type: /mobile|android|ios/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating chat session:', error);
+      } else {
+        setSessionId(session.id);
+      }
+
+      // Initial welcome message
+      const welcomeMessage = {
+        content: "Welkom bij ArchiboldBeckers.nl en Bedroom.nl. Ik ben Archibot, uw persoonlijke slaapadviseur. Hoe kan ik u vandaag helpen?",
+        isBot: true,
+        role: 'assistant' as const
+      };
+      
+      setMessages([welcomeMessage]);
+
+      // Log welcome message
+      if (session?.id) {
+        await supabase.from('chat_messages').insert([
+          {
+            session_id: session.id,
+            message_type: 'bot',
+            content: welcomeMessage.content
+          }
+        ]);
+      }
     };
 
-    checkAdminStatus();
-    // Initial welcome message in Dutch
-    setMessages([
-      {
-        content:
-          "Welkom bij ArchiboldBeckers.nl en Bedroom.nl. Ik ben Archibot, uw persoonlijke slaapadviseur. Hoe kan ik u vandaag helpen?",
-        isBot: true,
-        role: 'assistant'
-      },
-    ]);
+    initializeChat();
   }, []);
 
   useEffect(() => {
@@ -58,14 +90,58 @@ const Index = () => {
   }, [messages]);
 
   const handleLogout = async () => {
+    // End chat session if exists
+    if (sessionId) {
+      await supabase
+        .from('chat_sessions')
+        .update({ ended_at: new Date().toISOString() })
+        .eq('id', sessionId);
+    }
+
     await supabase.auth.signOut();
     navigate('/auth');
   };
 
+  const logChatMessage = async (content: string, type: 'user' | 'bot', startTime?: number) => {
+    if (!sessionId) return;
+
+    const messageData = {
+      session_id: sessionId,
+      message_type: type,
+      content: content,
+      ...(startTime && { response_time_ms: Date.now() - startTime })
+    };
+
+    const { error } = await supabase
+      .from('chat_messages')
+      .insert([messageData]);
+
+    if (error) {
+      console.error('Error logging chat message:', error);
+    }
+
+    // Update chat_queries for user messages
+    if (type === 'user') {
+      const { error: queryError } = await supabase
+        .rpc('upsert_chat_query', { 
+          p_query_text: content,
+          p_response_time: messageData.response_time_ms || 0
+        });
+
+      if (queryError) {
+        console.error('Error updating chat query:', queryError);
+      }
+    }
+  };
+
   const handleSend = async (message: string) => {
+    const startTime = Date.now();
+    
     // Add user message
     const userMessage = { content: message, isBot: false, role: 'user' as const };
     setMessages((prev) => [...prev, userMessage]);
+    await logChatMessage(message, 'user');
+    
     setIsTyping(true);
 
     try {
@@ -84,6 +160,10 @@ const Index = () => {
       if (error) throw error;
 
       const botResponse = data.choices[0].message.content;
+      
+      // Log bot message
+      await logChatMessage(botResponse, 'bot', startTime);
+      
       setMessages((prev) => [
         ...prev,
         { content: botResponse, isBot: true, role: 'assistant' }
@@ -102,12 +182,10 @@ const Index = () => {
 
   const handleQuickAction = (action: string) => {
     const actionMessages: Record<string, string> = {
-      products:
-        "Vertel me over uw luxe matrassen en de materialen die u gebruikt.",
+      products: "Vertel me over uw luxe matrassen en de materialen die u gebruikt.",
       book: "Ik wil graag een showroom bezoek inplannen. Wat zijn de beschikbare tijden?",
       sleep: "Kunt u mij expert slaaptips geven?",
-      contact:
-        "Wat zijn uw contactgegevens en de locatie van de showroom?",
+      contact: "Wat zijn uw contactgegevens en de locatie van de showroom?",
     };
 
     handleSend(actionMessages[action]);

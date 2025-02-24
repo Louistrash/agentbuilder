@@ -21,6 +21,9 @@ serve(async (req) => {
       throw new Error('OPENAI_API_KEY is not set');
     }
 
+    // Start timing the response
+    const startTime = Date.now();
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -28,7 +31,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
           {
             role: 'system',
@@ -41,6 +44,12 @@ serve(async (req) => {
 
     const data = await response.json();
     
+    // Calculate response time
+    const responseTime = Date.now() - startTime;
+    
+    // Add response time to the data
+    data.responseTime = responseTime;
+
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
