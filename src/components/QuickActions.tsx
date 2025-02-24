@@ -47,15 +47,15 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 px-1">
+    <div className="flex flex-row gap-2 px-4">
       {actions.slice(0, maxActions).map((action) => (
         <Button
           key={action.id}
           variant="outline"
           size="sm"
-          className="bg-white/50 backdrop-blur-sm border border-gray-200
-                     text-[#18344A] shadow-sm rounded-2xl w-full md:flex-1
-                     transition-all duration-200 ease-out
+          className="flex-1 min-w-0 bg-white/50 backdrop-blur-sm border border-gray-200
+                     text-[#18344A] shadow-sm rounded-2xl whitespace-nowrap overflow-hidden text-ellipsis
+                     transition-all duration-200 ease-out px-3 h-8 text-sm
                      hover:bg-white/70 hover:shadow-md hover:scale-[1.02]
                      active:scale-95 active:shadow-inner
                      bg-gradient-to-b from-white/80 to-white/40"
