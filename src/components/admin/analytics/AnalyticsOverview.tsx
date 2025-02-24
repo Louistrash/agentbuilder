@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { 
-  BarChart, 
   MessageSquare, 
   Users, 
   Activity, 
@@ -18,20 +17,30 @@ interface AnalyticsSummary {
   engagementRate: number;
 }
 
-const MOCK_DATA: AnalyticsSummary = {
-  totalChats: 1567,
-  activeUsers: 342,
-  averageResponseTime: 2.5,
-  engagementRate: 78
-};
-
 export const AnalyticsOverview = () => {
   const { data: analytics, isLoading } = useQuery({
     queryKey: ['analytics-summary'],
     queryFn: async () => {
-      // In a real implementation, this would fetch actual data from Supabase
-      // For now, we'll use mock data
-      return MOCK_DATA;
+      // Get today's analytics
+      const { data: todayAnalytics, error } = await supabase
+        .from('chat_analytics')
+        .select('*')
+        .eq('date', new Date().toISOString().split('T')[0])
+        .single();
+
+      if (error) {
+        console.error('Error fetching analytics:', error);
+        throw error;
+      }
+
+      return {
+        totalChats: todayAnalytics?.total_sessions || 0,
+        activeUsers: todayAnalytics?.active_users || 0,
+        averageResponseTime: todayAnalytics?.avg_response_time_ms 
+          ? Math.round(todayAnalytics.avg_response_time_ms / 1000 * 10) / 10 // Convert to seconds with 1 decimal
+          : 0,
+        engagementRate: todayAnalytics?.engagement_rate || 0
+      };
     }
   });
 

@@ -1,4 +1,5 @@
 
+import { useQuery } from "@tanstack/react-query";
 import {
   Table,
   TableBody,
@@ -8,16 +9,44 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
-
-const MOCK_DATA = [
-  { query: "What are your mattress sizes?", count: 245, avgResponseTime: "2.1s" },
-  { query: "Do you offer free delivery?", count: 189, avgResponseTime: "1.8s" },
-  { query: "What's your return policy?", count: 156, avgResponseTime: "2.3s" },
-  { query: "How long is the warranty?", count: 134, avgResponseTime: "1.9s" },
-  { query: "Do you have financing options?", count: 98, avgResponseTime: "2.4s" }
-];
+import { supabase } from "@/integrations/supabase/client";
 
 export const TopQueriesTable = () => {
+  const { data: queries, isLoading } = useQuery({
+    queryKey: ['top-queries'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('chat_queries')
+        .select('*')
+        .order('frequency', { ascending: false })
+        .limit(5);
+
+      if (error) {
+        console.error('Error fetching top queries:', error);
+        throw error;
+      }
+
+      return data.map(query => ({
+        query: query.query_text,
+        count: query.frequency,
+        avgResponseTime: `${(query.avg_response_time_ms / 1000).toFixed(1)}s`
+      }));
+    }
+  });
+
+  if (isLoading) {
+    return (
+      <Card className="p-6">
+        <h3 className="text-lg font-semibold mb-4">Top User Queries</h3>
+        <div className="animate-pulse space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-10 bg-gray-100 rounded" />
+          ))}
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card className="p-6">
       <h3 className="text-lg font-semibold mb-4">Top User Queries</h3>
@@ -30,7 +59,7 @@ export const TopQueriesTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {MOCK_DATA.map((item) => (
+          {queries?.map((item) => (
             <TableRow key={item.query}>
               <TableCell className="font-medium">{item.query}</TableCell>
               <TableCell className="text-right">{item.count}</TableCell>

@@ -131,6 +131,149 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_analytics: {
+        Row: {
+          active_users: number | null
+          avg_response_time_ms: number | null
+          avg_session_duration_sec: number | null
+          created_at: string
+          date: string
+          engagement_rate: number | null
+          id: string
+          total_messages: number | null
+          total_sessions: number | null
+          updated_at: string
+        }
+        Insert: {
+          active_users?: number | null
+          avg_response_time_ms?: number | null
+          avg_session_duration_sec?: number | null
+          created_at?: string
+          date: string
+          engagement_rate?: number | null
+          id?: string
+          total_messages?: number | null
+          total_sessions?: number | null
+          updated_at?: string
+        }
+        Update: {
+          active_users?: number | null
+          avg_response_time_ms?: number | null
+          avg_session_duration_sec?: number | null
+          created_at?: string
+          date?: string
+          engagement_rate?: number | null
+          id?: string
+          total_messages?: number | null
+          total_sessions?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          message_type: string
+          response_time_ms: number | null
+          sent_at: string
+          session_id: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          message_type: string
+          response_time_ms?: number | null
+          sent_at?: string
+          session_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          message_type?: string
+          response_time_ms?: number | null
+          sent_at?: string
+          session_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_queries: {
+        Row: {
+          avg_response_time_ms: number | null
+          created_at: string
+          frequency: number | null
+          id: string
+          last_asked_at: string
+          query_text: string
+          updated_at: string
+        }
+        Insert: {
+          avg_response_time_ms?: number | null
+          created_at?: string
+          frequency?: number | null
+          id?: string
+          last_asked_at?: string
+          query_text: string
+          updated_at?: string
+        }
+        Update: {
+          avg_response_time_ms?: number | null
+          created_at?: string
+          frequency?: number | null
+          id?: string
+          last_asked_at?: string
+          query_text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      chat_sessions: {
+        Row: {
+          created_at: string
+          device_type: string | null
+          ended_at: string | null
+          id: string
+          platform: string | null
+          started_at: string
+          updated_at: string
+          visitor_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_type?: string | null
+          ended_at?: string | null
+          id?: string
+          platform?: string | null
+          started_at?: string
+          updated_at?: string
+          visitor_id: string
+        }
+        Update: {
+          created_at?: string
+          device_type?: string | null
+          ended_at?: string | null
+          id?: string
+          platform?: string | null
+          started_at?: string
+          updated_at?: string
+          visitor_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
