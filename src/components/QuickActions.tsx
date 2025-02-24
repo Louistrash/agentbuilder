@@ -53,8 +53,12 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           key={action.id}
           variant="outline"
           size="sm"
-          className="bg-white/50 backdrop-blur-sm border border-gray-200 hover:bg-gray-50 
-                     text-[#18344A] shadow-sm rounded-2xl w-full md:flex-1"
+          className="bg-white/50 backdrop-blur-sm border border-gray-200
+                     text-[#18344A] shadow-sm rounded-2xl w-full md:flex-1
+                     transition-all duration-200 ease-out
+                     hover:bg-white/70 hover:shadow-md hover:scale-[1.02]
+                     active:scale-95 active:shadow-inner
+                     bg-gradient-to-b from-white/80 to-white/40"
           onClick={() => onActionClick(action.action)}
         >
           {action.text}
