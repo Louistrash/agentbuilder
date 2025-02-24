@@ -44,7 +44,17 @@ const Index = () => {
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-luxury-100 p-4 sticky top-0 z-50">
         <div className="max-w-2xl mx-auto flex justify-between items-center">
-          <h1 className="text-lg font-semibold text-luxury-900">Luxury Sleep</h1>
+          <div className="flex items-center gap-3">
+            <img 
+              src="/placeholder.svg" 
+              alt="Archibot AI Logo" 
+              className="w-[70px] h-[70px] object-contain"
+            />
+            <div className="flex flex-col items-start">
+              <h1 className="text-lg font-semibold text-luxury-900">Archibot AI</h1>
+              <p className="text-sm text-luxury-600">Luxury Sleep Coach</p>
+            </div>
+          </div>
           <div className="flex gap-2">
             {isAdmin && (
               <Button
