@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/FileUpload";
+import { BotSettings } from "@/components/BotSettings";
 import { LogOut, Home, Settings, MessageSquare, Calendar, BarChart3, Link2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -109,7 +110,7 @@ const Admin = () => {
                 <section className="space-y-4">
                   <h2 className="text-xl font-semibold">Bot Name & Branding</h2>
                   <p className="text-gray-600">Customize Archibot's appearance and initial settings.</p>
-                  {/* Bot name and branding settings will go here */}
+                  <BotSettings />
                 </section>
 
                 <section className="space-y-4">
