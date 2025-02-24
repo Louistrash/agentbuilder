@@ -25,7 +25,6 @@ const Index = () => {
     setupChat();
     fetchLogo();
     
-    // Show welcome message with a slight delay for smooth animation
     setTimeout(() => setShowWelcome(true), 100);
   }, []);
 
@@ -64,7 +63,7 @@ const Index = () => {
     <div className="min-h-screen bg-luxury-50 flex flex-col">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-luxury-100 p-4 sticky top-0 z-50">
-        <div className="max-w-2xl mx-auto flex justify-between items-center">
+        <div className="max-w-3xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img 
               src={logoUrl || "/placeholder.svg"} 
@@ -99,19 +98,22 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Timestamp */}
-      <div className="max-w-2xl mx-auto w-full px-4 py-2">
-        <p className="text-sm text-[#18344A]/70">vrijdag 11:41pm</p>
-      </div>
+      {/* Main Content with Padding */}
+      <div className="flex-1 px-4 md:px-6 max-w-3xl mx-auto w-full">
+        {/* Timestamp */}
+        <div className="py-2">
+          <p className="text-sm text-[#18344A]/70">vrijdag 11:41pm</p>
+        </div>
 
-      {/* Welcome Message */}
-      <div className={`flex-1 md:p-4 mt-8 transition-all duration-500 ease-out transform ${showWelcome ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-        <ChatContainer
-          messages={messages}
-          isTyping={isTyping}
-          onSend={sendMessage}
-          onQuickAction={handleQuickAction}
-        />
+        {/* Chat Container */}
+        <div className={`transition-all duration-500 ease-out transform ${showWelcome ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <ChatContainer
+            messages={messages}
+            isTyping={isTyping}
+            onSend={sendMessage}
+            onQuickAction={handleQuickAction}
+          />
+        </div>
       </div>
     </div>
   );
