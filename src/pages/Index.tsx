@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,11 +6,13 @@ import { LogOut, Settings } from "lucide-react";
 import { useChat } from "@/hooks/useChat";
 import { useAdmin } from "@/hooks/useAdmin";
 import { ChatContainer } from "@/components/chat/ChatContainer";
+import { useState } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAdmin();
   const { messages, isTyping, sendMessage, initializeChat, endSession } = useChat();
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const setupChat = async () => {
@@ -20,7 +21,22 @@ const Index = () => {
     };
 
     setupChat();
+    fetchLogo();
   }, []);
+
+  const fetchLogo = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('bot_settings')
+        .select('logo_url')
+        .single();
+      
+      if (error) throw error;
+      setLogoUrl(data?.logo_url);
+    } catch (error) {
+      console.error('Error fetching logo:', error);
+    }
+  };
 
   const handleLogout = async () => {
     await endSession();
@@ -46,7 +62,7 @@ const Index = () => {
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img 
-              src="/placeholder.svg" 
+              src={logoUrl || "/placeholder.svg"} 
               alt="Archibot AI Logo" 
               className="w-[70px] h-[70px] object-contain"
             />
