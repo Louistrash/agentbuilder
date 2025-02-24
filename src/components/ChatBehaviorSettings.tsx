@@ -5,17 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
+
+type BotSettings = Database['public']['Tables']['bot_settings']['Row'];
 
 interface ChatSettings {
   maxMessagesPerChat: number;
   responseDelay: number;
   aiPersonality: string;
   fallbackMessage: string;
-}
-
-interface BotSettings {
-  id: string;
-  chat_settings: ChatSettings;
 }
 
 export const ChatBehaviorSettings = () => {
@@ -41,13 +39,13 @@ export const ChatBehaviorSettings = () => {
 
       if (error) throw error;
       
-      const botSettings = data as BotSettings;
-      if (botSettings?.chat_settings) {
+      if (data?.chat_settings && typeof data.chat_settings === 'object' && !Array.isArray(data.chat_settings)) {
+        const chatSettings = data.chat_settings as ChatSettings;
         setSettings({
-          maxMessagesPerChat: botSettings.chat_settings.maxMessagesPerChat.toString(),
-          responseDelay: botSettings.chat_settings.responseDelay.toString(),
-          aiPersonality: botSettings.chat_settings.aiPersonality,
-          fallbackMessage: botSettings.chat_settings.fallbackMessage,
+          maxMessagesPerChat: chatSettings.maxMessagesPerChat.toString(),
+          responseDelay: chatSettings.responseDelay.toString(),
+          aiPersonality: chatSettings.aiPersonality,
+          fallbackMessage: chatSettings.fallbackMessage,
         });
       }
     } catch (error) {
