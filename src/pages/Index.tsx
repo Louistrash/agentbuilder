@@ -40,27 +40,35 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-luxury-50 p-4 flex items-center justify-center">
-      <div className="chat-container relative bg-white rounded-lg shadow-lg w-full max-w-2xl overflow-hidden">
-        <div className="absolute top-4 right-4 z-10 flex gap-2">
-          {isAdmin && (
+    <div className="min-h-screen bg-luxury-50 flex flex-col">
+      {/* Header */}
+      <div className="bg-white/80 backdrop-blur-sm border-b border-luxury-100 p-4 sticky top-0 z-50">
+        <div className="max-w-2xl mx-auto flex justify-between items-center">
+          <h1 className="text-lg font-semibold text-luxury-900">Luxury Sleep</h1>
+          <div className="flex gap-2">
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate('/admin')}
+                className="text-luxury-600 hover:text-luxury-800"
+              >
+                <Settings className="h-4 w-4" />
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate('/admin')}
-              className="text-luxury-600 hover:text-luxury-800"
+              onClick={handleLogout}
             >
-              <Settings className="h-4 w-4" />
+              <LogOut className="h-4 w-4" />
             </Button>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleLogout}
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
+          </div>
         </div>
+      </div>
+
+      {/* Chat Container */}
+      <div className="flex-1 md:p-4">
         <ChatContainer
           messages={messages}
           isTyping={isTyping}
