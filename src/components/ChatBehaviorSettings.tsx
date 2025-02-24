@@ -6,6 +6,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 
+interface ChatSettings {
+  maxMessagesPerChat: number;
+  responseDelay: number;
+  aiPersonality: string;
+  fallbackMessage: string;
+}
+
+interface BotSettings {
+  id: string;
+  chat_settings: ChatSettings;
+}
+
 export const ChatBehaviorSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -29,12 +41,13 @@ export const ChatBehaviorSettings = () => {
 
       if (error) throw error;
       
-      if (data?.chat_settings) {
+      const botSettings = data as BotSettings;
+      if (botSettings?.chat_settings) {
         setSettings({
-          maxMessagesPerChat: data.chat_settings.maxMessagesPerChat.toString(),
-          responseDelay: data.chat_settings.responseDelay.toString(),
-          aiPersonality: data.chat_settings.aiPersonality,
-          fallbackMessage: data.chat_settings.fallbackMessage,
+          maxMessagesPerChat: botSettings.chat_settings.maxMessagesPerChat.toString(),
+          responseDelay: botSettings.chat_settings.responseDelay.toString(),
+          aiPersonality: botSettings.chat_settings.aiPersonality,
+          fallbackMessage: botSettings.chat_settings.fallbackMessage,
         });
       }
     } catch (error) {
