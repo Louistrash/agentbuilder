@@ -49,8 +49,8 @@
 
 .messages-container {
   @apply flex-1 overflow-y-auto p-4 md:p-6 space-y-4;
-  height: calc(100vh - 120px); /* Full viewport height minus footer */
-  height: calc(-webkit-fill-available - 120px); /* iOS Safari fix */
+  height: calc(100vh - 140px); /* Adjusted height to account for increased footer space */
+  height: calc(-webkit-fill-available - 140px); /* iOS Safari fix */
   @apply relative;
   -webkit-overflow-scrolling: touch;
   padding-bottom: calc(2rem + env(safe-area-inset-bottom));
@@ -61,7 +61,7 @@
   @apply bg-white border-t border-luxury-100;
   @apply z-[9999]; /* Highest z-index to ensure visibility */
   @apply md:max-w-2xl md:mx-auto md:rounded-b-2xl;
-  height: 120px;
+  height: 140px; /* Increased height */
   @apply shadow-lg;
   position: sticky; /* iOS Safari fix */
   bottom: env(safe-area-inset-bottom); /* iOS Safari fix */
@@ -69,7 +69,7 @@
 
 .chat-input-wrapper {
   @apply h-full flex flex-col justify-between p-4;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom)); /* Added more padding at the bottom */
 }
 
 .message {
