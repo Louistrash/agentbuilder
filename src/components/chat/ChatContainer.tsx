@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
@@ -78,7 +79,7 @@ export const ChatContainer = ({
 
       <div className="fixed bottom-0 left-0 right-0 z-10">
         <div className="max-w-3xl mx-auto px-1">
-          <div className="chat-input-container rounded-xl mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg py-[19px] my-[27px] mx-[4px] w-[calc(100%-8px)]">
+          <div className="chat-input-container rounded-xl mb-6 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg py-[19px] my-[27px] mx-[14px] w-[calc(100%-28px)]">
             <div className="chat-input-wrapper space-y-4">
               <div className="overflow-x-auto pb-2">
                 <QuickActions onActionClick={onQuickAction} />
