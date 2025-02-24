@@ -63,13 +63,16 @@
 
 .messages-container {
   @apply flex-1 p-4 md:p-6 space-y-4;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: 140px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .chat-input-container {
