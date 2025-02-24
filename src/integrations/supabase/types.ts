@@ -63,6 +63,33 @@ export type Database = {
         }
         Relationships: []
       }
+      quick_actions: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          order_index: number
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          order_index: number
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          order_index?: number
+          text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       training_files: {
         Row: {
           content_type: string

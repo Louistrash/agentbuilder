@@ -1,32 +1,51 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface QuickAction {
   id: string;
   text: string;
   action: string;
+  order_index: number;
 }
 
-const defaultActions: QuickAction[] = [
-  { id: "products", text: "Vertel me over uw luxe matrassen", action: "products" },
-  { id: "book", text: "Showroom bezoek inplannen", action: "book" },
-  { id: "sleep", text: "Expert slaaptips", action: "sleep" },
-  { id: "contact", text: "Contactgegevens & locatie", action: "contact" },
-];
-
 export const QuickActionsSettings = () => {
-  const [actions, setActions] = useState<QuickAction[]>(defaultActions);
+  const [actions, setActions] = useState<QuickAction[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchActions();
+  }, []);
+
+  const fetchActions = async () => {
+    const { data, error } = await supabase
+      .from('quick_actions')
+      .select('*')
+      .order('order_index');
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Could not load quick actions.",
+      });
+      return;
+    }
+
+    setActions(data);
+  };
 
   const handleAdd = () => {
     const newAction: QuickAction = {
       id: crypto.randomUUID(),
       text: "",
       action: "",
+      order_index: actions.length + 1,
     };
     setActions([...actions, newAction]);
   };
@@ -35,28 +54,54 @@ export const QuickActionsSettings = () => {
     setActions(actions.filter(action => action.id !== id));
   };
 
-  const handleChange = (id: string, field: keyof QuickAction, value: string) => {
+  const handleChange = (id: string, field: 'text' | 'action', value: string) => {
     setActions(actions.map(action => 
       action.id === id ? { ...action, [field]: value } : action
     ));
   };
 
-  const handleSave = () => {
-    // For now, we'll just save to localStorage since these are static options
-    // In a future iteration, we could move this to the database if needed
-    try {
-      localStorage.setItem('quickActions', JSON.stringify(actions));
+  const handleSave = async () => {
+    setIsLoading(true);
+
+    // First, delete all existing actions
+    const { error: deleteError } = await supabase
+      .from('quick_actions')
+      .delete()
+      .neq('id', 'placeholder'); // Delete all rows
+
+    if (deleteError) {
+      setIsLoading(false);
       toast({
-        title: "Success",
-        description: "Quick actions saved successfully.",
+        variant: "destructive",
+        title: "Error",
+        description: "Could not update quick actions.",
       });
-    } catch (error) {
+      return;
+    }
+
+    // Then insert all current actions
+    const { error: insertError } = await supabase
+      .from('quick_actions')
+      .insert(actions.map((action, index) => ({
+        ...action,
+        order_index: index + 1,
+      })));
+
+    setIsLoading(false);
+
+    if (insertError) {
       toast({
         variant: "destructive",
         title: "Error",
         description: "Could not save quick actions.",
       });
+      return;
     }
+
+    toast({
+      title: "Success",
+      description: "Quick actions saved successfully.",
+    });
   };
 
   return (
@@ -99,6 +144,7 @@ export const QuickActionsSettings = () => {
         </Button>
         <Button
           onClick={handleSave}
+          disabled={isLoading}
           className="w-full sm:w-auto"
         >
           <Save className="h-4 w-4 mr-2" />
