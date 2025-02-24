@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,37 +9,68 @@ import { BotSettings } from "@/components/BotSettings";
 import { LogOut, Home, Settings, MessageSquare, Calendar, BarChart3, Link2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { QuickActionsSettings } from "@/components/QuickActionsSettings";
+import { useToast } from "@/hooks/use-toast";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+  const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
+  const { toast } = useToast();
   const [selectedTab, setSelectedTab] = useState("general");
 
   useEffect(() => {
     const checkAdmin = async () => {
+      // If not logged in, redirect to auth page
       if (!user) {
         navigate('/auth');
         return;
       }
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_admin')
-        .eq('id', user.id)
-        .single();
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', user.id)
+          .single();
 
-      if (!profile?.is_admin) {
+        if (error) throw error;
+
+        if (!profile?.is_admin) {
+          toast({
+            variant: "destructive",
+            title: "Access Denied",
+            description: "You do not have permission to access the admin dashboard.",
+          });
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Could not verify admin access. Please try again later.",
+        });
         navigate('/');
+      } finally {
+        setIsCheckingAdmin(false);
       }
     };
 
     checkAdmin();
-  }, [user, navigate]);
+  }, [user, navigate, toast]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/auth');
   };
+
+  if (isLoading || isCheckingAdmin) {
+    return (
+      <div className="min-h-screen bg-luxury-50 flex items-center justify-center">
+        <p className="text-luxury-900">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-luxury-50 p-4">
