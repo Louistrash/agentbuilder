@@ -20,20 +20,17 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex items-center space-x-2"
-    >
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Typ uw bericht..."
-        className="flex-1 bg-white border-[#E5E7EB] rounded-full text-[15px] px-4 py-3 focus:ring-0 focus:border-[#E5E7EB] placeholder:text-gray-500 text-[#18344A]"
+        placeholder="Type a message..."
+        className="flex-1 bg-white border-[#E5E7EB] rounded-full text-[15px] px-4 py-3 focus:ring-0 focus:border-[#E5E7EB] placeholder:text-gray-500 text-gray-800"
       />
       <Button
         type="submit"
         size="icon"
-        className="bg-[#18344A] hover:bg-[#18344A]/90 rounded-full w-12 h-12 flex items-center justify-center shadow-sm"
+        className="bg-[#00A884] hover:bg-[#00A884]/90 rounded-full w-10 h-10 flex items-center justify-center"
       >
         <Send className="h-5 w-5" />
       </Button>
