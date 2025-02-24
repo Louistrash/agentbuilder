@@ -22,7 +22,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center space-x-2 p-4 border-t border-luxury-100"
+      className="flex items-center space-x-2"
     >
       <Input
         value={message}

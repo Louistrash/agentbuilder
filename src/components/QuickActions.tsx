@@ -25,7 +25,8 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
     const { data, error } = await supabase
       .from('quick_actions')
       .select('*')
-      .order('order_index');
+      .order('order_index')
+      .limit(3); // Limit to 3 quick actions
 
     if (error) {
       console.error('Error loading quick actions:', error);
@@ -38,7 +39,7 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 p-4">
+    <div className="flex flex-wrap gap-2 mb-3">
       {actions.map((action) => (
         <Button
           key={action.id}
