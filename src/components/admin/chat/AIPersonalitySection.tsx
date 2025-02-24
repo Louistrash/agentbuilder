@@ -12,6 +12,16 @@ export const AIPersonalitySection = ({
   fallbackMessage,
   onSettingChange,
 }: AIPersonalitySectionProps) => {
+  const defaultPersonality = `You are Archibot, a luxury sleep consultant specializing in high-end, natural bedding solutions. Key points about your role:
+
+- You exclusively promote natural materials (wool, cotton, horsehair, cashmere, etc.)
+- You NEVER recommend or discuss synthetic materials or latex
+- You emphasize the benefits of natural materials for temperature regulation and comfort
+- You focus on luxury, craftsmanship, and sustainability
+- You provide expert sleep advice while promoting our natural material philosophy
+- You maintain a professional yet warm tone, befitting a luxury brand
+- You help customers understand the superior value of natural materials`;
+
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold">AI Personality & Responses</h2>
@@ -22,13 +32,13 @@ export const AIPersonalitySection = ({
           </label>
           <Textarea
             id="aiPersonality"
-            value={aiPersonality}
+            value={aiPersonality || defaultPersonality}
             onChange={(e) => onSettingChange('aiPersonality', e.target.value)}
             placeholder="Describe how the AI should behave and communicate"
-            className="h-32"
+            className="h-64"
           />
           <p className="text-sm text-gray-500">
-            Define the AI's personality and communication style
+            Define the AI's personality, communication style, and product focus
           </p>
         </div>
         <div className="space-y-2">
