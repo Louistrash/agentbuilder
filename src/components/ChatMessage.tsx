@@ -24,13 +24,13 @@ export const ChatMessage = ({ content, isBot = false }: ChatMessageProps) => {
         </Avatar>
       )}
       <div className={cn(
-        "px-4 py-2.5 rounded-2xl max-w-[75%] break-words text-left",
+        "px-4 py-2.5 rounded-2xl max-w-[85%] break-words text-left",
         isBot 
           ? "bg-white text-gray-800" 
-          : "bg-[#18344A] text-white shadow-sm transition-all duration-200" +
+          : "bg-[#D3E4FD] text-gray-800 shadow-sm transition-all duration-200" +
             " hover:shadow-md" +
-            " bg-gradient-to-br from-[#18344A] to-[#1F4565]" +
-            " border border-white/10"
+            " bg-gradient-to-br from-[#D3E4FD] to-[#E8F0FD]" +
+            " border border-white/20"
       )}>
         {content}
       </div>
