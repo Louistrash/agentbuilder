@@ -101,7 +101,7 @@ const Index = () => {
       </div>
 
       {/* Chat Container */}
-      <div className="flex-1 md:p-4">
+      <div className="flex-1 md:p-4 mt-8">
         <ChatContainer
           messages={messages}
           isTyping={isTyping}
