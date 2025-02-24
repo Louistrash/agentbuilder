@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +7,7 @@ import { FileUpload } from "@/components/FileUpload";
 import { BotSettings } from "@/components/BotSettings";
 import { LogOut, Home, Settings, MessageSquare, Calendar, BarChart3, Link2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { QuickActionsSettings } from "@/components/QuickActionsSettings";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -114,9 +114,9 @@ const Admin = () => {
                 </section>
 
                 <section className="space-y-4">
-                  <h2 className="text-xl font-semibold">Welcome Message</h2>
-                  <p className="text-gray-600">Set the default greeting message for new conversations.</p>
-                  {/* Welcome message settings will go here */}
+                  <h2 className="text-xl font-semibold">Conversation Starters</h2>
+                  <p className="text-gray-600">Configure quick action buttons that appear at the start of each conversation.</p>
+                  <QuickActionsSettings />
                 </section>
 
                 <section className="space-y-4">
