@@ -18,7 +18,7 @@ export const AppointmentSettings = () => {
     loadSettings();
   }, []);
 
-  const validateTimeSlot = (slot: unknown): slot is TimeSlot => {
+  const validateTimeSlot = (slot: unknown): boolean => {
     return (
       typeof slot === 'object' &&
       slot !== null &&
@@ -34,7 +34,13 @@ export const AppointmentSettings = () => {
       return DEFAULT_SETTINGS.time_slots;
     }
 
-    const validSlots = data.filter((slot): slot is TimeSlot => validateTimeSlot(slot));
+    const validSlots = data
+      .filter(validateTimeSlot)
+      .map(slot => ({
+        start: (slot as any).start,
+        end: (slot as any).end
+      }));
+
     return validSlots.length > 0 ? validSlots : DEFAULT_SETTINGS.time_slots;
   };
 
