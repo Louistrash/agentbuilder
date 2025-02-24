@@ -54,11 +54,12 @@ export const QuickActions = ({ onActionClick }: QuickActionsProps) => {
           variant="outline"
           size="sm"
           className="flex-1 min-w-0 bg-white/50 backdrop-blur-sm border border-gray-200
-                     text-[#18344A] shadow-sm rounded-2xl whitespace-nowrap overflow-hidden text-ellipsis
-                     transition-all duration-200 ease-out px-3 h-8 text-sm
+                     text-[#18344A] shadow-sm rounded-2xl 
+                     transition-all duration-200 ease-out px-4 py-2 h-auto min-h-[40px]
                      hover:bg-white/70 hover:shadow-md hover:scale-[1.02]
                      active:scale-95 active:shadow-inner
-                     bg-gradient-to-b from-white/80 to-white/40"
+                     bg-gradient-to-b from-white/80 to-white/40
+                     text-sm leading-tight"
           onClick={() => onActionClick(action.action)}
         >
           {action.text}
