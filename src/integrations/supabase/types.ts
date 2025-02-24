@@ -374,7 +374,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_daily_analytics: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      upsert_chat_query: {
+        Args: {
+          p_query_text: string
+          p_response_time: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

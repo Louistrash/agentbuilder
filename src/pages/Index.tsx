@@ -121,11 +121,11 @@ const Index = () => {
     }
 
     // Update chat_queries for user messages
-    if (type === 'user') {
+    if (type === 'user' && startTime) {
       const { error: queryError } = await supabase
-        .rpc('upsert_chat_query', { 
+        .rpc('upsert_chat_query', {
           p_query_text: content,
-          p_response_time: messageData.response_time_ms || 0
+          p_response_time: Date.now() - startTime
         });
 
       if (queryError) {
@@ -213,7 +213,7 @@ const Index = () => {
             <LogOut className="h-4 w-4" />
           </Button>
         </div>
-        <div className="messages-container max-h-[60vh] overflow-y-auto">
+        <div className="messages-container max-h-[60vh] overflow-y-auto p-4">
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
