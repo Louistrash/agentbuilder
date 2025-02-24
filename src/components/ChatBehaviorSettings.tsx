@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,9 +16,49 @@ export const ChatBehaviorSettings = () => {
     fallbackMessage: "I apologize, but I don't have enough information to answer that question. Could you please rephrase or ask something else about our luxury bedding products?",
   });
 
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('bot_settings')
+        .select('*')
+        .single();
+
+      if (error) throw error;
+      
+      if (data?.chat_settings) {
+        setSettings({
+          maxMessagesPerChat: data.chat_settings.maxMessagesPerChat.toString(),
+          responseDelay: data.chat_settings.responseDelay.toString(),
+          aiPersonality: data.chat_settings.aiPersonality,
+          fallbackMessage: data.chat_settings.fallbackMessage,
+        });
+      }
+    } catch (error) {
+      console.error('Error loading chat settings:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load chat behavior settings.",
+      });
+    }
+  };
+
   const handleSave = async () => {
     setIsLoading(true);
     try {
+      const { data: existingSettings } = await supabase
+        .from('bot_settings')
+        .select('id')
+        .single();
+
+      if (!existingSettings?.id) {
+        throw new Error('No settings record found');
+      }
+
       const { error } = await supabase
         .from('bot_settings')
         .update({
@@ -29,7 +69,7 @@ export const ChatBehaviorSettings = () => {
             fallbackMessage: settings.fallbackMessage,
           }
         })
-        .eq('id', '1'); // Assuming we're using a single settings record
+        .eq('id', existingSettings.id);
 
       if (error) throw error;
 
