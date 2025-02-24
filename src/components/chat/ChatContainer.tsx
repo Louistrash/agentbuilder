@@ -42,8 +42,8 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
   };
 
   return (
-    <div className="chat-container relative flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto">
+    <div className="chat-container relative h-screen flex flex-col">
+      <div className="flex-1 overflow-y-auto pb-[200px]">
         {messages.map((message, index) => (
           <div key={index} className="flex items-start gap-2 group">
             <ChatMessage
@@ -75,7 +75,7 @@ export const ChatContainer = ({ messages, isTyping, onSend, onQuickAction }: Cha
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="w-full bg-white/80 backdrop-blur-sm border-t border-gray-200">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200">
         <div className="max-w-3xl mx-auto px-[25px] md:px-[33px]">
           <div className="chat-input-container py-4">
             <div className="chat-input-wrapper space-y-4">
