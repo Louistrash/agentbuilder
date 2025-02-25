@@ -62,8 +62,12 @@ export const ChatSection = () => {
             <h2 className="text-xl font-semibold text-white">Chat Behavior & AI Responses</h2>
             <p className="text-sm text-gray-400 mt-1">Configure how your AI assistant interacts with users</p>
           </div>
-          <div className="bg-[#161B22] rounded-lg p-6 border border-[#30363D]">
-            <ChatBehaviorSettings />
+          <div className="relative bg-gradient-to-br from-[#161B22] to-[#1F2937] rounded-lg p-8 border border-[#30363D] shadow-lg overflow-hidden">
+            <div className="absolute inset-0 bg-grid-white/[0.02] mask-gradient"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 via-purple-500/5 to-pink-500/5"></div>
+            <div className="relative z-10">
+              <ChatBehaviorSettings />
+            </div>
           </div>
         </div>
       </div>
