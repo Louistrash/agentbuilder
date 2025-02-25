@@ -4,6 +4,8 @@ import { Settings, ArrowRight, Menu, LucideHeartHandshake } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
+import { TokenDisplay } from "./TokenDisplay";
+import { useAuth } from "@/lib/auth";
 
 interface HeaderProps {
   logoUrl: string | null;
@@ -12,6 +14,7 @@ interface HeaderProps {
 export function Header({ logoUrl }: HeaderProps) {
   const navigate = useNavigate();
   const { isAdmin } = useAdmin();
+  const { user } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -44,6 +47,7 @@ export function Header({ logoUrl }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-4">
+            {user && <TokenDisplay />}
             {isAdmin && (
               <Button
                 variant="ghost"
@@ -58,10 +62,10 @@ export function Header({ logoUrl }: HeaderProps) {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate(user ? '/agents' : '/auth')}
               className="text-gray-300 hover:text-white hover:bg-white/10"
             >
-              Get Started <ArrowRight className="h-4 w-4 ml-2" />
+              {user ? 'Dashboard' : 'Get Started'} <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
 
@@ -76,6 +80,11 @@ export function Header({ logoUrl }: HeaderProps) {
           {/* Mobile Menu */}
           {showMobileMenu && (
             <div className="absolute top-full right-0 w-48 mt-2 py-2 bg-[#1a1f35] rounded-lg shadow-xl border border-white/10 backdrop-blur-lg sm:hidden">
+              {user && (
+                <div className="px-4 py-2">
+                  <TokenDisplay />
+                </div>
+              )}
               {isAdmin && (
                 <button
                   onClick={() => {
@@ -90,12 +99,12 @@ export function Header({ logoUrl }: HeaderProps) {
               )}
               <button
                 onClick={() => {
-                  navigate('/auth');
+                  navigate(user ? '/agents' : '/auth');
                   setShowMobileMenu(false);
                 }}
                 className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
               >
-                Get Started
+                {user ? 'Dashboard' : 'Get Started'}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </button>
             </div>
