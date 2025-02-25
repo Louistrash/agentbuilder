@@ -1,3 +1,4 @@
+
 import { Json } from "@/integrations/supabase/types";
 
 export interface TimeSlot {
@@ -14,21 +15,6 @@ export interface AppointmentSettings {
   appointment_duration: number;
   break_between_appointments: number;
 }
-
-export interface WeekDay {
-  value: number;
-  label: string;
-}
-
-export const WEEK_DAYS: WeekDay[] = [
-  { value: 1, label: "Mon" },
-  { value: 2, label: "Tue" },
-  { value: 3, label: "Wed" },
-  { value: 4, label: "Thu" },
-  { value: 5, label: "Fri" },
-  { value: 6, label: "Sat" },
-  { value: 0, label: "Sun" },
-];
 
 export const DEFAULT_SETTINGS: AppointmentSettings = {
   available_days: [1, 2, 3, 4, 5],
@@ -55,3 +41,18 @@ export interface AgentAvailability {
   available_days: number[];
   time_slots: TimeSlot[];
 }
+
+export interface WeekDay {
+  value: number;
+  label: string;
+}
+
+export const WEEK_DAYS: WeekDay[] = [
+  { value: 1, label: "Mon" },
+  { value: 2, label: "Tue" },
+  { value: 3, label: "Wed" },
+  { value: 4, label: "Thu" },
+  { value: 5, label: "Fri" },
+  { value: 6, label: "Sat" },
+  { value: 0, label: "Sun" },
+];

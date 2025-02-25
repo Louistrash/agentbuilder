@@ -9,8 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Agent } from "./types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { AvailableDays } from "./components/AvailableDays";
-import { BusinessHours } from "./components/BusinessHours";
 
 interface AgentFormProps {
   agent?: Agent;
@@ -22,15 +20,25 @@ interface AgentFormProps {
 export const AgentForm = ({ agent, isOpen, onClose, onSave }: AgentFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState<Partial<Agent>>({
+  const [formData, setFormData] = useState<Omit<Agent, 'id'>>({
     name: agent?.name || "",
     email: agent?.email || "",
     bio: agent?.bio || "",
+    profile_image_url: agent?.profile_image_url,
     is_active: agent?.is_active ?? true,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name || !formData.email) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Name and email are required.",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {

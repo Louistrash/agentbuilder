@@ -41,7 +41,11 @@ export const AgentAvailabilityForm = ({
 
       if (error && error.code !== 'PGRST116') throw error;
       if (data) {
-        setAvailability(data);
+        // Convert the JSON time_slots to our TimeSlot type
+        setAvailability({
+          ...data,
+          time_slots: data.time_slots as TimeSlot[]
+        });
       }
     } catch (error) {
       console.error('Error loading availability:', error);
@@ -64,11 +68,17 @@ export const AgentAvailabilityForm = ({
         .eq('agent_id', agentId)
         .single();
 
+      const availabilityData = {
+        agent_id: agentId,
+        available_days: availability.available_days,
+        time_slots: availability.time_slots
+      };
+
       if (existing) {
         // Update existing availability
         const { error } = await supabase
           .from('agent_availability')
-          .update(availability)
+          .update(availabilityData)
           .eq('id', existing.id);
 
         if (error) throw error;
@@ -76,7 +86,7 @@ export const AgentAvailabilityForm = ({
         // Create new availability
         const { error } = await supabase
           .from('agent_availability')
-          .insert([availability]);
+          .insert([availabilityData]);
 
         if (error) throw error;
       }
