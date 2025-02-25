@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
@@ -167,9 +166,23 @@ const Admin = () => {
             <AdminMenu />
 
             <div className="space-y-8">
-              <section id="general" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
-                <h2 className="text-xl font-semibold mb-6 text-white">General Settings</h2>
-                <GeneralSettings />
+              <section id="general" className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+                <div className="border-b border-[#30363D] bg-[#0D1117]/50 p-4 sm:p-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-white flex items-center gap-3">
+                    <Settings2 className="w-5 h-5 text-[#6366F1]" />
+                    General Settings
+                  </h2>
+                  <p className="text-sm text-gray-400 mt-1">Configure your system's general settings</p>
+                </div>
+                
+                <div className="p-4 sm:p-6 space-y-6">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/5 via-transparent to-[#EC4899]/5"></div>
+                    <div className="relative z-10">
+                      <GeneralSettings />
+                    </div>
+                  </div>
+                </div>
               </section>
 
               <section id="chat" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
