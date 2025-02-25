@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +14,7 @@ import { AnalyticsOverview } from "@/components/admin/analytics/AnalyticsOvervie
 import { ChatMetricsChart } from "@/components/admin/analytics/ChatMetricsChart";
 import { TopQueriesTable } from "@/components/admin/analytics/TopQueriesTable";
 import { IntegrationsSettings } from "@/components/admin/integrations/IntegrationsSettings";
+import { WebTrainingSection } from "@/components/admin/training/WebTrainingSection";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -120,6 +120,12 @@ const Admin = () => {
                   <ChatMetricsChart />
                   <TopQueriesTable />
                 </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="training" className="mt-0">
+              <div className="space-y-6">
+                <WebTrainingSection />
               </div>
             </TabsContent>
 
