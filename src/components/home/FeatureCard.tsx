@@ -40,16 +40,16 @@ export function FeatureCard({
       className="scale-[1.14]" // 14% size increase
     >
       <Card
-        className={`${bgColor} rounded-xl border border-[#9b87f5]/10 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#9b87f5]/5 backdrop-blur-sm`}
+        className={`${bgColor} rounded-xl border border-[#1EAEDB]/10 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#1EAEDB]/5 backdrop-blur-sm`}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
         <div className="relative">
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#9b87f5]/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent pointer-events-none" />
           
           <div className={`p-6 flex items-center justify-center relative z-10`}>
-            <div className="h-12 w-12 rounded-lg bg-[#9b87f5]/10 flex items-center justify-center text-[#9b87f5]">
+            <div className="h-12 w-12 rounded-lg bg-[#1EAEDB]/10 flex items-center justify-center text-[#1EAEDB]">
               {icon}
             </div>
           </div>
@@ -67,7 +67,7 @@ export function FeatureCard({
           </p>
           <Button
             variant="outline"
-            className="w-full mt-2 bg-black/20 border border-[#9b87f5]/20 text-gray-300 hover:bg-[#9b87f5]/10 hover:border-[#9b87f5]/30 transition-all duration-300 transform hover:scale-[1.02]"
+            className="w-full mt-2 bg-black/20 border border-[#1EAEDB]/20 text-gray-300 hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 transform hover:scale-[1.02]"
             onClick={onClick}
           >
             <Play className="h-4 w-4 mr-2" />
