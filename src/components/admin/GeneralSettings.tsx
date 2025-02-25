@@ -11,12 +11,23 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Upload, Loader2 } from "lucide-react";
+import { useAdmin } from "@/hooks/useAdmin";
 
 export const GeneralSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
+  const { isAdmin } = useAdmin();
 
   const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isAdmin) {
+      toast({
+        title: "Access denied",
+        description: "Only platform administrators can change the logo",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -80,13 +91,11 @@ export const GeneralSettings = () => {
     }
   };
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl sm:text-2xl font-bold">Dashboard</h2>
-        <p className="text-sm sm:text-base text-muted-foreground">Overview of key metrics and performance indicators</p>
-      </div>
+  // Only render the logo upload section if user is admin
+  const renderLogoUpload = () => {
+    if (!isAdmin) return null;
 
+    return (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Platform Logo</h3>
         <div className="flex items-center gap-4">
@@ -114,6 +123,17 @@ export const GeneralSettings = () => {
           </p>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl sm:text-2xl font-bold">Dashboard</h2>
+        <p className="text-sm sm:text-base text-muted-foreground">Overview of key metrics and performance indicators</p>
+      </div>
+
+      {renderLogoUpload()}
 
       <Separator className="my-8" />
 
