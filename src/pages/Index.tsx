@@ -130,6 +130,8 @@ const Index = () => {
               />
             ))}
           </div>
+
+          <ProFeatures />
         </div>
       </main>
 
