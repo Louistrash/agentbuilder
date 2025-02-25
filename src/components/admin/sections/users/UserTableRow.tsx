@@ -12,17 +12,19 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
 import { UserRoleSelect } from "./UserRoleSelect";
 
+type UserRole = "admin" | "moderator" | "user";
+
 interface User {
   id: string;
   email: string;
-  roles: string[];
+  roles: UserRole[];
 }
 
 interface UserTableRowProps {
   user: User;
   selected: boolean;
   onSelect: (checked: boolean) => void;
-  onUpdateRole: (role: string) => void;
+  onUpdateRole: (role: UserRole) => void;
 }
 
 export const UserTableRow = ({

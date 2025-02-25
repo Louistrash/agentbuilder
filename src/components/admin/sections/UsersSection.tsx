@@ -14,13 +14,15 @@ import { UserFilters } from "./users/UserFilters";
 import { BulkActions } from "./users/BulkActions";
 import { useUsers } from "@/hooks/useUsers";
 
+type UserRole = "admin" | "moderator" | "user";
+
 export const UsersSection = () => {
   const { users, loading, fetchUsers, updateUserRole, deleteUsers, updateUsersRole } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
-  const handleBulkAction = async (action: 'delete' | 'role', role?: string) => {
+  const handleBulkAction = async (action: 'delete' | 'role', role?: UserRole) => {
     if (selectedUsers.length === 0) return;
 
     let success = false;
@@ -42,7 +44,7 @@ export const UsersSection = () => {
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter === "all" || user.roles.includes(roleFilter);
+    const matchesRole = roleFilter === "all" || user.roles.includes(roleFilter as UserRole);
     return matchesSearch && matchesRole;
   });
 
@@ -105,7 +107,7 @@ export const UsersSection = () => {
                         checked ? [...prev, user.id] : prev.filter(id => id !== user.id)
                       )
                     }
-                    onUpdateRole={(role) => updateUserRole(user.id, role)}
+                    onUpdateRole={(role) => updateUserRole(user.id, role as UserRole)}
                   />
                 ))}
               </TableBody>

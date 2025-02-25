@@ -8,9 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+type UserRole = "admin" | "moderator" | "user";
+
 interface UserRoleSelectProps {
-  currentRole: string;
-  onRoleChange: (role: string) => void;
+  currentRole: UserRole;
+  onRoleChange: (role: UserRole) => void;
 }
 
 export const UserRoleSelect = ({ currentRole, onRoleChange }: UserRoleSelectProps) => {
