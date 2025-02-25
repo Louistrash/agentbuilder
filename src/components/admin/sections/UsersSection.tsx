@@ -1,39 +1,18 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Search, MoreHorizontal, UserCog, Shield, Trash2 } from "lucide-react";
+import { UserTableRow } from "./users/UserTableRow";
+import { UserFilters } from "./users/UserFilters";
+import { BulkActions } from "./users/BulkActions";
 
 interface User {
   id: string;
@@ -107,16 +86,6 @@ export const UsersSection = () => {
     }
   };
 
-  const handleSelectAll = (checked: boolean) => {
-    setSelectedUsers(checked ? filteredUsers.map(user => user.id) : []);
-  };
-
-  const handleSelectUser = (userId: string, checked: boolean) => {
-    setSelectedUsers(prev => 
-      checked ? [...prev, userId] : prev.filter(id => id !== userId)
-    );
-  };
-
   const handleBulkAction = async (action: 'delete' | 'role', role?: string) => {
     if (selectedUsers.length === 0) {
       toast({
@@ -187,65 +156,16 @@ export const UsersSection = () => {
       </div>
 
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 flex-1">
-          <div className="relative flex-1">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search users by email..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8"
-            />
-          </div>
-          <Select value={roleFilter} onValueChange={setRoleFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Roles</SelectItem>
-              <SelectItem value="admin">Admin</SelectItem>
-              <SelectItem value="moderator">Moderator</SelectItem>
-              <SelectItem value="user">User</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {selectedUsers.length > 0 && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
-              {selectedUsers.length} selected
-            </span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <UserCog className="h-4 w-4 mr-2" />
-                  Bulk Actions
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => handleBulkAction('role', 'admin')}>
-                  <Shield className="h-4 w-4 mr-2" />
-                  Make Admin
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleBulkAction('role', 'moderator')}>
-                  <Shield className="h-4 w-4 mr-2" />
-                  Make Moderator
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleBulkAction('role', 'user')}>
-                  <Shield className="h-4 w-4 mr-2" />
-                  Make User
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="text-destructive"
-                  onClick={() => handleBulkAction('delete')}
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete Users
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        )}
+        <UserFilters 
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          roleFilter={roleFilter}
+          onRoleFilterChange={setRoleFilter}
+        />
+        <BulkActions 
+          selectedCount={selectedUsers.length}
+          onAction={handleBulkAction}
+        />
       </div>
 
       <Table>
@@ -254,7 +174,9 @@ export const UsersSection = () => {
             <TableHead className="w-12">
               <Checkbox 
                 checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                onCheckedChange={(checked) => handleSelectAll(checked === true)}
+                onCheckedChange={(checked) => 
+                  setSelectedUsers(checked === true ? filteredUsers.map(user => user.id) : [])
+                }
                 aria-label="Select all users"
               />
             </TableHead>
@@ -265,50 +187,17 @@ export const UsersSection = () => {
         </TableHeader>
         <TableBody>
           {filteredUsers.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>
-                <Checkbox 
-                  checked={selectedUsers.includes(user.id)}
-                  onCheckedChange={(checked) => handleSelectUser(user.id, checked === true)}
-                  aria-label={`Select user ${user.email}`}
-                />
-              </TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.roles.join(', ') || 'No roles'}</TableCell>
-              <TableCell>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                      Manage Roles
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Manage User Roles</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                      <div className="space-y-2">
-                        <Label>Role</Label>
-                        <Select
-                          onValueChange={(value) => updateUserRole(user.id, value)}
-                          defaultValue={user.roles[0] || 'user'}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select role" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="moderator">Moderator</SelectItem>
-                            <SelectItem value="user">User</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </TableCell>
-            </TableRow>
+            <UserTableRow
+              key={user.id}
+              user={user}
+              selected={selectedUsers.includes(user.id)}
+              onSelect={(checked) => 
+                setSelectedUsers(prev => 
+                  checked ? [...prev, user.id] : prev.filter(id => id !== user.id)
+                )
+              }
+              onUpdateRole={(role) => updateUserRole(user.id, role)}
+            />
           ))}
         </TableBody>
       </Table>
