@@ -93,18 +93,18 @@ const Index = () => {
               <Button
                 size="default"
                 onClick={() => navigate('/agents')}
-                className="w-full bg-white text-[#0f1116] hover:bg-gray-200 h-10"
+                className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity h-12 rounded-xl font-medium text-base shadow-lg shadow-indigo-500/25"
               >
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-5 w-5 mr-2" />
                 Create Your First Agent
               </Button>
               <Button
                 size="default"
                 variant="outline"
                 onClick={() => setShowOnboarding(true)}
-                className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-10"
+                className="w-full bg-transparent backdrop-blur-sm border-2 border-purple-500/20 text-white hover:bg-purple-500/10 transition-colors h-12 rounded-xl font-medium text-base"
               >
-                <Play className="h-4 w-4 mr-2" />
+                <Play className="h-5 w-5 mr-2" />
                 Watch Demo
               </Button>
             </div>
