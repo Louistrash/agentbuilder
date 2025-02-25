@@ -64,7 +64,7 @@ export const ChatSection = () => {
           </div>
           <div className="relative bg-gradient-to-br from-[#161B22] to-[#1F2937] rounded-lg p-8 border border-[#30363D] shadow-lg overflow-hidden">
             <div className="absolute inset-0 bg-grid-white/[0.02] mask-gradient"></div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 via-purple-500/5 to-pink-500/5"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#4F46E5]/10 via-[#7C3AED]/10 to-[#EC4899]/10 animate-gradient-slow"></div>
             <div className="relative z-10">
               <ChatBehaviorSettings />
             </div>
