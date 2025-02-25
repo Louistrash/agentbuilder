@@ -340,6 +340,39 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_features: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string
+          id: string
+          name: string
+          price: number
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description: string
+          id?: string
+          name: string
+          price: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          name?: string
+          price?: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       organization_usage: {
         Row: {
           created_at: string
@@ -401,6 +434,50 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      purchased_features: {
+        Row: {
+          activated_at: string | null
+          created_at: string | null
+          expires_at: string | null
+          feature_id: string
+          id: string
+          purchased_at: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          feature_id: string
+          id?: string
+          purchased_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          feature_id?: string
+          id?: string
+          purchased_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchased_features_feature_id_fkey"
+            columns: ["feature_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_features"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       quick_actions: {
         Row: {

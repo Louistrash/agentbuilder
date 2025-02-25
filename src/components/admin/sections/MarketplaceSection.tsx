@@ -1,53 +1,84 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Plus } from "lucide-react";
+import { ShoppingCart, Plus, X, Filter, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
 
 interface Feature {
   id: string;
   name: string;
   description: string;
   price: number;
-  category: "analytics" | "integration" | "automation" | "customization";
+  category: string;
+  status: string;
 }
 
-const features: Feature[] = [
-  {
-    id: "1",
-    name: "Advanced Analytics",
-    description: "Get deep insights into your virtual agent's performance with detailed metrics and visualizations.",
-    price: 29.99,
-    category: "analytics",
-  },
-  {
-    id: "2",
-    name: "Multi-Channel Integration",
-    description: "Connect your virtual agent with popular messaging platforms and social media.",
-    price: 49.99,
-    category: "integration",
-  },
-  {
-    id: "3",
-    name: "Custom Workflows",
-    description: "Create sophisticated automation workflows with a visual builder.",
-    price: 39.99,
-    category: "automation",
-  },
-  {
-    id: "4",
-    name: "Personality Customization",
-    description: "Fine-tune your agent's personality and responses with advanced settings.",
-    price: 19.99,
-    category: "customization",
-  },
-];
+interface PurchasedFeature {
+  id: string;
+  feature_id: string;
+  status: string;
+  activated_at: string | null;
+}
 
 export const MarketplaceSection = () => {
+  const [features, setFeatures] = useState<Feature[]>([]);
+  const [purchasedFeatures, setPurchasedFeatures] = useState<PurchasedFeature[]>([]);
   const [cart, setCart] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [showCart, setShowCart] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+
+  const categories = ["all", "analytics", "integration", "automation", "customization"];
+
+  useEffect(() => {
+    fetchFeatures();
+    if (user) {
+      fetchPurchasedFeatures();
+    }
+  }, [user]);
+
+  const fetchFeatures = async () => {
+    const { data, error } = await supabase
+      .from('marketplace_features')
+      .select('*')
+      .eq('status', 'active');
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch features",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setFeatures(data);
+  };
+
+  const fetchPurchasedFeatures = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('purchased_features')
+      .select('*')
+      .eq('user_id', user.id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch purchased features",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setPurchasedFeatures(data);
+  };
 
   const addToCart = (featureId: string) => {
     if (!cart.includes(featureId)) {
@@ -74,6 +105,82 @@ export const MarketplaceSection = () => {
       .toFixed(2);
   };
 
+  const isFeaturePurchased = (featureId: string) => {
+    return purchasedFeatures.some(pf => pf.feature_id === featureId);
+  };
+
+  const activateFeature = async (featureId: string) => {
+    if (!user) return;
+
+    const { error } = await supabase
+      .from('purchased_features')
+      .update({ 
+        status: 'active',
+        activated_at: new Date().toISOString()
+      })
+      .eq('feature_id', featureId)
+      .eq('user_id', user.id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to activate feature",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    await fetchPurchasedFeatures();
+    toast({
+      title: "Success",
+      description: "Feature has been activated",
+    });
+  };
+
+  const handleCheckout = async () => {
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "Please login to make purchases",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Here you would typically integrate with Stripe
+    // For now, we'll simulate a successful purchase
+    for (const featureId of cart) {
+      const { error } = await supabase
+        .from('purchased_features')
+        .insert({
+          user_id: user.id,
+          feature_id: featureId,
+          status: 'pending'
+        });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: `Failed to purchase feature: ${error.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    await fetchPurchasedFeatures();
+    setCart([]);
+    setShowCart(false);
+    toast({
+      title: "Success",
+      description: "Features have been purchased successfully",
+    });
+  };
+
+  const filteredFeatures = selectedCategory === "all"
+    ? features
+    : features.filter(feature => feature.category === selectedCategory);
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -81,14 +188,32 @@ export const MarketplaceSection = () => {
           <h2 className="text-2xl font-bold">Feature Marketplace</h2>
           <p className="text-muted-foreground">Enhance your virtual agent with powerful features</p>
         </div>
-        <Button variant="outline" className="gap-2">
+        <Button 
+          variant="outline" 
+          className="gap-2"
+          onClick={() => setShowCart(true)}
+        >
           <ShoppingCart className="h-4 w-4" />
           Cart ({cart.length}) - ${getCartTotal()}
         </Button>
       </div>
 
+      <div className="flex gap-2 overflow-x-auto py-2">
+        <Filter className="h-4 w-4 mt-2" />
+        {categories.map((category) => (
+          <Button
+            key={category}
+            variant={selectedCategory === category ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category.charAt(0).toUpperCase() + category.slice(1)}
+          </Button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map((feature) => (
+        {filteredFeatures.map((feature) => (
           <Card key={feature.id} className="flex flex-col">
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -101,7 +226,12 @@ export const MarketplaceSection = () => {
             </CardContent>
             <CardFooter className="flex justify-between items-center">
               <span className="text-lg font-bold">${feature.price}</span>
-              {cart.includes(feature.id) ? (
+              {isFeaturePurchased(feature.id) ? (
+                <Button variant="outline" className="gap-2">
+                  <CheckCircle className="h-4 w-4" />
+                  Purchased
+                </Button>
+              ) : cart.includes(feature.id) ? (
                 <Button 
                   variant="destructive" 
                   onClick={() => removeFromCart(feature.id)}
@@ -121,6 +251,56 @@ export const MarketplaceSection = () => {
           </Card>
         ))}
       </div>
+
+      {showCart && cart.length > 0 && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <Card className="w-full max-w-md mx-4">
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle>Shopping Cart</CardTitle>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => setShowCart(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {features
+                .filter(feature => cart.includes(feature.id))
+                .map(feature => (
+                  <div key={feature.id} className="flex justify-between items-center">
+                    <div>
+                      <h3 className="font-medium">{feature.name}</h3>
+                      <p className="text-sm text-muted-foreground">{feature.category}</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="font-medium">${feature.price}</span>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => removeFromCart(feature.id)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total</p>
+                <p className="text-lg font-bold">${getCartTotal()}</p>
+              </div>
+              <Button onClick={handleCheckout}>
+                Checkout
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
