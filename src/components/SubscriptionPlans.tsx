@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Check } from "lucide-react";
