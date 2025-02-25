@@ -429,6 +429,100 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_invoices: {
+        Row: {
+          amount_due: number
+          created_at: string | null
+          id: string
+          messages_count: number
+          status: string
+          stripe_invoice_id: string | null
+          subscription_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount_due: number
+          created_at?: string | null
+          id?: string
+          messages_count: number
+          status?: string
+          stripe_invoice_id?: string | null
+          subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount_due?: number
+          created_at?: string | null
+          id?: string
+          messages_count?: number
+          status?: string
+          stripe_invoice_id?: string | null
+          subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_invoices_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          is_using_own_api: boolean | null
+          level: Database["public"]["Enums"]["subscription_level"]
+          messages_limit: number | null
+          messages_used: number | null
+          openai_api_key: string | null
+          profile_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          is_using_own_api?: boolean | null
+          level: Database["public"]["Enums"]["subscription_level"]
+          messages_limit?: number | null
+          messages_used?: number | null
+          openai_api_key?: string | null
+          profile_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          is_using_own_api?: boolean | null
+          level?: Database["public"]["Enums"]["subscription_level"]
+          messages_limit?: number | null
+          messages_used?: number | null
+          openai_api_key?: string | null
+          profile_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       training_files: {
         Row: {
           content_type: string
@@ -573,6 +667,7 @@ export type Database = {
     }
     Enums: {
       role_type: "admin" | "moderator" | "user"
+      subscription_level: "basic" | "enhanced"
     }
     CompositeTypes: {
       [_ in never]: never

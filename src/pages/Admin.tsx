@@ -14,6 +14,7 @@ import { AnalyticsSection } from "@/components/admin/sections/AnalyticsSection";
 import { TrainingSection } from "@/components/admin/sections/TrainingSection";
 import { IntegrationsSection } from "@/components/admin/sections/IntegrationsSection";
 import { UsersSection } from "@/components/admin/sections/UsersSection";
+import { SubscriptionsSection } from "@/components/admin/sections/SubscriptionsSection";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -104,6 +105,10 @@ const Admin = () => {
 
             <TabsContent value="users" className="mt-0">
               <UsersSection />
+            </TabsContent>
+
+            <TabsContent value="subscriptions" className="mt-0">
+              <SubscriptionsSection />
             </TabsContent>
           </div>
         </Tabs>
