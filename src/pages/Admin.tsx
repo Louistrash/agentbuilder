@@ -137,7 +137,8 @@ const Admin = () => {
 
       {/* Main Content */}
       <main className="flex-1 w-full">
-        <div className="container mx-auto p-4 lg:p-8 max-w-[1600px]">
+        <AdminMenu />
+        <div className="container mx-auto p-4 lg:p-8 max-w-[1600px] mt-[280px] md:mt-[200px] lg:mt-[160px]">
           <div className="mb-8 hidden lg:block">
             <h1 className="text-2xl font-bold text-white">
               Dashboard Overview
@@ -162,8 +163,6 @@ const Admin = () => {
                 />
               </div>
             </div>
-
-            <AdminMenu />
 
             <div className="space-y-8">
               <section id="general" className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
