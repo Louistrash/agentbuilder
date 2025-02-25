@@ -44,7 +44,7 @@ export const ChatMetricsChart = () => {
     return (
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Weekly Chat Activity</h3>
-        <div className="h-[300px] animate-pulse bg-gray-100 rounded" />
+        <div className="h-[180px] sm:h-[300px] animate-pulse bg-gray-100 rounded" />
       </Card>
     );
   }
@@ -52,7 +52,7 @@ export const ChatMetricsChart = () => {
   return (
     <Card className="p-6">
       <h3 className="text-lg font-semibold mb-4">Weekly Chat Activity</h3>
-      <div className="h-[300px]">
+      <div className="h-[180px] sm:h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <RechartsBarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
