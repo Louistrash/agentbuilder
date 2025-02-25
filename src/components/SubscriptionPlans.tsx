@@ -7,8 +7,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const BASIC_PRICE_ID = "price_XXXXX"; // Replace with your Stripe price ID
-const ENHANCED_PRICE_ID = "price_XXXXX"; // Replace with your Stripe price ID
+const BASIC_PRICE_ID = "price_1QwD0HLKYh7oFRi1iuxawvIg";
+const ENHANCED_PRICE_ID = "price_1QwD1lLKYh7oFRi1y2IHT0xY";
 
 export const SubscriptionPlans = () => {
   const { user } = useAuth();
