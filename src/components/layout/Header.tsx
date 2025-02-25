@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight } from "lucide-react";
+import { Settings, ArrowRight, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,6 +15,7 @@ export function Header({ logoUrl }: HeaderProps) {
   const { isAdmin } = useAdmin();
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const handleImageLoad = () => {
     setImageLoading(false);
@@ -26,26 +27,32 @@ export function Header({ logoUrl }: HeaderProps) {
   };
 
   return (
-    <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-between items-center">
+    <header className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center gap-3">
             {imageLoading && (
-              <Skeleton className="w-10 h-10 rounded-lg bg-gray-700/50" />
+              <Skeleton className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-700/50" />
             )}
             <img
               src={logoUrl || "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"}
               alt="Chat Agent Builder Logo"
-              className={`w-10 h-10 rounded-lg ${imageLoading ? 'hidden' : 'block'}`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover ${imageLoading ? 'hidden' : 'block'}`}
               onLoad={handleImageLoad}
               onError={handleImageError}
             />
             <div className="flex flex-col">
-              <h1 className="text-xl font-semibold">Chat Agent Builder</h1>
-              <p className="text-sm text-gray-400">Build. Deploy. Engage.</p>
+              <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Chat Agent Builder
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
+                Build. Deploy. Engage.
+              </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+
+          {/* Desktop Navigation */}
+          <div className="hidden sm:flex items-center gap-4">
             {isAdmin && (
               <Button
                 variant="ghost"
@@ -66,6 +73,42 @@ export function Header({ logoUrl }: HeaderProps) {
               Get Started <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="sm:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+
+          {/* Mobile Menu */}
+          {showMobileMenu && (
+            <div className="absolute top-full right-0 w-48 mt-2 py-2 bg-[#1a1f35] rounded-lg shadow-xl border border-white/10 backdrop-blur-lg sm:hidden">
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    navigate('/admin');
+                    setShowMobileMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Admin
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  navigate('/auth');
+                  setShowMobileMenu(false);
+                }}
+                className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
+              >
+                Get Started
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>
