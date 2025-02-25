@@ -1,11 +1,8 @@
-
 import { ChatBehaviorSettings } from "@/components/ChatBehaviorSettings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare, Bot, Brain, Sliders } from "lucide-react";
-
 export const ChatSection = () => {
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-4">
           <Card className="bg-admin-card border-admin-border group hover:bg-[#161B22] transition-all duration-300">
@@ -72,7 +69,7 @@ export const ChatSection = () => {
         <CardHeader>
           <CardTitle className="text-white text-xl font-bold">Chat Behavior & AI Responses</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="bg-slate-900">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-[#0D1117] rounded-lg p-4 border border-[#30363D]">
               <h3 className="text-base font-semibold text-white mb-4">Chat Configuration</h3>
@@ -92,6 +89,5 @@ export const ChatSection = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };

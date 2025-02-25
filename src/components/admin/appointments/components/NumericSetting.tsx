@@ -1,7 +1,5 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 interface NumericSettingProps {
   id: string;
   label: string;
@@ -10,26 +8,16 @@ interface NumericSettingProps {
   min?: number;
   step?: number;
 }
-
-export const NumericSetting = ({ 
-  id, 
-  label, 
-  value, 
-  onChange, 
-  min = 0, 
-  step = 1 
+export const NumericSetting = ({
+  id,
+  label,
+  value,
+  onChange,
+  min = 0,
+  step = 1
 }: NumericSettingProps) => {
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Input
-        id={id}
-        type="number"
-        min={min}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(parseInt(e.target.value))}
-      />
-    </div>
-  );
+  return <div className="space-y-2">
+      <Label htmlFor={id} className="bg-zinc-700">{label}</Label>
+      <Input id={id} type="number" min={min} step={step} value={value} onChange={e => onChange(parseInt(e.target.value))} className="bg-gray-50" />
+    </div>;
 };
