@@ -899,6 +899,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      grant_tokens: {
+        Args: {
+          user_id: string
+          amount: number
+        }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           user_id: string

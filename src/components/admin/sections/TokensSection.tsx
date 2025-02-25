@@ -41,7 +41,14 @@ export const TokensSection = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setTransactions(data || []);
+      
+      // Cast the transaction_type to the correct type
+      const typedData = data?.map(transaction => ({
+        ...transaction,
+        transaction_type: transaction.transaction_type as 'credit' | 'debit'
+      })) || [];
+      
+      setTransactions(typedData);
     } catch (error) {
       console.error('Error fetching token transactions:', error);
       toast({
@@ -66,11 +73,14 @@ export const TokensSection = () => {
     }
 
     try {
-      // First, update the user's token balance
-      const { error: updateError } = await supabase.rpc('grant_tokens', {
-        user_id: selectedUserId,
-        amount: parseInt(grantAmount)
-      });
+      // First, update the user's token balance using a direct update
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ tokens: supabase.rpc('grant_tokens', { 
+          user_id: selectedUserId, 
+          amount: parseInt(grantAmount) 
+        })})
+        .eq('id', selectedUserId);
 
       if (updateError) throw updateError;
 
