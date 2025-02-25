@@ -42,6 +42,74 @@ export type Database = {
         }
         Relationships: []
       }
+      agent_availability: {
+        Row: {
+          agent_id: string
+          available_days: number[] | null
+          created_at: string
+          id: string
+          time_slots: Json | null
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          available_days?: number[] | null
+          created_at?: string
+          id?: string
+          time_slots?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          available_days?: number[] | null
+          created_at?: string
+          id?: string
+          time_slots?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_availability_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agents: {
+        Row: {
+          bio: string | null
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean | null
+          name: string
+          profile_image_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          profile_image_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          profile_image_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       appointment_settings: {
         Row: {
           appointment_duration: number | null
@@ -83,6 +151,7 @@ export type Database = {
       }
       appointments: {
         Row: {
+          agent_id: string | null
           appointment_date: string
           created_at: string
           customer_email: string
@@ -97,6 +166,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          agent_id?: string | null
           appointment_date: string
           created_at?: string
           customer_email: string
@@ -111,6 +181,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          agent_id?: string | null
           appointment_date?: string
           created_at?: string
           customer_email?: string
@@ -125,6 +196,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "appointments_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "appointments_profile_id_fkey"
             columns: ["profile_id"]

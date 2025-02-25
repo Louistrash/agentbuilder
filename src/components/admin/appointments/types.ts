@@ -1,4 +1,3 @@
-
 import { Json } from "@/integrations/supabase/types";
 
 export interface TimeSlot {
@@ -40,3 +39,19 @@ export const DEFAULT_SETTINGS: AppointmentSettings = {
   appointment_duration: 60,
   break_between_appointments: 15
 };
+
+export interface Agent {
+  id: string;
+  name: string;
+  email: string;
+  bio?: string;
+  profile_image_url?: string;
+  is_active: boolean;
+}
+
+export interface AgentAvailability {
+  id: string;
+  agent_id: string;
+  available_days: number[];
+  time_slots: TimeSlot[];
+}
