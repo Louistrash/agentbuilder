@@ -53,14 +53,14 @@ export const TokensSection = () => {
   }, { totalGranted: 0, totalSpent: 0 });
 
   if (loading) {
-    return <div>Loading token data...</div>;
+    return <div className="p-4">Loading token data...</div>;
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       <div>
-        <h2 className="text-2xl font-bold">Token Management</h2>
-        <p className="text-muted-foreground">Manage and track token usage across the platform</p>
+        <h2 className="text-xl sm:text-2xl font-bold">Token Management</h2>
+        <p className="text-sm sm:text-base text-muted-foreground">Manage and track token usage across the platform</p>
       </div>
 
       <TokenStatsCards stats={stats} />

@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { TokenTransaction } from "./types";
 
 interface TokenTransactionsTableProps {
@@ -21,42 +22,46 @@ export const TokenTransactionsTable = ({ transactions }: TokenTransactionsTableP
         <CardTitle>Token Transactions</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>User ID</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Feature</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>
-                  {new Date(transaction.created_at).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="font-mono text-sm">
-                  {transaction.profile_id}
-                </TableCell>
-                <TableCell>
-                  <span className={
-                    transaction.transaction_type === 'credit' 
-                      ? 'text-green-500' 
-                      : 'text-red-500'
-                  }>
-                    {transaction.transaction_type}
-                  </span>
-                </TableCell>
-                <TableCell>{transaction.amount}</TableCell>
-                <TableCell>{transaction.description}</TableCell>
-                <TableCell>{transaction.feature_used || '-'}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <ScrollArea className="w-full">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="whitespace-nowrap">Date</TableHead>
+                  <TableHead className="whitespace-nowrap">User ID</TableHead>
+                  <TableHead className="whitespace-nowrap">Type</TableHead>
+                  <TableHead className="whitespace-nowrap">Amount</TableHead>
+                  <TableHead className="whitespace-nowrap">Description</TableHead>
+                  <TableHead className="whitespace-nowrap">Feature</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {transactions.map((transaction) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell className="whitespace-nowrap">
+                      {new Date(transaction.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="font-mono text-sm whitespace-nowrap">
+                      {transaction.profile_id}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <span className={
+                        transaction.transaction_type === 'credit' 
+                          ? 'text-green-500' 
+                          : 'text-red-500'
+                      }>
+                        {transaction.transaction_type}
+                      </span>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">{transaction.amount}</TableCell>
+                    <TableCell className="whitespace-nowrap">{transaction.description}</TableCell>
+                    <TableCell className="whitespace-nowrap">{transaction.feature_used || '-'}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

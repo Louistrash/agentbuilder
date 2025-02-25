@@ -71,21 +71,21 @@ export const GrantTokensForm = ({ onSuccess }: GrantTokensFormProps) => {
         <CardTitle>Grant Tokens</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex space-x-2">
+        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
           <Input
             placeholder="User ID"
             value={selectedUserId}
             onChange={(e) => setSelectedUserId(e.target.value)}
-            className="max-w-[200px]"
+            className="w-full sm:max-w-[200px]"
           />
           <Input
             type="number"
             placeholder="Amount"
             value={grantAmount}
             onChange={(e) => setGrantAmount(e.target.value)}
-            className="max-w-[120px]"
+            className="w-full sm:max-w-[120px]"
           />
-          <Button onClick={handleGrantTokens}>Grant Tokens</Button>
+          <Button onClick={handleGrantTokens} className="w-full sm:w-auto">Grant Tokens</Button>
         </div>
       </CardContent>
     </Card>
