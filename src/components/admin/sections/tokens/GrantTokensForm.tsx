@@ -27,15 +27,10 @@ export const GrantTokensForm = ({ onSuccess }: GrantTokensFormProps) => {
 
     try {
       // First, update the user's token balance
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ 
-          tokens: supabase.rpc('grant_tokens', { 
-            user_id: selectedUserId, 
-            amount: parseInt(grantAmount) 
-          }) 
-        })
-        .eq('id', selectedUserId);
+      const { error: updateError } = await supabase.rpc('grant_tokens', { 
+        user_id: selectedUserId, 
+        amount: parseInt(grantAmount) 
+      });
 
       if (updateError) throw updateError;
 
