@@ -18,6 +18,7 @@ import { IntegrationsSection } from "@/components/admin/sections/IntegrationsSec
 import { SubscriptionsSection } from "@/components/admin/sections/SubscriptionsSection";
 import { TrainingSection } from "@/components/admin/sections/TrainingSection";
 import { AdminMenu } from "@/components/admin/AdminMenu";
+import { LayoutGrid, Settings2, Users, MessageSquare, ChartBar, Calendar, ShoppingBag, Link, CreditCard, Book } from "lucide-react";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -93,15 +94,39 @@ const Admin = () => {
     );
   }
 
+  const menuItems = [
+    { icon: LayoutGrid, label: "Dashboard", href: "#dashboard" },
+    { icon: Settings2, label: "General", href: "#general" },
+    { icon: Users, label: "Users", href: "#users" },
+    { icon: MessageSquare, label: "Chat", href: "#chat" },
+    { icon: ChartBar, label: "Analytics", href: "#analytics" },
+    { icon: Calendar, label: "Appointments", href: "#appointments" },
+    { icon: ShoppingBag, label: "Marketplace", href: "#marketplace" },
+    { icon: Link, label: "Integrations", href: "#integrations" },
+    { icon: CreditCard, label: "Subscriptions", href: "#subscriptions" },
+    { icon: Book, label: "Training", href: "#training" },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#0D1117] text-white">
+    <div className="min-h-screen bg-[#0D1117]">
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-64 min-h-screen bg-[#161B22] border-r border-[#30363D]">
+        <div className="w-64 min-h-screen bg-[#161B22] border-r border-[#30363D] shadow-xl">
           <div className="p-6">
-            <h2 className="text-xl font-bold text-white mb-6">Admin Panel</h2>
-            <nav className="space-y-2">
-              {/* Add navigation items here */}
+            <h2 className="text-xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent mb-6">
+              Admin Panel
+            </h2>
+            <nav className="space-y-1">
+              {menuItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-3 px-3 py-2 text-sm text-gray-400 rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+                >
+                  <item.icon className="w-4 h-4" />
+                  {item.label}
+                </a>
+              ))}
             </nav>
           </div>
         </div>
@@ -110,7 +135,7 @@ const Admin = () => {
         <div className="flex-1 p-8">
           <div className="max-w-[1600px] mx-auto">
             <div className="mb-8">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent">
                 Dashboard Overview
               </h1>
               <p className="text-gray-400">Complete system management and analytics</p>
@@ -131,7 +156,7 @@ const Admin = () => {
 
             <AdminMenu />
 
-            <div className="space-y-8 mt-8">
+            <div className="space-y-6 mt-8">
               <div className="bg-[#161B22]/95 backdrop-blur-xl rounded-xl p-8 border border-[#30363D]/50 shadow-2xl relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/5 via-transparent to-[#EC4899]/5 pointer-events-none"></div>
                 <div className="relative z-10">
