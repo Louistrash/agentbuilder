@@ -307,6 +307,41 @@ export type Database = {
         }
         Relationships: []
       }
+      organization_usage: {
+        Row: {
+          created_at: string
+          id: string
+          profile_id: string | null
+          total_words_used: number | null
+          updated_at: string
+          words_limit: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          profile_id?: string | null
+          total_words_used?: number | null
+          updated_at?: string
+          words_limit?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          profile_id?: string | null
+          total_words_used?: number | null
+          updated_at?: string
+          words_limit?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_usage_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -395,6 +430,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "training_files_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      website_training_sources: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          processed: boolean | null
+          profile_id: string | null
+          status: string | null
+          updated_at: string
+          url: string
+          word_count: number | null
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          processed?: boolean | null
+          profile_id?: string | null
+          status?: string | null
+          updated_at?: string
+          url: string
+          word_count?: number | null
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          processed?: boolean | null
+          profile_id?: string | null
+          status?: string | null
+          updated_at?: string
+          url?: string
+          word_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "website_training_sources_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"

@@ -12,6 +12,20 @@ interface UsageStats {
   wordsLimit: number;
 }
 
+interface WebsiteTrainingSource {
+  id: string;
+  url: string;
+  processed: boolean;
+  word_count: number;
+  status: string;
+  error_message?: string;
+}
+
+interface OrganizationUsage {
+  total_words_used: number;
+  words_limit: number;
+}
+
 export const WebTrainingSection = () => {
   const [url, setUrl] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -23,20 +37,39 @@ export const WebTrainingSection = () => {
   }, []);
 
   const fetchUsageStats = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-    const { data } = await supabase
-      .from('organization_usage')
-      .select('total_words_used, words_limit')
-      .eq('profile_id', user.id)
-      .maybeSingle();
+      // Create default usage entry if it doesn't exist
+      const { data: existingUsage } = await supabase
+        .from('organization_usage')
+        .select()
+        .eq('profile_id', user.id)
+        .maybeSingle();
 
-    if (data) {
-      setUsage({
-        totalWordsUsed: data.total_words_used,
-        wordsLimit: data.words_limit
-      });
+      if (!existingUsage) {
+        await supabase.from('organization_usage').insert({
+          profile_id: user.id,
+          total_words_used: 0,
+          words_limit: 100000 // Default limit
+        });
+      }
+
+      const { data } = await supabase
+        .from('organization_usage')
+        .select('total_words_used, words_limit')
+        .eq('profile_id', user.id)
+        .maybeSingle();
+
+      if (data) {
+        setUsage({
+          totalWordsUsed: data.total_words_used,
+          wordsLimit: data.words_limit
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching usage stats:', error);
     }
   };
 
@@ -87,7 +120,8 @@ export const WebTrainingSection = () => {
         .insert({
           url,
           profile_id: user.id,
-        });
+          status: 'pending'
+        } as WebsiteTrainingSource);
 
       if (error) throw error;
 
