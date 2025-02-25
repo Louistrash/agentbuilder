@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ChatSettings, Json, isChatSettings } from "./admin/chat/types";
 import { ChatLimitsSection } from "./admin/chat/ChatLimitsSection";
 import { AIPersonalitySection } from "./admin/chat/AIPersonalitySection";
+import { MultimodalSection } from "./admin/chat/MultimodalSection";
 
 export const ChatBehaviorSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +24,16 @@ export const ChatBehaviorSettings = () => {
     learningMode: {
       enabled: true,
       adaptationRate: 0.5
+    },
+    multimodalSupport: {
+      images: false,
+      voice: false,
+      video: false
+    },
+    voiceSettings: {
+      enabled: false,
+      language: "en-US",
+      voice: "natural"
     }
   });
 
@@ -56,6 +66,16 @@ export const ChatBehaviorSettings = () => {
             learningMode: data.chat_settings.learningMode || {
               enabled: true,
               adaptationRate: 0.5
+            },
+            multimodalSupport: data.chat_settings.multimodalSupport || {
+              images: false,
+              voice: false,
+              video: false
+            },
+            voiceSettings: data.chat_settings.voiceSettings || {
+              enabled: false,
+              language: "en-US",
+              voice: "natural"
             }
           });
         } else {
@@ -98,6 +118,8 @@ export const ChatBehaviorSettings = () => {
         emotionalIntelligence: settings.emotionalIntelligence,
         contextMemory: settings.contextMemory,
         learningMode: settings.learningMode,
+        multimodalSupport: settings.multimodalSupport,
+        voiceSettings: settings.voiceSettings,
       } as unknown as Json;
 
       const { error } = await supabase
@@ -144,6 +166,12 @@ export const ChatBehaviorSettings = () => {
         fallbackMessage={settings.fallbackMessage}
         reasoningLevel={settings.reasoningLevel}
         emotionalIntelligence={settings.emotionalIntelligence}
+        onSettingChange={handleSettingChange}
+      />
+
+      <MultimodalSection
+        multimodalSupport={settings.multimodalSupport}
+        voiceSettings={settings.voiceSettings}
         onSettingChange={handleSettingChange}
       />
 
