@@ -89,14 +89,14 @@ const Admin = () => {
 
   if (isLoading || isCheckingAdmin) {
     return (
-      <div className="min-h-screen bg-[#1A1F2C] flex items-center justify-center">
+      <div className="min-h-screen bg-[#171923] flex items-center justify-center">
         <div className="text-white animate-pulse">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#1A1F2C]">
+    <div className="min-h-screen bg-[#171923]">
       <div className="container mx-auto p-6">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-2">CEO Dashboard</h1>
@@ -117,47 +117,51 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="general" className="space-y-8">
-          <AdminTabs />
+          <div className="bg-[#1E2028] rounded-lg p-4 backdrop-blur-sm border border-[#2D3748]/10">
+            <AdminTabs />
+          </div>
           
-          <TabsContent value="general">
-            <GeneralSettings />
-          </TabsContent>
+          <div className="bg-[#1E2028] rounded-lg p-6 border border-[#2D3748]/10">
+            <TabsContent value="general" className="mt-0">
+              <GeneralSettings />
+            </TabsContent>
 
-          <TabsContent value="chat">
-            <ChatSection />
-          </TabsContent>
+            <TabsContent value="chat" className="mt-0">
+              <ChatSection />
+            </TabsContent>
 
-          <TabsContent value="users">
-            <UsersSection />
-          </TabsContent>
+            <TabsContent value="users" className="mt-0">
+              <UsersSection />
+            </TabsContent>
 
-          <TabsContent value="tokens">
-            <TokensSection />
-          </TabsContent>
+            <TabsContent value="tokens" className="mt-0">
+              <TokensSection />
+            </TabsContent>
 
-          <TabsContent value="analytics">
-            <AnalyticsSection />
-          </TabsContent>
+            <TabsContent value="analytics" className="mt-0">
+              <AnalyticsSection />
+            </TabsContent>
 
-          <TabsContent value="appointments">
-            <AppointmentsSection />
-          </TabsContent>
+            <TabsContent value="appointments" className="mt-0">
+              <AppointmentsSection />
+            </TabsContent>
 
-          <TabsContent value="marketplace">
-            <MarketplaceSection />
-          </TabsContent>
+            <TabsContent value="marketplace" className="mt-0">
+              <MarketplaceSection />
+            </TabsContent>
 
-          <TabsContent value="integrations">
-            <IntegrationsSection />
-          </TabsContent>
+            <TabsContent value="integrations" className="mt-0">
+              <IntegrationsSection />
+            </TabsContent>
 
-          <TabsContent value="subscriptions">
-            <SubscriptionsSection />
-          </TabsContent>
+            <TabsContent value="subscriptions" className="mt-0">
+              <SubscriptionsSection />
+            </TabsContent>
 
-          <TabsContent value="training">
-            <TrainingSection />
-          </TabsContent>
+            <TabsContent value="training" className="mt-0">
+              <TrainingSection />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </div>
