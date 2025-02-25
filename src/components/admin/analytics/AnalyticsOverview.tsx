@@ -75,7 +75,7 @@ export const AnalyticsOverview = () => {
     },
     {
       title: "Engagement Rate",
-      value: `${analytics?.engagementRate}%` || "0%",
+      value: `${Number(analytics?.engagementRate).toFixed(2)}%` || "0%",
       icon: TrendingUp,
       color: "text-purple-500"
     }
@@ -86,11 +86,11 @@ export const AnalyticsOverview = () => {
       {stats.map((stat) => (
         <Card key={stat.title} className="p-6">
           <div className="flex items-center justify-between">
-            <div>
+            <div className="min-w-0"> {/* Add min-w-0 to allow text truncation */}
               <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-              <p className="text-2xl font-semibold mt-1">{stat.value}</p>
+              <p className="text-2xl font-semibold mt-1 truncate">{stat.value}</p>
             </div>
-            <div className={`${stat.color} bg-gray-50 p-3 rounded-full`}>
+            <div className={`${stat.color} bg-gray-50 p-3 rounded-full flex-shrink-0`}>
               <stat.icon className="w-6 h-6" />
             </div>
           </div>
