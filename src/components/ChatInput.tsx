@@ -56,7 +56,12 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
 
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        onSend(audioBlob, 'voice');
+        // Convert Blob to File
+        const audioFile = new File([audioBlob], 'voice-message.webm', {
+          type: 'audio/webm',
+          lastModified: Date.now()
+        });
+        onSend(audioFile, 'voice');
         stream.getTracks().forEach(track => track.stop());
       };
 
