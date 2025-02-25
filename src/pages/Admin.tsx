@@ -1,20 +1,18 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { ChatBehaviorSettings } from "@/components/ChatBehaviorSettings";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { GeneralSettings } from "@/components/admin/GeneralSettings";
-import { AppointmentSettings } from "@/components/admin/appointments/AppointmentSettings";
-import { AppointmentCalendar } from "@/components/admin/appointments/AppointmentCalendar";
-import { AnalyticsOverview } from "@/components/admin/analytics/AnalyticsOverview";
-import { ChatMetricsChart } from "@/components/admin/analytics/ChatMetricsChart";
-import { TopQueriesTable } from "@/components/admin/analytics/TopQueriesTable";
-import { IntegrationsSettings } from "@/components/admin/integrations/IntegrationsSettings";
-import { WebTrainingSection } from "@/components/admin/training/WebTrainingSection";
+import { ChatSection } from "@/components/admin/sections/ChatSection";
+import { AppointmentsSection } from "@/components/admin/sections/AppointmentsSection";
+import { AnalyticsSection } from "@/components/admin/sections/AnalyticsSection";
+import { TrainingSection } from "@/components/admin/sections/TrainingSection";
+import { IntegrationsSection } from "@/components/admin/sections/IntegrationsSection";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -84,59 +82,23 @@ const Admin = () => {
             </TabsContent>
 
             <TabsContent value="chat" className="mt-0">
-              <div className="space-y-6">
-                <h2 className="text-xl font-semibold">Chat Behavior & AI Responses</h2>
-                <p className="text-gray-600">Configure how Archibot interacts with users.</p>
-                <ChatBehaviorSettings />
-              </div>
+              <ChatSection />
             </TabsContent>
 
             <TabsContent value="appointments" className="mt-0">
-              <div className="space-y-6">
-                <section className="space-y-4">
-                  <h2 className="text-xl font-semibold">Appointment Settings</h2>
-                  <p className="text-gray-600">Configure appointment booking rules and availability.</p>
-                  <AppointmentSettings />
-                </section>
-
-                <section className="space-y-4 mt-8">
-                  <h2 className="text-xl font-semibold">Appointment Calendar</h2>
-                  <p className="text-gray-600">View and manage scheduled appointments.</p>
-                  <AppointmentCalendar />
-                </section>
-              </div>
+              <AppointmentsSection />
             </TabsContent>
 
             <TabsContent value="analytics" className="mt-0">
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-xl font-semibold">Analytics & Performance</h2>
-                  <p className="text-gray-600">View chat statistics and user engagement metrics.</p>
-                </div>
-                
-                <AnalyticsOverview />
-                
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <ChatMetricsChart />
-                  <TopQueriesTable />
-                </div>
-              </div>
+              <AnalyticsSection />
             </TabsContent>
 
             <TabsContent value="training" className="mt-0">
-              <div className="space-y-6">
-                <WebTrainingSection />
-              </div>
+              <TrainingSection />
             </TabsContent>
 
             <TabsContent value="integrations" className="mt-0">
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-xl font-semibold">Integrations & API Settings</h2>
-                  <p className="text-gray-600">Manage external integrations and API connections.</p>
-                </div>
-                <IntegrationsSettings />
-              </div>
+              <IntegrationsSection />
             </TabsContent>
           </div>
         </Tabs>
