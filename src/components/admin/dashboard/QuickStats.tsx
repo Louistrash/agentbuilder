@@ -1,6 +1,6 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Boxes, Rocket, Lock } from "lucide-react";
+import { Boxes, Rocket, Book } from "lucide-react";
 
 interface QuickStatsProps {
   stats: {
@@ -12,36 +12,36 @@ interface QuickStatsProps {
 
 export function QuickStats({ stats }: QuickStatsProps) {
   return (
-    <Card className="bg-[#161B22] border-[#30363D]">
+    <Card className="bg-admin-card border-admin-border">
       <CardHeader>
         <CardTitle className="text-white">Quick Stats</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 rounded-lg bg-[#0D1117] border border-[#30363D]">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[#0D1117] border border-admin-border hover:border-admin-accent-purple/50 transition-all group">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#6366F1]/10 flex items-center justify-center">
-                <Boxes className="h-4 w-4 text-[#6366F1]" />
+              <div className="w-10 h-10 rounded-xl bg-admin-accent-purple/10 flex items-center justify-center group-hover:bg-admin-accent-purple/20 transition-colors">
+                <Boxes className="h-5 w-5 text-admin-accent-purple" />
               </div>
               <span className="text-sm text-gray-300">Marketplace Items</span>
             </div>
             <span className="text-sm font-bold text-white">{stats.marketplaceItems}</span>
           </div>
           
-          <div className="flex items-center justify-between p-4 rounded-lg bg-[#0D1117] border border-[#30363D]">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[#0D1117] border border-admin-border hover:border-admin-accent-pink/50 transition-all group">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#EC4899]/10 flex items-center justify-center">
-                <Rocket className="h-4 w-4 text-[#EC4899]" />
+              <div className="w-10 h-10 rounded-xl bg-admin-accent-pink/10 flex items-center justify-center group-hover:bg-admin-accent-pink/20 transition-colors">
+                <Rocket className="h-5 w-5 text-admin-accent-pink" />
               </div>
               <span className="text-sm text-gray-300">Active Integrations</span>
             </div>
             <span className="text-sm font-bold text-white">{stats.integrations}</span>
           </div>
           
-          <div className="flex items-center justify-between p-4 rounded-lg bg-[#0D1117] border border-[#30363D]">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[#0D1117] border border-admin-border hover:border-admin-accent-blue/50 transition-all group">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#10B981]/10 flex items-center justify-center">
-                <Lock className="h-4 w-4 text-[#10B981]" />
+              <div className="w-10 h-10 rounded-xl bg-admin-accent-blue/10 flex items-center justify-center group-hover:bg-admin-accent-blue/20 transition-colors">
+                <Book className="h-5 w-5 text-admin-accent-blue" />
               </div>
               <span className="text-sm text-gray-300">Training Documents</span>
             </div>

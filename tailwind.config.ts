@@ -25,17 +25,15 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        luxury: {
-          50: "#FAF9F7",
-          100: "#E8E6E1",
-          200: "#D3CEC4",
-          300: "#B8B2A7",
-          400: "#A39E93",
-          500: "#8C8578",
-          600: "#736D62",
-          700: "#5C5750",
-          800: "#403C37",
-          900: "#27241F",
+        admin: {
+          background: "#0D1117",
+          card: "#161B22",
+          border: "#30363D",
+          accent: {
+            blue: "#1EAEDB",
+            purple: "#9b87f5",
+            pink: "#EC4899",
+          },
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -87,25 +85,26 @@ export default {
             transform: "translateY(0)",
           },
         },
-        typing: {
+        "gradient-flow": {
           "0%": {
-            width: "0%",
+            backgroundPosition: "0% 50%",
+          },
+          "50%": {
+            backgroundPosition: "100% 50%",
           },
           "100%": {
-            width: "100%",
+            backgroundPosition: "0% 50%",
           },
-        },
-        blink: {
-          "50%": {
-            borderColor: "transparent",
-          },
-        },
+        }
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out",
         "fade-down": "fade-down 0.5s ease-out",
-        typing: "typing 2s steps(20, end)",
-        blink: "blink 1s step-end infinite",
+        "gradient-flow": "gradient-flow 3s ease infinite",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-card": "linear-gradient(to right bottom, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05))",
       },
     },
   },

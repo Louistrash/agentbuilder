@@ -13,7 +13,8 @@ interface RevenueChartProps {
 
 export function RevenueChart({ data }: RevenueChartProps) {
   return (
-    <Card className="bg-[#161B22] border-[#30363D] lg:col-span-2">
+    <Card className="bg-admin-card border-admin-border lg:col-span-2 relative group overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-card opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <CardHeader>
         <CardTitle className="text-white">Revenue Overview</CardTitle>
       </CardHeader>
@@ -41,9 +42,15 @@ export function RevenueChart({ data }: RevenueChartProps) {
               />
               <Bar
                 dataKey="value"
-                fill="#6366F1"
+                fill="url(#colorGradient)"
                 radius={[4, 4, 0, 0]}
               />
+              <defs>
+                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#9b87f5" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#1EAEDB" stopOpacity={0.8}/>
+                </linearGradient>
+              </defs>
             </BarChart>
           </ResponsiveContainer>
         </div>

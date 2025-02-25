@@ -14,57 +14,61 @@ interface MetricCardsProps {
 export function MetricCards({ analytics }: MetricCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <Card className="bg-[#161B22] border-[#30363D] hover:border-[#6366F1]/50 transition-colors">
+      <Card className="bg-admin-card border-admin-border hover:border-admin-accent-purple/50 transition-colors relative group overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-admin-accent-purple/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
           <CardTitle className="text-sm font-medium text-gray-400">Total Users</CardTitle>
-          <div className="w-10 h-10 rounded-full bg-[#6366F1]/10 flex items-center justify-center">
-            <Users className="h-5 w-5 text-[#6366F1]" />
+          <div className="w-10 h-10 rounded-xl bg-admin-accent-purple/10 flex items-center justify-center">
+            <Users className="h-5 w-5 text-admin-accent-purple" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-white">{analytics.totalUsers}</div>
-          <div className="text-xs text-[#6366F1]">+12% from last month</div>
+          <div className="text-2xl font-bold text-white">{analytics.totalUsers.toLocaleString()}</div>
+          <div className="text-xs text-admin-accent-purple">+12% from last month</div>
         </CardContent>
       </Card>
       
-      <Card className="bg-[#161B22] border-[#30363D] hover:border-[#EC4899]/50 transition-colors">
+      <Card className="bg-admin-card border-admin-border hover:border-admin-accent-pink/50 transition-colors relative group overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-admin-accent-pink/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
           <CardTitle className="text-sm font-medium text-gray-400">Active Chats</CardTitle>
-          <div className="w-10 h-10 rounded-full bg-[#EC4899]/10 flex items-center justify-center">
-            <MessageSquare className="h-5 w-5 text-[#EC4899]" />
+          <div className="w-10 h-10 rounded-xl bg-admin-accent-pink/10 flex items-center justify-center">
+            <MessageSquare className="h-5 w-5 text-admin-accent-pink" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-white">{analytics.activeChats}</div>
-          <div className="text-xs text-[#EC4899]">+8% from yesterday</div>
+          <div className="text-2xl font-bold text-white">{analytics.activeChats.toLocaleString()}</div>
+          <div className="text-xs text-admin-accent-pink">+8% from yesterday</div>
         </CardContent>
       </Card>
 
-      <Card className="bg-[#161B22] border-[#30363D] hover:border-[#10B981]/50 transition-colors">
+      <Card className="bg-admin-card border-admin-border hover:border-admin-accent-blue/50 transition-colors relative group overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-admin-accent-blue/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
           <CardTitle className="text-sm font-medium text-gray-400">Revenue</CardTitle>
-          <div className="w-10 h-10 rounded-full bg-[#10B981]/10 flex items-center justify-center">
-            <CreditCard className="h-5 w-5 text-[#10B981]" />
+          <div className="w-10 h-10 rounded-xl bg-admin-accent-blue/10 flex items-center justify-center">
+            <CreditCard className="h-5 w-5 text-admin-accent-blue" />
           </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-white">
             ${analytics.revenue.toLocaleString()}
           </div>
-          <div className="text-xs text-[#10B981]">+15% from last month</div>
+          <div className="text-xs text-admin-accent-blue">+15% from last month</div>
         </CardContent>
       </Card>
 
-      <Card className="bg-[#161B22] border-[#30363D] hover:border-[#F59E0B]/50 transition-colors">
+      <Card className="bg-admin-card border-admin-border hover:border-admin-accent-purple/50 transition-colors relative group overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-admin-accent-purple/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
           <CardTitle className="text-sm font-medium text-gray-400">Appointments</CardTitle>
-          <div className="w-10 h-10 rounded-full bg-[#F59E0B]/10 flex items-center justify-center">
-            <CalendarDays className="h-5 w-5 text-[#F59E0B]" />
+          <div className="w-10 h-10 rounded-xl bg-admin-accent-purple/10 flex items-center justify-center">
+            <CalendarDays className="h-5 w-5 text-admin-accent-purple" />
           </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-white">{analytics.appointments}</div>
-          <div className="text-xs text-[#F59E0B]">+5% from last week</div>
+          <div className="text-xs text-admin-accent-purple">+5% from last week</div>
         </CardContent>
       </Card>
     </div>
