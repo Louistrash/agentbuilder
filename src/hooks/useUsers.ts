@@ -8,8 +8,10 @@ interface User {
   id: string;
   email: string;
   created_at: string;
-  roles: string[];
+  roles: UserRole[];
 }
+
+type UserRole = "admin" | "moderator" | "user";
 
 export const useUsers = () => {
   const { toast } = useToast();
@@ -42,7 +44,7 @@ export const useUsers = () => {
       const users = authUsers.map(authUser => {
         const roles = userRoles
           ?.filter(r => r.user_id === authUser.id)
-          ?.map(r => r.role) || [];
+          ?.map(r => r.role as UserRole) || [];
 
         return {
           id: authUser.id,
@@ -64,7 +66,7 @@ export const useUsers = () => {
     }
   };
 
-  const updateUserRole = async (userId: string, role: string) => {
+  const updateUserRole = async (userId: string, role: UserRole) => {
     try {
       const { error } = await supabase
         .from('user_roles')
@@ -116,12 +118,15 @@ export const useUsers = () => {
     }
   };
 
-  const updateUsersRole = async (userIds: string[], role: string) => {
+  const updateUsersRole = async (userIds: string[], role: UserRole) => {
     try {
       const promises = userIds.map(userId => 
         supabase
           .from('user_roles')
-          .upsert({ user_id: userId, role: role })
+          .upsert({ 
+            user_id: userId, 
+            role: role 
+          })
       );
       
       await Promise.all(promises);
