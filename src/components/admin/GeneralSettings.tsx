@@ -42,11 +42,11 @@ export const GeneralSettings = () => {
       return;
     }
 
-    // Check file size (max 2MB)
-    if (file.size > 2 * 1024 * 1024) {
+    // Check file size (max 3MB)
+    if (file.size > 3 * 1024 * 1024) {
       toast({
         title: "File too large",
-        description: "Please upload an image smaller than 2MB",
+        description: "Please upload an image smaller than 3MB",
         variant: "destructive"
       });
       return;
@@ -123,7 +123,7 @@ export const GeneralSettings = () => {
             {isUploading ? "Uploading..." : "Upload Logo"}
           </Button>
           <p className="text-sm text-muted-foreground">
-            Upload your platform logo (SVG, PNG or JPG, max 2MB)
+            Upload your platform logo (SVG, PNG or JPG, max 3MB)
           </p>
         </div>
       </div>
