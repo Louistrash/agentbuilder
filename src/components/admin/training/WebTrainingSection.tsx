@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,6 @@ interface WebsiteTrainingSource {
   profile_id: string;
 }
 
-// Separate interface for insertion that only includes required fields
 interface WebsiteTrainingSourceInsert {
   url: string;
   profile_id: string;
@@ -51,7 +49,6 @@ export const WebTrainingSection = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Create default usage entry if it doesn't exist
       const { data: existingUsage } = await supabase
         .from('organization_usage')
         .select()
@@ -62,7 +59,7 @@ export const WebTrainingSection = () => {
         await supabase.from('organization_usage').insert({
           profile_id: user.id,
           total_words_used: 0,
-          words_limit: 100000 // Default limit
+          words_limit: 100000
         });
       }
 
@@ -206,6 +203,11 @@ export const WebTrainingSection = () => {
           </div>
         </div>
       )}
+
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold mb-4">Processing Status</h3>
+        <WebTrainingList />
+      </div>
     </section>
   );
 };
