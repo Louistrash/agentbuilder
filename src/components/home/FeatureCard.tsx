@@ -49,7 +49,7 @@ export function FeatureCard({
           <div className="absolute inset-0 bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent pointer-events-none" />
           
           <div className={`p-6 flex items-center justify-center relative z-10`}>
-            <div className="h-12 w-12 rounded-lg bg-[#1EAEDB]/10 flex items-center justify-center text-[#1EAEDB]">
+            <div className="h-12 w-12 rounded-lg bg-[#1EAEDB]/10 flex items-center justify-center text-white">
               {icon}
             </div>
           </div>
