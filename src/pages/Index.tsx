@@ -7,6 +7,7 @@ import { useChat } from "@/hooks/useChat";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { FeatureOnboarding } from "@/components/agent-builder/FeatureOnboarding";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const Index = () => {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [clickedCard, setClickedCard] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<string>('');
 
   useEffect(() => {
     fetchLogo();
@@ -40,9 +43,13 @@ const Index = () => {
 
   const handleFeatureClick = (feature: string) => {
     setClickedCard(feature);
-    setTimeout(() => {
-      navigate('/agents', { state: { feature } });
-    }, 300);
+    setSelectedFeature(feature);
+    setShowOnboarding(true);
+  };
+
+  const handleOnboardingClose = () => {
+    setShowOnboarding(false);
+    navigate('/agents', { state: { feature: selectedFeature } });
   };
 
   const getCardClassName = (feature: string) => {
@@ -198,6 +205,12 @@ const Index = () => {
           </div>
         </div>
       </main>
+
+      <FeatureOnboarding
+        feature={selectedFeature}
+        isOpen={showOnboarding}
+        onClose={handleOnboardingClose}
+      />
     </div>
   );
 };
