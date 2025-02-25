@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserTableRow } from "./users/UserTableRow";
 import { UserFilters } from "./users/UserFilters";
@@ -45,62 +46,72 @@ export const UsersSection = () => {
   });
 
   if (loading) {
-    return <div>Loading users...</div>;
+    return (
+      <Card className="bg-admin-card border-admin-border">
+        <CardContent className="p-6">
+          <div className="animate-pulse text-white/50">Loading users...</div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">User Management</h2>
-        <p className="text-muted-foreground">Manage user roles and permissions</p>
-      </div>
-
-      <div className="flex items-center justify-between gap-4">
-        <UserFilters 
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          roleFilter={roleFilter}
-          onRoleFilterChange={setRoleFilter}
-        />
-        <BulkActions 
-          selectedCount={selectedUsers.length}
-          onAction={handleBulkAction}
-        />
-      </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-12">
-              <Checkbox 
-                checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                onCheckedChange={(checked) => 
-                  setSelectedUsers(checked === true ? filteredUsers.map(user => user.id) : [])
-                }
-                aria-label="Select all users"
-              />
-            </TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Roles</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredUsers.map((user) => (
-            <UserTableRow
-              key={user.id}
-              user={user}
-              selected={selectedUsers.includes(user.id)}
-              onSelect={(checked) => 
-                setSelectedUsers(prev => 
-                  checked ? [...prev, user.id] : prev.filter(id => id !== user.id)
-                )
-              }
-              onUpdateRole={(role) => updateUserRole(user.id, role)}
+    <Card className="bg-admin-card border-admin-border overflow-hidden">
+      <CardHeader>
+        <CardTitle className="text-white">User Management</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between gap-4">
+            <UserFilters 
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              roleFilter={roleFilter}
+              onRoleFilterChange={setRoleFilter}
             />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+            <BulkActions 
+              selectedCount={selectedUsers.length}
+              onAction={handleBulkAction}
+            />
+          </div>
+
+          <div className="rounded-lg border border-admin-border overflow-hidden">
+            <Table>
+              <TableHeader className="bg-[#0D1117]">
+                <TableRow>
+                  <TableHead className="w-12">
+                    <Checkbox 
+                      checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
+                      onCheckedChange={(checked) => 
+                        setSelectedUsers(checked === true ? filteredUsers.map(user => user.id) : [])
+                      }
+                      aria-label="Select all users"
+                    />
+                  </TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Roles</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.map((user) => (
+                  <UserTableRow
+                    key={user.id}
+                    user={user}
+                    selected={selectedUsers.includes(user.id)}
+                    onSelect={(checked) => 
+                      setSelectedUsers(prev => 
+                        checked ? [...prev, user.id] : prev.filter(id => id !== user.id)
+                      )
+                    }
+                    onUpdateRole={(role) => updateUserRole(user.id, role)}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
