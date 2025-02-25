@@ -19,7 +19,7 @@ interface DashboardOverviewProps {
 
 export function DashboardOverview({ analytics, chartData }: DashboardOverviewProps) {
   return (
-    <>
+    <div className="min-h-screen bg-[#0D1117] pt-4">
       <div className="mb-8 hidden lg:block">
         <h1 className="text-2xl font-bold text-white">
           Dashboard Overview
@@ -45,6 +45,6 @@ export function DashboardOverview({ analytics, chartData }: DashboardOverviewPro
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
