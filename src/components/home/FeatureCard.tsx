@@ -47,32 +47,40 @@ export function FeatureCard({
 
   return (
     <Card
-      className={`p-4 sm:p-6 ${bgColor} rounded-xl border border-gray-800 hover:border-gray-700 transition-all duration-300`}
+      className={`relative group p-5 ${bgColor} rounded-2xl border border-gray-800 hover:border-gray-700/50 transition-all duration-300`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       <div 
-        className={`${gradientClasses} rounded-lg h-32 sm:h-40 mb-4 sm:mb-6 flex items-center justify-center transition-all duration-500`}
+        className={`${gradientClasses} rounded-xl h-24 sm:h-32 lg:h-40 mb-5 flex items-center justify-center transition-all duration-500`}
       >
         <div className={`transform transition-all duration-300 ${getIconAnimation(feature)}`}>
           {icon}
         </div>
       </div>
-      <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 transition-colors duration-300 hover:text-blue-400">{title}</h3>
-      <p className="text-gray-400 mb-3 sm:mb-4 text-sm">{description}</p>
-      <p className="text-gray-500 mb-4 sm:mb-6 text-xs sm:text-sm">{demoContent}</p>
-      <Button
-        variant="outline"
-        className={`w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-9 sm:h-10 text-sm transition-all duration-300 ${
-          isHovered ? 'bg-gray-800 border-gray-600' : ''
-        }`}
-        onClick={onClick}
-      >
-        <Play className={`h-3 w-3 sm:h-4 sm:w-4 mr-2 transition-transform duration-300 ${
-          isHovered ? 'transform translate-x-1' : ''
-        }`} />
-        Try it out
-      </Button>
+      <div className="space-y-3">
+        <h3 className="text-base sm:text-lg lg:text-xl font-semibold transition-colors duration-300 group-hover:text-blue-400">
+          {title}
+        </h3>
+        <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+          {description}
+        </p>
+        <p className="text-gray-500 text-xs leading-relaxed">
+          {demoContent}
+        </p>
+        <Button
+          variant="outline"
+          className={`w-full mt-2 border-gray-700/50 text-gray-300 hover:bg-gray-800/80 h-9 text-xs sm:text-sm transition-all duration-300 ${
+            isHovered ? 'bg-gray-800/60 border-gray-600/50' : ''
+          }`}
+          onClick={onClick}
+        >
+          <Play className={`h-3 w-3 mr-2 transition-transform duration-300 ${
+            isHovered ? 'transform translate-x-1' : ''
+          }`} />
+          Try it out
+        </Button>
+      </div>
     </Card>
   );
 }
