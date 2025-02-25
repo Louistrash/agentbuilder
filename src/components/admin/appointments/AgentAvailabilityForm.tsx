@@ -45,10 +45,13 @@ export const AgentAvailabilityForm = ({
         // Safely convert the JSON time_slots to our TimeSlot type
         const jsonTimeSlots = data.time_slots as Json[];
         const timeSlots = Array.isArray(jsonTimeSlots) 
-          ? jsonTimeSlots.map(slot => ({
-              start: String(slot.start || "09:00"),
-              end: String(slot.end || "17:00")
-            }))
+          ? jsonTimeSlots.map(slot => {
+              const jsonSlot = slot as { [key: string]: Json };
+              return {
+                start: String(jsonSlot.start || "09:00"),
+                end: String(jsonSlot.end || "17:00")
+              };
+            })
           : [{ start: "09:00", end: "17:00" }];
 
         setAvailability({
