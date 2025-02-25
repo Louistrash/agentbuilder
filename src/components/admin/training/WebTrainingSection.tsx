@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { Globe, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { WebTrainingList } from "./WebTrainingList";
 
 interface UsageStats {
   totalWordsUsed: number;
