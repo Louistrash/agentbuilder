@@ -32,10 +32,11 @@ export const GeneralSettings = () => {
     if (!file) return;
 
     // Check file type
-    if (!file.type.startsWith('image/')) {
+    const allowedTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
       toast({
         title: "Invalid file type",
-        description: "Please upload an image file",
+        description: "Please upload an SVG, PNG, or JPG file",
         variant: "destructive"
       });
       return;
@@ -59,7 +60,10 @@ export const GeneralSettings = () => {
       const fileName = `logo-${Date.now()}.${fileExt}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('logos')
-        .upload(fileName, file);
+        .upload(fileName, file, {
+          contentType: file.type, // Important for SVG files
+          upsert: false
+        });
 
       if (uploadError) throw uploadError;
 
@@ -107,7 +111,7 @@ export const GeneralSettings = () => {
             <input
               type="file"
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              accept="image/*"
+              accept=".svg,.png,.jpg,.jpeg"
               onChange={handleLogoUpload}
               disabled={isUploading}
             />
@@ -119,7 +123,7 @@ export const GeneralSettings = () => {
             {isUploading ? "Uploading..." : "Upload Logo"}
           </Button>
           <p className="text-sm text-muted-foreground">
-            Upload your platform logo (max 2MB, PNG or JPG)
+            Upload your platform logo (SVG, PNG or JPG, max 2MB)
           </p>
         </div>
       </div>
