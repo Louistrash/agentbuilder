@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Settings, Plus, Code, Rocket, ChartBar } from "lucide-react";
+import { LogOut, Settings, Plus, Code, Rocket, ChartBar, MessageSquare } from "lucide-react";
 import { useChat } from "@/hooks/useChat";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
@@ -18,6 +18,7 @@ const Index = () => {
   const [clickedCard, setClickedCard] = useState<string | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<string>('');
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLogo();
@@ -54,9 +55,10 @@ const Index = () => {
   };
 
   const getCardClassName = (feature: string) => {
-    const baseClasses = "p-6 bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer transform";
-    const clickedClasses = clickedCard === feature ? "scale-95 opacity-75" : "hover:scale-105";
-    return `${baseClasses} ${clickedClasses}`;
+    const baseClasses = "p-6 bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-300 cursor-pointer transform";
+    const hoverClasses = hoveredCard === feature ? "border-white/30 translate-y-[-4px]" : "hover:border-white/20 hover:translate-y-[-2px]";
+    const clickedClasses = clickedCard === feature ? "scale-95 opacity-75" : "";
+    return `${baseClasses} ${hoverClasses} ${clickedClasses}`;
   };
 
   return (
@@ -123,9 +125,16 @@ const Index = () => {
             <Card 
               className={getCardClassName('build')}
               onClick={() => handleFeatureClick('build')}
+              onMouseEnter={() => setHoveredCard('build')}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="mb-6 h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
-                <Rocket className={`h-16 w-16 text-blue-400 transition-transform duration-300 ${clickedCard === 'build' ? 'scale-90' : 'hover:scale-110'}`} />
+              <div className="relative mb-6 h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center overflow-hidden group">
+                <Rocket 
+                  className={`h-16 w-16 text-blue-400 transition-all duration-500 transform
+                    ${hoveredCard === 'build' ? 'translate-y-[-8px] scale-110' : ''}`} 
+                />
+                <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity duration-300
+                  ${hoveredCard === 'build' ? 'opacity-100' : ''}`} />
               </div>
               <h3 className="text-xl font-semibold mb-3">Easy to Build</h3>
               <p className="text-gray-400">
@@ -136,13 +145,18 @@ const Index = () => {
             <Card 
               className={getCardClassName('smart')}
               onClick={() => handleFeatureClick('smart')}
+              onMouseEnter={() => setHoveredCard('smart')}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="mb-6 h-40 bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-lg flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-105">
-                <img
-                  src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
-                  alt="Smart Response"
-                  className={`h-full w-full object-cover rounded-lg opacity-75 transition-transform duration-300 ${clickedCard === 'smart' ? 'scale-110' : 'hover:scale-105'}`}
-                />
+              <div className="relative mb-6 h-40 bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-500
+                  ${hoveredCard === 'smart' ? 'translate-y-0' : 'translate-y-full'}`}>
+                  <MessageSquare className="h-16 w-16 text-green-400 animate-bounce" />
+                </div>
+                <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-500
+                  ${hoveredCard === 'smart' ? 'translate-y-[-100%]' : 'translate-y-0'}`}>
+                  <Rocket className="h-16 w-16 text-teal-400" />
+                </div>
               </div>
               <h3 className="text-xl font-semibold mb-3">Smart Responses</h3>
               <p className="text-gray-400">
@@ -153,9 +167,22 @@ const Index = () => {
             <Card 
               className={getCardClassName('analytics')}
               onClick={() => handleFeatureClick('analytics')}
+              onMouseEnter={() => setHoveredCard('analytics')}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="mb-6 h-40 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
-                <ChartBar className={`h-16 w-16 text-orange-400 transition-transform duration-300 ${clickedCard === 'analytics' ? 'scale-90' : 'hover:scale-110'}`} />
+              <div className="relative mb-6 h-40 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="flex flex-col items-center space-y-2 transition-transform duration-500">
+                  <ChartBar 
+                    className={`h-16 w-16 text-orange-400 transition-all duration-300
+                      ${hoveredCard === 'analytics' ? 'scale-110' : ''}`}
+                  />
+                  <div className={`flex space-x-2 transition-opacity duration-300
+                    ${hoveredCard === 'analytics' ? 'opacity-100' : 'opacity-0'}`}>
+                    <div className="w-2 h-8 bg-orange-400/50 rounded-t animate-pulse" />
+                    <div className="w-2 h-12 bg-orange-400/70 rounded-t animate-pulse" />
+                    <div className="w-2 h-6 bg-orange-400/40 rounded-t animate-pulse" />
+                  </div>
+                </div>
               </div>
               <h3 className="text-xl font-semibold mb-3">Analytics & Insights</h3>
               <p className="text-gray-400">
