@@ -67,11 +67,11 @@ export function ProFeatures() {
   return (
     <div className="mt-16 sm:mt-24 px-4 sm:px-0">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center px-4 py-1 bg-[#9b87f5]/10 rounded-full text-sm font-medium text-[#9b87f5] mb-4">
+        <div className="inline-flex items-center px-4 py-1 bg-[#1EAEDB]/10 rounded-full text-sm font-medium text-[#1EAEDB] mb-4">
           <Sparkles className="h-4 w-4 mr-2" />
           Pro Features
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold mb-4 bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
+        <h3 className="text-xl sm:text-2xl font-bold mb-4 bg-gradient-to-r from-white via-[#1EAEDB] to-[#0FA0CE] bg-clip-text text-transparent">
           Unlock Advanced Capabilities
         </h3>
         <p className="text-gray-400 mb-8 max-w-2xl mx-auto text-sm sm:text-base">
@@ -79,9 +79,9 @@ export function ProFeatures() {
         </p>
       </div>
 
-      <Card className="p-4 sm:p-8 bg-[#1A1F2C] border border-[#9b87f5]/10 rounded-2xl overflow-hidden relative">
+      <Card className="p-4 sm:p-8 bg-[#222222] border border-[#1EAEDB]/10 rounded-2xl overflow-hidden relative">
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#9b87f5]/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent pointer-events-none" />
 
         <div className="grid md:grid-cols-2 gap-8 items-start relative z-10">
           <div className="space-y-6">
@@ -92,9 +92,9 @@ export function ProFeatures() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-4 rounded-xl bg-black/20 border border-[#9b87f5]/10 backdrop-blur-sm"
+                  className="p-4 rounded-xl bg-black/20 border border-[#1EAEDB]/10 backdrop-blur-sm"
                 >
-                  <div className="h-8 w-8 rounded-lg bg-[#9b87f5]/10 flex items-center justify-center text-[#9b87f5] mb-3">
+                  <div className="h-8 w-8 rounded-lg bg-[#1EAEDB]/10 flex items-center justify-center text-[#1EAEDB] mb-3">
                     {feature.icon}
                   </div>
                   <h4 className="font-medium text-white mb-1">{feature.title}</h4>
@@ -104,7 +104,7 @@ export function ProFeatures() {
             </div>
             <Button 
               onClick={() => navigate('/auth?plan=pro')}
-              className="w-full sm:w-auto bg-[#9b87f5] hover:bg-[#8b77e5] text-white transition-all duration-300"
+              className="w-full sm:w-auto bg-[#1EAEDB] hover:bg-[#0FA0CE] text-white transition-all duration-300"
             >
               <Zap className="h-4 w-4 mr-2" />
               Upgrade to Pro
@@ -112,34 +112,34 @@ export function ProFeatures() {
           </div>
 
           <div className="space-y-6">
-            <div className="p-4 rounded-xl bg-black/40 border border-[#9b87f5]/10">
+            <div className="p-4 rounded-xl bg-black/40 border border-[#1EAEDB]/10">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-sm font-medium text-gray-300">User Engagement</h4>
-                <TrendingUp className="h-4 w-4 text-[#9b87f5]" />
+                <TrendingUp className="h-4 w-4 text-[#1EAEDB]" />
               </div>
               <div className="h-[140px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data}>
                     <defs>
                       <linearGradient id="colorEngagement" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#9b87f5" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#9b87f5" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#1EAEDB" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#1EAEDB" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2F3C" />
-                    <XAxis dataKey="name" stroke="#4A4F5C" />
-                    <YAxis stroke="#4A4F5C" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#333333" />
+                    <XAxis dataKey="name" stroke="#555555" />
+                    <YAxis stroke="#555555" />
                     <Tooltip 
                       contentStyle={{ 
-                        backgroundColor: '#1A1F2C',
-                        border: '1px solid rgba(155, 135, 245, 0.1)',
+                        backgroundColor: '#222222',
+                        border: '1px solid rgba(30, 174, 219, 0.1)',
                         borderRadius: '8px'
                       }}
                     />
                     <Area 
                       type="monotone" 
                       dataKey="engagement" 
-                      stroke="#9b87f5" 
+                      stroke="#1EAEDB" 
                       fill="url(#colorEngagement)"
                     />
                   </AreaChart>
@@ -149,31 +149,31 @@ export function ProFeatures() {
 
             <div className="grid grid-cols-2 gap-4">
               <motion.div 
-                className="p-4 rounded-xl bg-black/40 border border-[#9b87f5]/10"
+                className="p-4 rounded-xl bg-black/40 border border-[#1EAEDB]/10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <Users className="h-4 w-4 text-[#9b87f5]" />
+                  <Users className="h-4 w-4 text-[#1EAEDB]" />
                   <span className="text-xs text-gray-400">Active Users</span>
                 </div>
                 <h3 className="text-2xl font-semibold text-white">{data[6]?.users || 0}</h3>
-                <span className="text-xs text-[#9b87f5]">+12.5% this week</span>
+                <span className="text-xs text-[#1EAEDB]">+12.5% this week</span>
               </motion.div>
 
               <motion.div 
-                className="p-4 rounded-xl bg-black/40 border border-[#9b87f5]/10"
+                className="p-4 rounded-xl bg-black/40 border border-[#1EAEDB]/10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <MessageCircle className="h-4 w-4 text-[#9b87f5]" />
+                  <MessageCircle className="h-4 w-4 text-[#1EAEDB]" />
                   <span className="text-xs text-gray-400">Messages/Day</span>
                 </div>
                 <h3 className="text-2xl font-semibold text-white">{data[6]?.messages || 0}</h3>
-                <span className="text-xs text-[#9b87f5]">+8.3% this week</span>
+                <span className="text-xs text-[#1EAEDB]">+8.3% this week</span>
               </motion.div>
             </div>
           </div>
