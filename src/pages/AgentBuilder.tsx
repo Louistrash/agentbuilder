@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,9 +7,12 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AdvancedConfig } from "@/components/agent-builder/AdvancedConfig";
 import { TestInterface } from "@/components/agent-builder/TestInterface";
 import { AgentsList } from "@/components/agent-builder/AgentsList";
+import { AgentTemplates } from "@/components/agent-builder/AgentTemplates";
+import { TutorialOverlay } from "@/components/agent-builder/TutorialOverlay";
 
 interface Agent {
   id: string;
@@ -127,113 +129,139 @@ export default function AgentBuilder() {
     }
   };
 
+  const handleSelectTemplate = (template: {
+    name: string;
+    description: string;
+    systemPrompt: string;
+    temperature: number;
+    maxTokens: number;
+    topP: number;
+    frequencyPenalty: number;
+    presencePenalty: number;
+  }) => {
+    setName(template.name);
+    setDescription(template.description);
+    setSystemPrompt(template.systemPrompt);
+    setTemperature(template.temperature);
+    setMaxTokens(template.maxTokens);
+    setTopP(template.topP);
+    setFrequencyPenalty(template.frequencyPenalty);
+    setPresencePenalty(template.presencePenalty);
+  };
+
   return (
-    <div className="container mx-auto py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Create Agent Form */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Create New Agent</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleCreateAgent} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-1">
-                    Name
-                  </label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter agent name"
-                    required
+    <ErrorBoundary>
+      <div className="container mx-auto py-8">
+        <TutorialOverlay />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="lg:col-span-2 templates-section">
+            <h2 className="text-2xl font-bold mb-4">Templates</h2>
+            <AgentTemplates onSelectTemplate={handleSelectTemplate} />
+          </div>
+
+          <div className="space-y-6 configuration-section">
+            <Card>
+              <CardHeader>
+                <CardTitle>Create New Agent</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleCreateAgent} className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium mb-1">
+                      Name
+                    </label>
+                    <Input
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter agent name"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="description" className="block text-sm font-medium mb-1">
+                      Description
+                    </label>
+                    <Input
+                      id="description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Enter agent description"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="systemPrompt" className="block text-sm font-medium mb-1">
+                      System Prompt
+                    </label>
+                    <Textarea
+                      id="systemPrompt"
+                      value={systemPrompt}
+                      onChange={(e) => setSystemPrompt(e.target.value)}
+                      placeholder="Enter system prompt for the agent..."
+                      className="min-h-[100px]"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="model" className="block text-sm font-medium mb-1">
+                      Model
+                    </label>
+                    <select
+                      id="model"
+                      value={model}
+                      onChange={(e) => setModel(e.target.value)}
+                      className="w-full rounded-md border border-input bg-transparent px-3 py-2"
+                    >
+                      <option value="gpt-4o-mini">GPT-4 Mini (Fast)</option>
+                      <option value="gpt-4o">GPT-4 (Powerful)</option>
+                    </select>
+                  </div>
+
+                  <AdvancedConfig
+                    temperature={temperature}
+                    setTemperature={setTemperature}
+                    maxTokens={maxTokens}
+                    setMaxTokens={setMaxTokens}
+                    topP={topP}
+                    setTopP={setTopP}
+                    frequencyPenalty={frequencyPenalty}
+                    setFrequencyPenalty={setFrequencyPenalty}
+                    presencePenalty={presencePenalty}
+                    setPresencePenalty={setPresencePenalty}
                   />
-                </div>
-                
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium mb-1">
-                    Description
-                  </label>
-                  <Input
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Enter agent description"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="systemPrompt" className="block text-sm font-medium mb-1">
-                    System Prompt
-                  </label>
-                  <Textarea
-                    id="systemPrompt"
-                    value={systemPrompt}
-                    onChange={(e) => setSystemPrompt(e.target.value)}
-                    placeholder="Enter system prompt for the agent..."
-                    className="min-h-[100px]"
-                    required
-                  />
-                </div>
 
-                <div>
-                  <label htmlFor="model" className="block text-sm font-medium mb-1">
-                    Model
-                  </label>
-                  <select
-                    id="model"
-                    value={model}
-                    onChange={(e) => setModel(e.target.value)}
-                    className="w-full rounded-md border border-input bg-transparent px-3 py-2"
-                  >
-                    <option value="gpt-4o-mini">GPT-4 Mini (Fast)</option>
-                    <option value="gpt-4o">GPT-4 (Powerful)</option>
-                  </select>
-                </div>
+                  <Separator className="my-4" />
 
-                <AdvancedConfig
-                  temperature={temperature}
-                  setTemperature={setTemperature}
-                  maxTokens={maxTokens}
-                  setMaxTokens={setMaxTokens}
-                  topP={topP}
-                  setTopP={setTopP}
-                  frequencyPenalty={frequencyPenalty}
-                  setFrequencyPenalty={setFrequencyPenalty}
-                  presencePenalty={presencePenalty}
-                  setPresencePenalty={setPresencePenalty}
-                />
+                  <Button type="submit" className="w-full">
+                    Create Agent
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
 
-                <Separator className="my-4" />
+          <div className="space-y-6 test-interface">
+            <TestInterface
+              systemPrompt={systemPrompt}
+              temperature={temperature}
+              model={model}
+              maxTokens={maxTokens}
+              topP={topP}
+              frequencyPenalty={frequencyPenalty}
+              presencePenalty={presencePenalty}
+            />
+          </div>
 
-                <Button type="submit" className="w-full">
-                  Create Agent
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Preview Section */}
-        <div className="space-y-6">
-          <TestInterface
-            systemPrompt={systemPrompt}
-            temperature={temperature}
-            model={model}
-            maxTokens={maxTokens}
-            topP={topP}
-            frequencyPenalty={frequencyPenalty}
-            presencePenalty={presencePenalty}
-          />
-        </div>
-
-        {/* Agents List */}
-        <div className="lg:col-span-2">
-          <AgentsList agents={agents} />
+          <div className="lg:col-span-2">
+            <AgentsList agents={agents} />
+          </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
