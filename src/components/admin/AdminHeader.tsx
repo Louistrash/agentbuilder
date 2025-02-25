@@ -13,7 +13,7 @@ export const AdminHeader = () => {
   };
 
   return (
-    <div className="p-6 border-b border-[#1EAEDB]/10 flex justify-between items-center bg-[#222939]">
+    <div className="p-6 border-b border-[#1EAEDB]/10 flex justify-between items-center bg-[#222939]/95 backdrop-blur-sm">
       <h1 className="text-2xl font-semibold bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
         Admin Dashboard
       </h1>
@@ -22,7 +22,7 @@ export const AdminHeader = () => {
           variant="ghost"
           size="icon"
           onClick={() => navigate('/')}
-          className="text-white hover:bg-[#1EAEDB]/10"
+          className="text-white hover:bg-[#1EAEDB]/10 transition-colors duration-300"
         >
           <Home className="h-4 w-4" />
         </Button>
@@ -30,7 +30,7 @@ export const AdminHeader = () => {
           variant="ghost"
           size="icon"
           onClick={handleLogout}
-          className="text-white hover:bg-[#1EAEDB]/10"
+          className="text-white hover:bg-[#1EAEDB]/10 transition-colors duration-300"
         >
           <LogOut className="h-4 w-4" />
         </Button>
