@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { PlatformOverview } from "./platform/PlatformOverview";
 import { AnalyticsOverview } from "./analytics/AnalyticsOverview";
@@ -19,7 +18,6 @@ export const GeneralSettings = () => {
   const { toast } = useToast();
   const { isAdmin } = useAdmin();
 
-  // Fetch bot settings ID on component mount
   useEffect(() => {
     const fetchBotSettings = async () => {
       const { data, error } = await supabase
@@ -53,7 +51,6 @@ export const GeneralSettings = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Check file type
     const allowedTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg'];
     if (!allowedTypes.includes(file.type)) {
       toast({
@@ -64,7 +61,6 @@ export const GeneralSettings = () => {
       return;
     }
 
-    // Check file size (max 3MB)
     if (file.size > 3 * 1024 * 1024) {
       toast({
         title: "File too large",
@@ -77,19 +73,17 @@ export const GeneralSettings = () => {
     setIsUploading(true);
 
     try {
-      // Upload file to Supabase storage
       const fileExt = file.name.split('.').pop();
       const fileName = `logo-${Date.now()}.${fileExt}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('logos')
         .upload(fileName, file, {
-          contentType: file.type, // Important for SVG files
+          contentType: file.type,
           upsert: false
         });
 
       if (uploadError) throw uploadError;
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('logos')
         .getPublicUrl(fileName);
@@ -98,11 +92,10 @@ export const GeneralSettings = () => {
         throw new Error('Bot settings not found');
       }
 
-      // Update bot settings with new logo URL
       const { error: updateError } = await supabase
         .from('bot_settings')
         .update({ logo_url: publicUrl })
-        .eq('id', botSettingsId); // Use the fetched bot settings ID
+        .eq('id', botSettingsId);
 
       if (updateError) throw updateError;
 
@@ -121,17 +114,16 @@ export const GeneralSettings = () => {
     }
   };
 
-  // Only render the logo upload section if user is admin
   const renderLogoUpload = () => {
     if (!isAdmin) return null;
 
     return (
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Platform Logo</h3>
+      <div className="space-y-4 p-6 bg-[#161B22] rounded-xl border border-[#30363D]">
+        <h3 className="text-lg font-semibold text-white">Platform Logo</h3>
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
-            className="relative"
+            className="relative bg-[#0D1117] hover:bg-[#161B22] border-[#30363D]"
             disabled={isUploading}
           >
             <input
@@ -148,7 +140,7 @@ export const GeneralSettings = () => {
             )}
             {isUploading ? "Uploading..." : "Upload Logo"}
           </Button>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-400">
             Upload your platform logo (SVG, PNG or JPG, max 3MB)
           </p>
         </div>
@@ -157,39 +149,44 @@ export const GeneralSettings = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold">Dashboard</h2>
-        <p className="text-sm sm:text-base text-muted-foreground">Overview of key metrics and performance indicators</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-white">Dashboard</h2>
+        <p className="text-sm sm:text-base text-gray-400">Overview of key metrics and performance indicators</p>
       </div>
 
       {renderLogoUpload()}
 
-      <Separator className="my-8" />
-
-      <PlatformOverview />
-      
-      <Separator className="my-8" />
-
-      <AnalyticsOverview />
-      
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-        <ChatMetricsChart />
-        <TopQueriesTable />
-      </div>
-
-      <Separator className="my-8" />
-
-      <div>
-        <h3 className="text-lg sm:text-xl font-semibold">Application Settings</h3>
-        <p className="text-sm sm:text-base text-muted-foreground mb-6">Configure your application behavior and integrations</p>
+      <div className="grid gap-8">
+        <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+          <h3 className="text-lg font-semibold text-white mb-6">Platform Overview</h3>
+          <PlatformOverview />
+        </div>
         
-        <div className="space-y-12">
-          <ChatSection />
+        <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+          <h3 className="text-lg font-semibold text-white mb-6">Analytics Overview</h3>
+          <AnalyticsOverview />
           
-          <Separator />
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 mt-6">
+            <div className="p-4 bg-[#0D1117] rounded-lg border border-[#30363D]">
+              <ChatMetricsChart />
+            </div>
+            <div className="p-4 bg-[#0D1117] rounded-lg border border-[#30363D]">
+              <TopQueriesTable />
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+            <h3 className="text-lg font-semibold text-white mb-6">Chat Settings</h3>
+            <ChatSection />
+          </div>
           
-          <IntegrationsSection />
+          <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+            <h3 className="text-lg font-semibold text-white mb-6">Integrations</h3>
+            <IntegrationsSection />
+          </div>
         </div>
       </div>
     </div>
