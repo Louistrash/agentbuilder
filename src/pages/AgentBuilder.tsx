@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
 
 interface Agent {
   id: string;
@@ -13,6 +14,8 @@ interface Agent {
   description: string;
   system_prompt: string;
   created_at: string;
+  created_by: string;
+  is_active: boolean;
 }
 
 export default function AgentBuilder() {
@@ -21,20 +24,25 @@ export default function AgentBuilder() {
   const [description, setDescription] = useState("");
   const [systemPrompt, setSystemPrompt] = useState("");
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
-    fetchAgents();
-  }, []);
+    if (user) {
+      fetchAgents();
+    }
+  }, [user]);
 
   const fetchAgents = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: agents, error } = await supabase
         .from('chat_agents')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setAgents(data || []);
+      
+      // Type assertion since we know the shape matches our Agent interface
+      setAgents(agents as Agent[]);
     } catch (error) {
       console.error('Error fetching agents:', error);
       toast({
@@ -48,16 +56,25 @@ export default function AgentBuilder() {
   const handleCreateAgent = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "You must be logged in to create an agent.",
+      });
+      return;
+    }
+    
     try {
       const { data, error } = await supabase
         .from('chat_agents')
-        .insert([
-          {
-            name,
-            description,
-            system_prompt: systemPrompt,
-          }
-        ])
+        .insert({
+          name,
+          description,
+          system_prompt: systemPrompt,
+          created_by: user.id,
+          is_active: true
+        })
         .select()
         .single();
 
