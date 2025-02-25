@@ -53,8 +53,8 @@ const Index = () => {
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
       icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-blue-400" />,
-      gradientClasses: 'bg-gradient-to-br from-[#1a237e]/30 to-[#283593]/20',
-      bgColor: 'bg-[#1a1f35]/80'
+      gradientClasses: 'bg-gradient-to-br from-[#1a237e]/20 to-[#283593]/20',
+      bgColor: 'bg-[#1a1f35]'
     },
     {
       id: 'smart',
@@ -62,8 +62,8 @@ const Index = () => {
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
       icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-teal-400" />,
-      gradientClasses: 'bg-gradient-to-br from-[#004d40]/30 to-[#00695c]/20',
-      bgColor: 'bg-[#1a2b29]/80'
+      gradientClasses: 'bg-gradient-to-br from-[#004d40]/20 to-[#00695c]/20',
+      bgColor: 'bg-[#1a2b29]'
     },
     {
       id: 'analytics',
@@ -71,8 +71,8 @@ const Index = () => {
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
       icon: <ChartBar className="h-12 w-12 sm:h-16 sm:w-16 text-orange-400" />,
-      gradientClasses: 'bg-gradient-to-br from-[#bf360c]/30 to-[#d84315]/20',
-      bgColor: 'bg-[#2b1f1a]/80'
+      gradientClasses: 'bg-gradient-to-br from-[#bf360c]/20 to-[#d84315]/20',
+      bgColor: 'bg-[#2b1f1a]'
     }
   ];
 
@@ -110,7 +110,7 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 px-4 sm:px-0 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 px-4 sm:px-0 max-w-5xl mx-auto">
             {features.map((feature) => (
               <FeatureCard
                 key={feature.id}

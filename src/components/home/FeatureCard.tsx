@@ -47,22 +47,14 @@ export function FeatureCard({
 
   return (
     <Card
-      className={`p-4 sm:p-6 backdrop-blur-sm backdrop-filter ${bgColor} rounded-xl border border-gray-800/50 hover:border-gray-700/70 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative overflow-hidden`}
+      className={`p-4 sm:p-6 ${bgColor} rounded-xl border border-gray-800 hover:border-gray-700 transition-all duration-300`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {/* Glossy overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-      
       <div 
-        className={`${gradientClasses} rounded-lg h-32 sm:h-40 mb-4 sm:mb-6 flex items-center justify-center transition-all duration-500 backdrop-blur-sm relative ${
-          isHovered ? 'bg-opacity-80' : 'bg-opacity-60'
-        }`}
+        className={`${gradientClasses} rounded-lg h-32 sm:h-40 mb-4 sm:mb-6 flex items-center justify-center transition-all duration-500`}
       >
-        {/* Subtle gradient overlay for glass effect */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5 rounded-lg" />
-        
-        <div className={`transform transition-all duration-300 relative ${getIconAnimation(feature)}`}>
+        <div className={`transform transition-all duration-300 ${getIconAnimation(feature)}`}>
           {icon}
         </div>
       </div>
@@ -71,8 +63,8 @@ export function FeatureCard({
       <p className="text-gray-500 mb-4 sm:mb-6 text-xs sm:text-sm">{demoContent}</p>
       <Button
         variant="outline"
-        className={`w-full border-gray-700/70 text-gray-300 hover:bg-gray-800/80 h-9 sm:h-10 text-sm transition-all duration-300 backdrop-blur-sm ${
-          isHovered ? 'bg-gray-800/60 border-gray-600/70' : ''
+        className={`w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-9 sm:h-10 text-sm transition-all duration-300 ${
+          isHovered ? 'bg-gray-800 border-gray-600' : ''
         }`}
         onClick={onClick}
       >
