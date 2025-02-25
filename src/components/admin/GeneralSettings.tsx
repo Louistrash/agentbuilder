@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Upload, Loader2 } from "lucide-react";
 import { useAdmin } from "@/hooks/useAdmin";
+import { Settings2 } from "lucide-react";
 
 export const GeneralSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
@@ -158,32 +159,44 @@ export const GeneralSettings = () => {
       {renderLogoUpload()}
 
       <div className="grid gap-8">
-        <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
-          <h3 className="text-lg font-semibold text-white mb-6">Platform Overview</h3>
-          <PlatformOverview />
+        <div className="relative group overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/10 via-[#1EAEDB]/5 to-[#EC4899]/10 opacity-50 group-hover:opacity-70 transition-all duration-300 blur-xl"></div>
+          
+          <div className="relative z-10 p-6 backdrop-blur-xl bg-[#161B22]/90 rounded-2xl border border-white/10 shadow-lg transition-all duration-300 group-hover:border-white/20">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1EAEDB]/20 to-[#1EAEDB]/5 flex items-center justify-center">
+                <Settings2 className="h-5 w-5 text-[#1EAEDB]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Platform Overview</h3>
+                <p className="text-sm text-white/60">System performance and metrics</p>
+              </div>
+            </div>
+            <PlatformOverview />
+          </div>
         </div>
         
-        <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+        <div className="p-6 bg-[#161B22]/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg">
           <h3 className="text-lg font-semibold text-white mb-6">Analytics Overview</h3>
           <AnalyticsOverview />
           
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 mt-6">
-            <div className="p-4 bg-[#0D1117] rounded-lg border border-[#30363D]">
+            <div className="p-4 bg-[#0D1117]/80 backdrop-blur-sm rounded-xl border border-white/10">
               <ChatMetricsChart />
             </div>
-            <div className="p-4 bg-[#0D1117] rounded-lg border border-[#30363D]">
+            <div className="p-4 bg-[#0D1117]/80 backdrop-blur-sm rounded-xl border border-white/10">
               <TopQueriesTable />
             </div>
           </div>
         </div>
 
         <div className="space-y-8">
-          <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+          <div className="p-6 bg-[#161B22]/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg">
             <h3 className="text-lg font-semibold text-white mb-6">Chat Settings</h3>
             <ChatSection />
           </div>
           
-          <div className="p-6 bg-[#161B22] rounded-xl border border-[#30363D] backdrop-blur-sm">
+          <div className="p-6 bg-[#161B22]/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg">
             <h3 className="text-lg font-semibold text-white mb-6">Integrations</h3>
             <IntegrationsSection />
           </div>
