@@ -32,52 +32,32 @@ export function FeatureCard({
   gradientClasses,
   bgColor
 }: FeatureCardProps) {
-  const getIconAnimation = (feature: string) => {
-    switch(feature) {
-      case 'build':
-        return isHovered ? 'scale-110 animate-bounce' : 'animate-pulse';
-      case 'smart':
-        return isHovered ? 'scale-125' : 'animate-pulse';
-      case 'analytics':
-        return isHovered ? 'scale-110 rotate-12' : '';
-      default:
-        return '';
-    }
-  };
-
   return (
     <Card
-      className={`relative group p-5 ${bgColor} rounded-2xl border border-gray-800 hover:border-gray-700/50 transition-all duration-300`}
+      className={`${bgColor} rounded-3xl border-0 overflow-hidden transition-all duration-300`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div 
-        className={`${gradientClasses} rounded-xl h-24 sm:h-32 lg:h-40 mb-5 flex items-center justify-center transition-all duration-500`}
-      >
-        <div className={`transform transition-all duration-300 ${getIconAnimation(feature)}`}>
-          {icon}
-        </div>
+      <div className={`${gradientClasses} p-12 flex items-center justify-center`}>
+        {icon}
       </div>
-      <div className="space-y-3">
-        <h3 className="text-base sm:text-lg lg:text-xl font-semibold transition-colors duration-300 group-hover:text-blue-400">
+      
+      <div className="p-8 space-y-4">
+        <h3 className="text-xl font-semibold text-white">
           {title}
         </h3>
-        <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+        <p className="text-gray-300 text-base leading-relaxed">
           {description}
         </p>
-        <p className="text-gray-500 text-xs leading-relaxed">
+        <p className="text-gray-500 text-sm leading-relaxed">
           {demoContent}
         </p>
         <Button
           variant="outline"
-          className={`w-full mt-2 border-gray-700/50 text-gray-300 hover:bg-gray-800/80 h-9 text-xs sm:text-sm transition-all duration-300 ${
-            isHovered ? 'bg-gray-800/60 border-gray-600/50' : ''
-          }`}
+          className="w-full mt-4 bg-transparent border border-gray-700/50 text-gray-300 hover:bg-gray-800/50 hover:border-gray-600"
           onClick={onClick}
         >
-          <Play className={`h-3 w-3 mr-2 transition-transform duration-300 ${
-            isHovered ? 'transform translate-x-1' : ''
-          }`} />
+          <Play className="h-4 w-4 mr-2" />
           Try it out
         </Button>
       </div>
