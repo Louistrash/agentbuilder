@@ -3,8 +3,8 @@ import { DashboardGrid } from "./dashboard/DashboardGrid";
 import { AnalyticsOverview } from "./analytics/AnalyticsOverview";
 import { ChatMetricsChart } from "./analytics/ChatMetricsChart";
 import { TopQueriesTable } from "./analytics/TopQueriesTable";
-import { ChatBehaviorSettings } from "@/components/ChatBehaviorSettings";
-import { IntegrationsSettings } from "./integrations/IntegrationsSettings";
+import { ChatSection } from "./sections/ChatSection";
+import { IntegrationsSection } from "./sections/IntegrationsSection";
 import { Separator } from "@/components/ui/separator";
 
 export const GeneralSettings = () => {
@@ -26,18 +26,16 @@ export const GeneralSettings = () => {
 
       <div>
         <h3 className="text-lg sm:text-xl font-semibold">Application Settings</h3>
-        <p className="text-sm sm:text-base text-muted-foreground mb-6">Configure your chat behavior and integrations</p>
+        <p className="text-sm sm:text-base text-muted-foreground mb-6">Configure your application behavior and integrations</p>
         
-        <div className="space-y-8">
-          {/* Chat Behavior Settings Section */}
-          <div>
-            <ChatBehaviorSettings />
-          </div>
-
-          {/* Integrations Section */}
-          <div>
-            <IntegrationsSettings />
-          </div>
+        <div className="space-y-12">
+          {/* Chat Behavior Settings */}
+          <ChatSection />
+          
+          <Separator />
+          
+          {/* Integrations Settings */}
+          <IntegrationsSection />
         </div>
       </div>
     </div>
