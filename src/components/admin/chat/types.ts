@@ -9,6 +9,26 @@ export interface ChatSettings {
   responseDelay: number;
   aiPersonality: string;
   fallbackMessage: string;
+  reasoningLevel: 'basic' | 'advanced' | 'expert';
+  emotionalIntelligence: boolean;
+  contextMemory: {
+    enabled: boolean;
+    messageHistory: number;
+  };
+  multimodalSupport: {
+    images: boolean;
+    voice: boolean;
+    video: boolean;
+  };
+  voiceSettings: {
+    enabled: boolean;
+    language: string;
+    voice: string;
+  };
+  learningMode: {
+    enabled: boolean;
+    adaptationRate: number;
+  };
 }
 
 // Type guard to check if an object is a valid ChatSettings
@@ -23,6 +43,12 @@ export function isChatSettings(obj: any): obj is ChatSettings {
     'aiPersonality' in obj &&
     typeof obj.aiPersonality === 'string' &&
     'fallbackMessage' in obj &&
-    typeof obj.fallbackMessage === 'string'
+    typeof obj.fallbackMessage === 'string' &&
+    'reasoningLevel' in obj &&
+    'emotionalIntelligence' in obj &&
+    'contextMemory' in obj &&
+    'multimodalSupport' in obj &&
+    'voiceSettings' in obj &&
+    'learningMode' in obj
   );
 }
