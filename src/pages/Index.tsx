@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,7 +84,7 @@ const Index = () => {
       <main className="relative">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
           <div className="text-center mb-8 sm:mb-12 animate-fade-up">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
               Create Intelligent Chat Agents
             </h2>
             <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
@@ -93,7 +94,7 @@ const Index = () => {
               <Button
                 size="default"
                 onClick={() => navigate('/agents')}
-                className="w-full bg-[#9b87f5] hover:bg-[#8b77e5] text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#9b87f5]/25 transform hover:scale-[1.02]"
+                className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 Create Your First Agent
@@ -102,7 +103,7 @@ const Index = () => {
                 size="default"
                 variant="outline"
                 onClick={() => setShowOnboarding(true)}
-                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#9b87f5]/20 text-white hover:bg-[#9b87f5]/10 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
+                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
                 <Play className="h-5 w-5 mr-2" />
                 Watch Demo
