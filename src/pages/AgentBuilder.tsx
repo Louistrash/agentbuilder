@@ -13,6 +13,7 @@ import { TestInterface } from "@/components/agent-builder/TestInterface";
 import { AgentsList } from "@/components/agent-builder/AgentsList";
 import { AgentTemplates } from "@/components/agent-builder/AgentTemplates";
 import { TutorialOverlay } from "@/components/agent-builder/TutorialOverlay";
+import { useLocation } from "react-router-dom";
 
 interface Agent {
   id: string;
@@ -31,6 +32,8 @@ interface Agent {
 }
 
 export default function AgentBuilder() {
+  const location = useLocation();
+  const [showTutorial, setShowTutorial] = useState(false);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -49,6 +52,13 @@ export default function AgentBuilder() {
       fetchAgents();
     }
   }, [user]);
+
+  useEffect(() => {
+    // Check if we should show the tutorial based on navigation state
+    if (location.state?.showTutorial) {
+      setShowTutorial(true);
+    }
+  }, [location]);
 
   const fetchAgents = async () => {
     try {
@@ -152,7 +162,7 @@ export default function AgentBuilder() {
   return (
     <ErrorBoundary>
       <div className="container mx-auto py-8">
-        <TutorialOverlay />
+        {showTutorial && <TutorialOverlay />}
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:col-span-2 templates-section">

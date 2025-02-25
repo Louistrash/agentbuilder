@@ -8,9 +8,11 @@ import { Header } from "@/components/layout/Header";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { ProFeatures } from "@/components/home/ProFeatures";
 import { FeatureOnboarding } from "@/components/agent-builder/FeatureOnboarding";
+import { useAuth } from "@/lib/auth";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [clickedCard, setClickedCard] = useState<string | null>(null);
@@ -45,6 +47,14 @@ const Index = () => {
   const handleOnboardingClose = () => {
     setShowOnboarding(false);
     navigate('/agents', { state: { feature: selectedFeature } });
+  };
+
+  const handleCreateAgentClick = () => {
+    if (user) {
+      navigate('/agents', { state: { showTutorial: true } });
+    } else {
+      navigate('/auth');
+    }
   };
 
   const features = [
@@ -93,7 +103,7 @@ const Index = () => {
             <div className="flex flex-col gap-3 max-w-md mx-auto">
               <Button
                 size="default"
-                onClick={() => navigate('/auth')}
+                onClick={handleCreateAgentClick}
                 className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
