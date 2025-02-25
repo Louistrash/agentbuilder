@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { AdminHeader } from "@/components/admin/AdminHeader";
-import { AdminTabs } from "@/components/admin/AdminTabs";
 import { MetricCards } from "@/components/admin/dashboard/MetricCards";
 import { RevenueChart } from "@/components/admin/dashboard/RevenueChart";
 import { QuickStats } from "@/components/admin/dashboard/QuickStats";
@@ -20,6 +17,7 @@ import { MarketplaceSection } from "@/components/admin/sections/MarketplaceSecti
 import { IntegrationsSection } from "@/components/admin/sections/IntegrationsSection";
 import { SubscriptionsSection } from "@/components/admin/sections/SubscriptionsSection";
 import { TrainingSection } from "@/components/admin/sections/TrainingSection";
+import { AdminMenu } from "@/components/admin/AdminMenu";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -131,56 +129,64 @@ const Admin = () => {
               />
             </div>
 
-            <Tabs defaultValue="general" className="space-y-6">
-              <div className="bg-[#161B22] rounded-lg p-4 backdrop-blur-sm border border-[#30363D]">
-                <AdminTabs />
-              </div>
-              
-              <div className="bg-[#161B22]/95 backdrop-blur-xl rounded-xl p-8 border border-[#30363D]/50 mt-[70px] shadow-2xl relative overflow-hidden">
+            <AdminMenu />
+
+            <div className="space-y-8 mt-8">
+              <div className="bg-[#161B22]/95 backdrop-blur-xl rounded-xl p-8 border border-[#30363D]/50 shadow-2xl relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/5 via-transparent to-[#EC4899]/5 pointer-events-none"></div>
                 <div className="relative z-10">
-                  <TabsContent value="general" className="mt-0">
+                  <section id="general" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">General Settings</h2>
                     <GeneralSettings />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="chat" className="mt-0">
+                  <section id="chat" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Chat Management</h2>
                     <ChatSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="users" className="mt-0">
+                  <section id="users" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">User Management</h2>
                     <UsersSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="tokens" className="mt-0">
+                  <section id="tokens" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Token Management</h2>
                     <TokensSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="analytics" className="mt-0">
+                  <section id="analytics" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Analytics</h2>
                     <AnalyticsSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="appointments" className="mt-0">
+                  <section id="appointments" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Appointments</h2>
                     <AppointmentsSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="marketplace" className="mt-0">
+                  <section id="marketplace" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Marketplace</h2>
                     <MarketplaceSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="integrations" className="mt-0">
+                  <section id="integrations" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Integrations</h2>
                     <IntegrationsSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="subscriptions" className="mt-0">
+                  <section id="subscriptions" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Subscriptions</h2>
                     <SubscriptionsSection />
-                  </TabsContent>
+                  </section>
 
-                  <TabsContent value="training" className="mt-0">
+                  <section id="training" className="mb-16">
+                    <h2 className="text-xl font-semibold mb-6 text-white/90">Training</h2>
                     <TrainingSection />
-                  </TabsContent>
+                  </section>
                 </div>
               </div>
-            </Tabs>
+            </div>
           </div>
         </div>
       </div>
