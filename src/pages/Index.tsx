@@ -53,7 +53,7 @@ const Index = () => {
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
-      icon: <Rocket className="h-6 w-6 text-white" />,
+      icon: <Rocket className="h-6 w-6 text-[#1EAEDB] filter drop-shadow-[0_0_8px_rgba(30,174,219,0.5)]" />,
       gradientClasses: 'bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent',
       bgColor: 'bg-black/20'
     },
@@ -62,7 +62,7 @@ const Index = () => {
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
-      icon: <Rocket className="h-6 w-6 text-white" />,
+      icon: <Rocket className="h-6 w-6 text-[#1EAEDB] filter drop-shadow-[0_0_8px_rgba(30,174,219,0.5)]" />,
       gradientClasses: 'bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent',
       bgColor: 'bg-black/20'
     },
@@ -71,7 +71,7 @@ const Index = () => {
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
-      icon: <ChartBar className="h-6 w-6 text-white" />,
+      icon: <ChartBar className="h-6 w-6 text-[#1EAEDB] filter drop-shadow-[0_0_8px_rgba(30,174,219,0.5)]" />,
       gradientClasses: 'bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent',
       bgColor: 'bg-black/20'
     }
