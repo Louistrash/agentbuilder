@@ -8,6 +8,7 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { FeatureOnboarding } from "@/components/agent-builder/FeatureOnboarding";
+import { WidgetCode } from "@/components/agent-builder/WidgetCode";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -174,7 +175,7 @@ const Index = () => {
               Take your chat agents to the next level with our professional integration options.
             </p>
             <Card className="p-8 bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="grid md:grid-cols-2 gap-8 items-start">
                 <div className="text-left">
                   <h4 className="text-xl font-semibold mb-4">
                     Embed Anywhere
@@ -188,17 +189,11 @@ const Index = () => {
                     className="bg-white text-gray-900 hover:bg-gray-200"
                   >
                     <Code className="h-4 w-4 mr-2" />
-                    Get Integration Code
+                    Create Agent to Get Code
                   </Button>
                 </div>
-                <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 p-6 rounded-lg">
-                  <pre className="text-sm text-gray-300 overflow-x-auto">
-                    <code>{`<script>
-  window.chatAgent.init({
-    agentId: "your-agent-id"
-  });
-</script>`}</code>
-                  </pre>
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6">
+                  <WidgetCode agentId="demo-agent" />
                 </div>
               </div>
             </Card>
