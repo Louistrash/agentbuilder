@@ -34,11 +34,11 @@ export function FeatureCard({
 }: FeatureCardProps) {
   return (
     <Card
-      className={`${bgColor} rounded-2xl border-0 overflow-hidden transition-all duration-300`}
+      className={`${bgColor} rounded-2xl border-[#9b87f5]/10 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#9b87f5]/5 animate-fade-up`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className={`${gradientClasses} p-8 flex items-center justify-center`}>
+      <div className={`${gradientClasses} p-8 flex items-center justify-center transition-transform duration-300 transform hover:scale-105`}>
         {icon}
       </div>
       
@@ -54,7 +54,7 @@ export function FeatureCard({
         </p>
         <Button
           variant="outline"
-          className="w-full mt-2 bg-transparent border border-gray-700/50 text-gray-300 hover:bg-gray-800/50 hover:border-gray-600 h-9 text-sm"
+          className="w-full mt-2 bg-transparent border border-[#9b87f5]/20 text-gray-300 hover:bg-[#9b87f5]/10 hover:border-[#9b87f5]/30 h-9 text-sm transition-all duration-300 transform hover:scale-[1.02]"
           onClick={onClick}
         >
           <Play className="h-3 w-3 mr-2" />

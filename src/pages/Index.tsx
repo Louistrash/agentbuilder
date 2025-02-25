@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -52,48 +53,48 @@ const Index = () => {
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
-      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-blue-400" />,
-      gradientClasses: 'bg-gradient-to-b from-[#1a237e]/20 to-[#1a1f35]',
-      bgColor: 'bg-[#1a1f35]'
+      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-[#9b87f5]" />,
+      gradientClasses: 'bg-gradient-to-b from-[#9b87f5]/10 to-[#1A1F2C]',
+      bgColor: 'bg-[#1A1F2C]'
     },
     {
       id: 'smart',
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
-      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-teal-400" />,
-      gradientClasses: 'bg-gradient-to-b from-[#004d40]/20 to-[#1a2b29]',
-      bgColor: 'bg-[#1a2b29]'
+      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-[#9b87f5]" />,
+      gradientClasses: 'bg-gradient-to-b from-[#9b87f5]/10 to-[#1A1F2C]',
+      bgColor: 'bg-[#1A1F2C]'
     },
     {
       id: 'analytics',
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
-      icon: <ChartBar className="h-12 w-12 sm:h-16 sm:w-16 text-orange-400" />,
-      gradientClasses: 'bg-gradient-to-b from-[#bf360c]/20 to-[#2b1f1a]',
-      bgColor: 'bg-[#2b1f1a]'
+      icon: <ChartBar className="h-12 w-12 sm:h-16 sm:w-16 text-[#9b87f5]" />,
+      gradientClasses: 'bg-gradient-to-b from-[#9b87f5]/10 to-[#1A1F2C]',
+      bgColor: 'bg-[#1A1F2C]'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f1116] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#1A1F2C] text-white overflow-x-hidden">
       <Header logoUrl={logoUrl} />
 
       <main className="relative">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+          <div className="text-center mb-8 sm:mb-12 animate-fade-up">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
               Create Intelligent Chat Agents
             </h2>
             <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
               Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
             </p>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 max-w-md mx-auto">
               <Button
                 size="default"
                 onClick={() => navigate('/agents')}
-                className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity h-12 rounded-xl font-medium text-base shadow-lg shadow-indigo-500/25"
+                className="w-full bg-[#9b87f5] hover:bg-[#8b77e5] text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#9b87f5]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 Create Your First Agent
@@ -102,7 +103,7 @@ const Index = () => {
                 size="default"
                 variant="outline"
                 onClick={() => setShowOnboarding(true)}
-                className="w-full bg-transparent backdrop-blur-sm border-2 border-purple-500/20 text-white hover:bg-purple-500/10 transition-colors h-12 rounded-xl font-medium text-base"
+                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#9b87f5]/20 text-white hover:bg-[#9b87f5]/10 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
                 <Play className="h-5 w-5 mr-2" />
                 Watch Demo
