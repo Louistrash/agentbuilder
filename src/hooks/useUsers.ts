@@ -16,28 +16,30 @@ export const useUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers();
-      if (usersError) throw usersError;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No session');
 
-      const { data: roles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('user_id, role');
-      if (rolesError) throw rolesError;
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/list-users`,
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
 
-      const userList = users.map(user => ({
-        id: user.id,
-        email: user.email || '',
-        roles: roles
-          .filter(r => r.user_id === user.id)
-          .map(r => r.role) || []
-      }));
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch users');
+      }
 
-      setUsers(userList);
+      const users = await response.json();
+      setUsers(users);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch users",
+        description: error.message || "Failed to fetch users",
         variant: "destructive",
       });
     } finally {
@@ -74,9 +76,24 @@ export const useUsers = () => {
 
   const deleteUsers = async (userIds: string[]) => {
     try {
-      for (const userId of userIds) {
-        const { error } = await supabase.auth.admin.deleteUser(userId);
-        if (error) throw error;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No session');
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-users`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userIds }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete users');
       }
       
       toast({
