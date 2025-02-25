@@ -1,12 +1,45 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Code, Sparkles, Zap, MessageSquare, BarChart3, Wifi } from "lucide-react";
+import { Code, Sparkles, Zap, MessageSquare, BarChart3, Wifi, TrendingUp, Users, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
+import { useState, useEffect } from "react";
+
+const generateRandomData = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 export function ProFeatures() {
   const navigate = useNavigate();
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Initialize data
+    const initialData = Array.from({ length: 7 }, (_, i) => ({
+      name: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i],
+      users: generateRandomData(100, 200),
+      engagement: generateRandomData(60, 90),
+      messages: generateRandomData(300, 500),
+    }));
+    setData(initialData);
+
+    // Update data periodically
+    const interval = setInterval(() => {
+      setData(currentData => {
+        const newData = [...currentData];
+        newData.forEach(item => {
+          item.users += generateRandomData(-10, 20);
+          item.engagement += generateRandomData(-5, 10);
+          item.messages += generateRandomData(-20, 40);
+        });
+        return [...newData];
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const features = [
     {
@@ -78,16 +111,70 @@ export function ProFeatures() {
             </Button>
           </div>
 
-          <div className="relative">
-            <div className="aspect-video rounded-lg overflow-hidden bg-black/40 border border-[#9b87f5]/10">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="animate-pulse mb-4">
-                    <Sparkles className="h-8 w-8 text-[#9b87f5]" />
-                  </div>
-                  <p className="text-sm text-gray-400">Interactive demo coming soon</p>
-                </div>
+          <div className="space-y-6">
+            <div className="p-4 rounded-xl bg-black/40 border border-[#9b87f5]/10">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-medium text-gray-300">User Engagement</h4>
+                <TrendingUp className="h-4 w-4 text-[#9b87f5]" />
               </div>
+              <div className="h-[140px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={data}>
+                    <defs>
+                      <linearGradient id="colorEngagement" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#9b87f5" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#9b87f5" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2F3C" />
+                    <XAxis dataKey="name" stroke="#4A4F5C" />
+                    <YAxis stroke="#4A4F5C" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#1A1F2C',
+                        border: '1px solid rgba(155, 135, 245, 0.1)',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="engagement" 
+                      stroke="#9b87f5" 
+                      fill="url(#colorEngagement)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <motion.div 
+                className="p-4 rounded-xl bg-black/40 border border-[#9b87f5]/10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <Users className="h-4 w-4 text-[#9b87f5]" />
+                  <span className="text-xs text-gray-400">Active Users</span>
+                </div>
+                <h3 className="text-2xl font-semibold text-white">{data[6]?.users || 0}</h3>
+                <span className="text-xs text-[#9b87f5]">+12.5% this week</span>
+              </motion.div>
+
+              <motion.div 
+                className="p-4 rounded-xl bg-black/40 border border-[#9b87f5]/10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <MessageCircle className="h-4 w-4 text-[#9b87f5]" />
+                  <span className="text-xs text-gray-400">Messages/Day</span>
+                </div>
+                <h3 className="text-2xl font-semibold text-white">{data[6]?.messages || 0}</h3>
+                <span className="text-xs text-[#9b87f5]">+8.3% this week</span>
+              </motion.div>
             </div>
           </div>
         </div>
