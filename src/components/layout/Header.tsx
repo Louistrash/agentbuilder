@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight, Menu, LucideHeartHandshake } from "lucide-react";
+import { Settings, ArrowRight, Menu, Rocket } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export function Header({ logoUrl }: HeaderProps) {
                   onError={() => setImageError(true)}
                 />
               ) : (
-                <LucideHeartHandshake className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-[#1EAEDB]" />
               )}
             </div>
             <div className="flex flex-col">
