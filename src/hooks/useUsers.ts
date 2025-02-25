@@ -16,35 +16,31 @@ export const useUsers = () => {
   
   const fetchUsers = async (): Promise<User[]> => {
     try {
-      // First get users with their basic info
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('id, created_at');
-
-      if (profilesError) throw profilesError;
-
-      // Then get their auth details
+      // First get users with their basic info from auth
       const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
       if (authError) throw authError;
 
-      // Finally get their roles
+      if (!authUsers?.users?.length) {
+        return [];
+      }
+
+      // Get their roles
       const { data: userRoles, error: rolesError } = await supabase
         .from('user_roles')
         .select('user_id, role');
 
       if (rolesError) throw rolesError;
 
-      // Combine the data
-      const users = profiles.map(profile => {
-        const authUser = authUsers.users.find(u => u.id === profile.id);
+      // Map the data
+      const users = authUsers.users.map(authUser => {
         const roles = userRoles
-          .filter(r => r.user_id === profile.id)
-          .map(r => r.role);
+          ?.filter(r => r.user_id === authUser.id)
+          ?.map(r => r.role) || [];
 
         return {
-          id: profile.id,
-          email: authUser?.email || '',
-          created_at: profile.created_at,
+          id: authUser.id,
+          email: authUser.email || '',
+          created_at: authUser.created_at,
           roles: roles
         };
       });
@@ -145,8 +141,8 @@ export const useUsers = () => {
 
   return {
     users,
-    loading: isLoading, // Alias for backward compatibility
-    fetchUsers: refetch, // Alias for backward compatibility
+    loading: isLoading,
+    fetchUsers: refetch,
     updateUserRole,
     deleteUsers,
     updateUsersRole,
