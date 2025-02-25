@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PlatformOverview } from "./platform/PlatformOverview";
 import { AnalyticsOverview } from "./analytics/AnalyticsOverview";
 import { ChatMetricsChart } from "./analytics/ChatMetricsChart";
@@ -15,8 +15,30 @@ import { useAdmin } from "@/hooks/useAdmin";
 
 export const GeneralSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
+  const [botSettingsId, setBotSettingsId] = useState<string | null>(null);
   const { toast } = useToast();
   const { isAdmin } = useAdmin();
+
+  // Fetch bot settings ID on component mount
+  useEffect(() => {
+    const fetchBotSettings = async () => {
+      const { data, error } = await supabase
+        .from('bot_settings')
+        .select('id')
+        .single();
+
+      if (error) {
+        console.error('Error fetching bot settings:', error);
+        return;
+      }
+
+      if (data) {
+        setBotSettingsId(data.id);
+      }
+    };
+
+    fetchBotSettings();
+  }, []);
 
   const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!isAdmin) {
@@ -72,11 +94,15 @@ export const GeneralSettings = () => {
         .from('logos')
         .getPublicUrl(fileName);
 
+      if (!botSettingsId) {
+        throw new Error('Bot settings not found');
+      }
+
       // Update bot settings with new logo URL
       const { error: updateError } = await supabase
         .from('bot_settings')
         .update({ logo_url: publicUrl })
-        .eq('id', '1'); // Assuming there's only one bot settings record
+        .eq('id', botSettingsId); // Use the fetched bot settings ID
 
       if (updateError) throw updateError;
 
