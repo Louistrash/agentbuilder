@@ -15,6 +15,16 @@ export const ChatBehaviorSettings = () => {
     responseDelay: "0",
     aiPersonality: "Friendly and helpful sleep advisor that specializes in luxury bedding and sleep solutions.",
     fallbackMessage: "I apologize, but I don't have enough information to answer that question. Could you please rephrase or ask something else about our luxury bedding products?",
+    reasoningLevel: "advanced",
+    emotionalIntelligence: true,
+    contextMemory: {
+      enabled: true,
+      messageHistory: 10
+    },
+    learningMode: {
+      enabled: true,
+      adaptationRate: 0.5
+    }
   });
 
   useEffect(() => {
@@ -37,6 +47,16 @@ export const ChatBehaviorSettings = () => {
             responseDelay: data.chat_settings.responseDelay.toString(),
             aiPersonality: data.chat_settings.aiPersonality,
             fallbackMessage: data.chat_settings.fallbackMessage,
+            reasoningLevel: data.chat_settings.reasoningLevel || "advanced",
+            emotionalIntelligence: data.chat_settings.emotionalIntelligence ?? true,
+            contextMemory: data.chat_settings.contextMemory || {
+              enabled: true,
+              messageHistory: 10
+            },
+            learningMode: data.chat_settings.learningMode || {
+              enabled: true,
+              adaptationRate: 0.5
+            }
           });
         } else {
           console.error('Invalid chat settings format:', data.chat_settings);
@@ -74,6 +94,10 @@ export const ChatBehaviorSettings = () => {
         responseDelay: parseInt(settings.responseDelay),
         aiPersonality: settings.aiPersonality,
         fallbackMessage: settings.fallbackMessage,
+        reasoningLevel: settings.reasoningLevel,
+        emotionalIntelligence: settings.emotionalIntelligence,
+        contextMemory: settings.contextMemory,
+        learningMode: settings.learningMode,
       } as unknown as Json;
 
       const { error } = await supabase
@@ -101,7 +125,7 @@ export const ChatBehaviorSettings = () => {
     }
   };
 
-  const handleSettingChange = (key: string, value: string) => {
+  const handleSettingChange = (key: string, value: string | boolean | object) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
@@ -110,12 +134,16 @@ export const ChatBehaviorSettings = () => {
       <ChatLimitsSection
         maxMessagesPerChat={settings.maxMessagesPerChat}
         responseDelay={settings.responseDelay}
+        contextMemory={settings.contextMemory}
+        learningMode={settings.learningMode}
         onSettingChange={handleSettingChange}
       />
 
       <AIPersonalitySection
         aiPersonality={settings.aiPersonality}
         fallbackMessage={settings.fallbackMessage}
+        reasoningLevel={settings.reasoningLevel}
+        emotionalIntelligence={settings.emotionalIntelligence}
         onSettingChange={handleSettingChange}
       />
 
