@@ -6,10 +6,10 @@ import { TokenStats } from "./types";
 export const TokenStatsCards = ({ stats }: { stats: TokenStats }) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <Card className="w-full">
+      <Card className="bg-[#222939]/95 border-[#1EAEDB]/10 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Tokens Granted</CardTitle>
-          <Coins className="h-4 w-4 text-muted-foreground" />
+          <Coins className="h-4 w-4 text-[#1EAEDB]" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalGranted}</div>
@@ -19,10 +19,10 @@ export const TokenStatsCards = ({ stats }: { stats: TokenStats }) => {
         </CardContent>
       </Card>
       
-      <Card className="w-full">
+      <Card className="bg-[#222939]/95 border-[#1EAEDB]/10 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Tokens Spent</CardTitle>
-          <TrendingDown className="h-4 w-4 text-muted-foreground" />
+          <TrendingDown className="h-4 w-4 text-[#1EAEDB]" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalSpent}</div>
@@ -32,10 +32,10 @@ export const TokenStatsCards = ({ stats }: { stats: TokenStats }) => {
         </CardContent>
       </Card>
 
-      <Card className="w-full sm:col-span-2 lg:col-span-1">
+      <Card className="bg-[#222939]/95 border-[#1EAEDB]/10 shadow-lg sm:col-span-2 lg:col-span-1">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Available Tokens</CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <TrendingUp className="h-4 w-4 text-[#1EAEDB]" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalGranted - stats.totalSpent}</div>

@@ -17,7 +17,7 @@ interface TokenTransactionsTableProps {
 
 export const TokenTransactionsTable = ({ transactions }: TokenTransactionsTableProps) => {
   return (
-    <Card>
+    <Card className="bg-[#222939]/95 border-[#1EAEDB]/10 shadow-lg">
       <CardHeader>
         <CardTitle>Token Transactions</CardTitle>
       </CardHeader>
