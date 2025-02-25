@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+import { useAdmin } from "@/hooks/useAdmin";
 import { MetricCards } from "@/components/admin/dashboard/MetricCards";
 import { RevenueChart } from "@/components/admin/dashboard/RevenueChart";
 import { QuickStats } from "@/components/admin/dashboard/QuickStats";
@@ -22,7 +21,8 @@ import { LayoutGrid, Settings2, Users, MessageSquare, ChartBar, Calendar, Shoppi
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
+  const { isAdmin, isLoading: isAdminLoading } = useAdmin();
   const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
   const { toast } = useToast();
   const [analytics, setAnalytics] = useState({
@@ -47,46 +47,24 @@ const Admin = () => {
   ]);
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (!user) {
-        navigate('/auth');
-        return;
-      }
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
 
-      try {
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('id', user.id)
-          .single();
+    if (!isAdminLoading && !isAdmin) {
+      toast({
+        variant: "destructive",
+        title: "Access Denied",
+        description: "You do not have permission to access the admin dashboard.",
+      });
+      navigate('/');
+    }
 
-        if (error) throw error;
+    setIsCheckingAdmin(false);
+  }, [user, isAdmin, isAdminLoading, navigate, toast]);
 
-        if (!profile?.is_admin) {
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: "You do not have permission to access the admin dashboard.",
-          });
-          navigate('/');
-        }
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Could not verify admin access. Please try again later.",
-        });
-        navigate('/');
-      } finally {
-        setIsCheckingAdmin(false);
-      }
-    };
-
-    checkAdmin();
-  }, [user, navigate, toast]);
-
-  if (isLoading || isCheckingAdmin) {
+  if (isAdminLoading || isCheckingAdmin) {
     return (
       <div className="min-h-screen bg-[#0D1117] flex items-center justify-center">
         <div className="text-white animate-pulse">Loading...</div>
@@ -110,7 +88,6 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-[#0D1117]">
       <div className="flex">
-        {/* Sidebar */}
         <div className="w-64 min-h-screen bg-[#161B22] border-r border-[#30363D] shadow-xl">
           <div className="p-6">
             <h2 className="text-xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent mb-6">
@@ -131,7 +108,6 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 p-8">
           <div className="max-w-[1600px] mx-auto">
             <div className="mb-8">
