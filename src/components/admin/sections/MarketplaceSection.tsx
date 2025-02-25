@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +6,9 @@ import { ShoppingCart, Plus, X, Filter, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 interface Feature {
   id: string;
@@ -147,35 +149,67 @@ export const MarketplaceSection = () => {
       return;
     }
 
-    // Here you would typically integrate with Stripe
-    // For now, we'll simulate a successful purchase
-    for (const featureId of cart) {
-      const { error } = await supabase
-        .from('purchased_features')
-        .insert({
-          user_id: user.id,
-          feature_id: featureId,
-          status: 'pending'
-        });
+    try {
+      const stripe = await stripePromise;
+      if (!stripe) throw new Error('Stripe failed to load');
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: `Failed to purchase feature: ${error.message}`,
-          variant: "destructive",
-        });
-        return;
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/marketplace-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+        },
+        body: JSON.stringify({
+          cart,
+          successUrl: `${window.location.origin}/admin?tab=marketplace&status=success`,
+          cancelUrl: `${window.location.origin}/admin?tab=marketplace&status=cancelled`,
+        }),
+      });
+
+      const { sessionId, error } = await response.json();
+      
+      if (error) throw new Error(error);
+      
+      const result = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
       }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to initiate checkout",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    
+    if (status === 'success') {
+      toast({
+        title: "Purchase Successful",
+        description: "Your features have been purchased successfully",
+      });
+      fetchPurchasedFeatures();
+    } else if (status === 'cancelled') {
+      toast({
+        title: "Purchase Cancelled",
+        description: "Your purchase has been cancelled",
+        variant: "destructive",
+      });
     }
 
-    await fetchPurchasedFeatures();
-    setCart([]);
-    setShowCart(false);
-    toast({
-      title: "Success",
-      description: "Features have been purchased successfully",
-    });
-  };
+    // Clean up URL
+    if (status) {
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
 
   const filteredFeatures = selectedCategory === "all"
     ? features
