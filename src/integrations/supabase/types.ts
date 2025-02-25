@@ -556,6 +556,8 @@ export type Database = {
           id: string
           is_admin: boolean | null
           sleep_preferences: Json | null
+          tokens: number | null
+          tokens_used: number | null
           updated_at: string
         }
         Insert: {
@@ -564,6 +566,8 @@ export type Database = {
           id: string
           is_admin?: boolean | null
           sleep_preferences?: Json | null
+          tokens?: number | null
+          tokens_used?: number | null
           updated_at?: string
         }
         Update: {
@@ -572,6 +576,8 @@ export type Database = {
           id?: string
           is_admin?: boolean | null
           sleep_preferences?: Json | null
+          tokens?: number | null
+          tokens_used?: number | null
           updated_at?: string
         }
         Relationships: []
@@ -734,6 +740,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "subscriptions_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      token_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string
+          feature_used: string | null
+          id: string
+          profile_id: string
+          transaction_type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description: string
+          feature_used?: string | null
+          id?: string
+          profile_id: string
+          transaction_type: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string
+          feature_used?: string | null
+          id?: string
+          profile_id?: string
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "token_transactions_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"

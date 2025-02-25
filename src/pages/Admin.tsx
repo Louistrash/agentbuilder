@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +15,7 @@ import { IntegrationsSection } from "@/components/admin/sections/IntegrationsSec
 import { UsersSection } from "@/components/admin/sections/UsersSection";
 import { SubscriptionsSection } from "@/components/admin/sections/SubscriptionsSection";
 import { MarketplaceSection } from "@/components/admin/sections/MarketplaceSection";
+import { TokensSection } from "@/components/admin/sections/TokensSection";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -114,6 +114,10 @@ const Admin = () => {
 
             <TabsContent value="marketplace" className="mt-0">
               <MarketplaceSection />
+            </TabsContent>
+
+            <TabsContent value="tokens" className="mt-0">
+              <TokensSection />
             </TabsContent>
           </div>
         </Tabs>
