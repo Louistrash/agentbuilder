@@ -19,7 +19,8 @@ import { SubscriptionsSection } from "@/components/admin/sections/SubscriptionsS
 import { TrainingSection } from "@/components/admin/sections/TrainingSection";
 import { AdminMenu } from "@/components/admin/AdminMenu";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, Settings2, Users, MessageSquare, ChartBar, Calendar, ShoppingBag, Link, CreditCard, Book, Menu } from "lucide-react";
+import { LayoutGrid, Settings2, Users, MessageSquare, ChartBar, Calendar, ShoppingBag, Link, CreditCard, Book, Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -67,14 +68,6 @@ const Admin = () => {
     setIsCheckingAdmin(false);
   }, [user, isAdmin, isAdminLoading, navigate, toast]);
 
-  if (isAdminLoading || isCheckingAdmin) {
-    return (
-      <div className="min-h-screen bg-[#0D1117] flex items-center justify-center">
-        <div className="text-white animate-pulse">Loading...</div>
-      </div>
-    );
-  }
-
   const menuItems = [
     { icon: LayoutGrid, label: "Dashboard", href: "#dashboard" },
     { icon: Settings2, label: "General", href: "#general" },
@@ -88,35 +81,45 @@ const Admin = () => {
     { icon: Book, label: "Training", href: "#training" },
   ];
 
-  return (
-    <div className="min-h-screen bg-[#0D1117]">
-      {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-[#161B22] border-b border-[#30363D] p-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-white">Admin Panel</h1>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white"
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
-        </div>
+  if (isAdminLoading || isCheckingAdmin) {
+    return (
+      <div className="min-h-screen bg-[#0D1117] flex items-center justify-center">
+        <div className="text-white animate-pulse">Loading...</div>
       </div>
+    );
+  }
 
-      <div className="flex">
-        {/* Sidebar */}
-        <div className={`
-          fixed top-0 left-0 z-40 h-full w-64 bg-[#161B22] border-r border-[#30363D] shadow-xl 
-          transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}>
-          <div className="p-6 pt-20 lg:pt-6">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent mb-6 hidden lg:block">
+  return (
+    <div className="min-h-screen bg-[#0D1117] flex flex-col lg:flex-row">
+      {/* Mobile Header */}
+      <header className="sticky top-0 z-50 lg:hidden bg-[#161B22] border-b border-[#30363D] px-4 h-16 flex items-center justify-between">
+        <h1 className="text-lg font-semibold text-white">Admin Panel</h1>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="text-white"
+        >
+          {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </header>
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 w-64 bg-[#161B22] border-r border-[#30363D] transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0",
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="flex flex-col h-full">
+          <div className="p-4 border-b border-[#30363D]">
+            <h2 className="text-xl font-bold text-white hidden lg:block">
               Admin Panel
             </h2>
-            <nav className="space-y-1">
+          </div>
+          
+          <nav className="flex-1 overflow-y-auto py-4">
+            <div className="px-2 space-y-1">
               {menuItems.map((item) => (
                 <a
                   key={item.href}
@@ -125,101 +128,100 @@ const Admin = () => {
                   className="flex items-center gap-3 px-3 py-2 text-sm text-gray-400 rounded-lg hover:bg-white/5 hover:text-white transition-colors"
                 >
                   <item.icon className="w-4 h-4" />
-                  {item.label}
+                  <span>{item.label}</span>
                 </a>
               ))}
-            </nav>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 p-4 lg:p-8 mt-16 lg:mt-0">
-          <div className="max-w-[1600px] mx-auto">
-            <div className="mb-8 hidden lg:block">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent">
-                Dashboard Overview
-              </h1>
-              <p className="text-gray-400">Complete system management and analytics</p>
             </div>
+          </nav>
+        </div>
+      </aside>
 
+      {/* Main Content */}
+      <main className="flex-1 w-full">
+        <div className="container mx-auto p-4 lg:p-8 max-w-[1600px]">
+          <div className="mb-8 hidden lg:block">
+            <h1 className="text-2xl font-bold text-white">
+              Dashboard Overview
+            </h1>
+            <p className="text-gray-400">Complete system management and analytics</p>
+          </div>
+
+          <div className="space-y-8">
             <MetricCards analytics={analytics} />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
                 <RevenueChart data={chartData} />
               </div>
-              <QuickStats 
-                stats={{
-                  marketplaceItems: analytics.marketplaceItems,
-                  integrations: analytics.integrations,
-                  trainingDocs: analytics.trainingDocs,
-                }}
-              />
+              <div className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <QuickStats 
+                  stats={{
+                    marketplaceItems: analytics.marketplaceItems,
+                    integrations: analytics.integrations,
+                    trainingDocs: analytics.trainingDocs,
+                  }}
+                />
+              </div>
             </div>
 
             <AdminMenu />
 
-            <div className="space-y-6 mt-8">
-              <div className="bg-[#161B22]/95 backdrop-blur-xl rounded-xl p-4 lg:p-8 border border-[#30363D]/50 shadow-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/5 via-transparent to-[#EC4899]/5 pointer-events-none"></div>
-                <div className="relative z-10 space-y-12">
-                  <section id="general">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">General Settings</h2>
-                    <GeneralSettings />
-                  </section>
+            <div className="space-y-8">
+              <section id="general" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">General Settings</h2>
+                <GeneralSettings />
+              </section>
 
-                  <section id="chat">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Chat Management</h2>
-                    <ChatSection />
-                  </section>
+              <section id="chat" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Chat Management</h2>
+                <ChatSection />
+              </section>
 
-                  <section id="users">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">User Management</h2>
-                    <UsersSection />
-                  </section>
+              <section id="users" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">User Management</h2>
+                <UsersSection />
+              </section>
 
-                  <section id="tokens">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Token Management</h2>
-                    <TokensSection />
-                  </section>
+              <section id="tokens" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Token Management</h2>
+                <TokensSection />
+              </section>
 
-                  <section id="analytics">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Analytics</h2>
-                    <AnalyticsSection />
-                  </section>
+              <section id="analytics" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Analytics</h2>
+                <AnalyticsSection />
+              </section>
 
-                  <section id="appointments">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Appointments</h2>
-                    <AppointmentsSection />
-                  </section>
+              <section id="appointments" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Appointments</h2>
+                <AppointmentsSection />
+              </section>
 
-                  <section id="marketplace">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Marketplace</h2>
-                    <MarketplaceSection />
-                  </section>
+              <section id="marketplace" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Marketplace</h2>
+                <MarketplaceSection />
+              </section>
 
-                  <section id="integrations">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Integrations</h2>
-                    <IntegrationsSection />
-                  </section>
+              <section id="integrations" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Integrations</h2>
+                <IntegrationsSection />
+              </section>
 
-                  <section id="subscriptions">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Subscriptions</h2>
-                    <SubscriptionsSection />
-                  </section>
+              <section id="subscriptions" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Subscriptions</h2>
+                <SubscriptionsSection />
+              </section>
 
-                  <section id="training">
-                    <h2 className="text-xl font-semibold mb-6 text-white/90">Training</h2>
-                    <TrainingSection />
-                  </section>
-                </div>
-              </div>
+              <section id="training" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+                <h2 className="text-xl font-semibold mb-6 text-white">Training</h2>
+                <TrainingSection />
+              </section>
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
-      {/* Overlay for mobile sidebar */}
+      {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
