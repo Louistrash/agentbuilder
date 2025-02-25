@@ -142,9 +142,10 @@ export const UsersSection = () => {
           description: `Updated roles for ${selectedUsers.length} users`,
         });
       } else if (action === 'delete') {
-        const { error } = await supabase.auth.admin.deleteUsers(selectedUsers);
-        
-        if (error) throw error;
+        for (const userId of selectedUsers) {
+          const { error } = await supabase.auth.admin.deleteUser(userId);
+          if (error) throw error;
+        }
         
         toast({
           title: "Success",
@@ -253,7 +254,7 @@ export const UsersSection = () => {
             <TableHead className="w-12">
               <Checkbox 
                 checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                onCheckedChange={handleSelectAll}
+                onCheckedChange={(checked) => handleSelectAll(checked === true)}
                 aria-label="Select all users"
               />
             </TableHead>
@@ -268,7 +269,7 @@ export const UsersSection = () => {
               <TableCell>
                 <Checkbox 
                   checked={selectedUsers.includes(user.id)}
-                  onCheckedChange={(checked) => handleSelectUser(user.id, checked)}
+                  onCheckedChange={(checked) => handleSelectUser(user.id, checked === true)}
                   aria-label={`Select user ${user.email}`}
                 />
               </TableCell>
