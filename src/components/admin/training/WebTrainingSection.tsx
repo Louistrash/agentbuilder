@@ -19,6 +19,16 @@ interface WebsiteTrainingSource {
   word_count: number;
   status: string;
   error_message?: string;
+  profile_id: string;
+}
+
+// Separate interface for insertion that only includes required fields
+interface WebsiteTrainingSourceInsert {
+  url: string;
+  profile_id: string;
+  status: string;
+  processed?: boolean;
+  word_count?: number;
 }
 
 interface OrganizationUsage {
@@ -115,13 +125,17 @@ export const WebTrainingSection = () => {
         return;
       }
 
+      const newSource: WebsiteTrainingSourceInsert = {
+        url,
+        profile_id: user.id,
+        status: 'pending',
+        processed: false,
+        word_count: 0
+      };
+
       const { error } = await supabase
         .from('website_training_sources')
-        .insert({
-          url,
-          profile_id: user.id,
-          status: 'pending'
-        } as WebsiteTrainingSource);
+        .insert(newSource);
 
       if (error) throw error;
 
