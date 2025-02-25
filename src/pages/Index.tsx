@@ -93,7 +93,7 @@ const Index = () => {
             <div className="flex flex-col gap-3 max-w-md mx-auto">
               <Button
                 size="default"
-                onClick={() => navigate('/agents')}
+                onClick={() => navigate('/auth')}
                 className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
