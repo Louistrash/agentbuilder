@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const BASIC_PRICE_ID = "price_1QwD0HLKYh7oFRi1iuxawvIg";
 const ENHANCED_PRICE_ID = "price_1QwD1lLKYh7oFRi1y2IHT0xY";
@@ -27,6 +28,10 @@ export const SubscriptionPlans = () => {
 
     setLoading(true);
     try {
+      // Get the publishable key from Supabase Functions
+      const { data: { publishableKey }, error: keyError } = await supabase.functions.invoke('get-stripe-key');
+      if (keyError) throw new Error('Could not load Stripe configuration');
+
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe`, {
         method: 'POST',
         headers: {
@@ -44,8 +49,8 @@ export const SubscriptionPlans = () => {
 
       const { clientSecret } = await response.json();
 
-      // Redirect to Stripe Checkout
-      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+      // Initialize Stripe with the publishable key from Supabase
+      const stripe = await loadStripe(publishableKey);
       if (!stripe) throw new Error('Stripe failed to load');
 
       const { error } = await stripe.confirmPayment({
