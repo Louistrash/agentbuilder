@@ -14,7 +14,7 @@ interface ChatLimitsSectionProps {
     enabled: boolean;
     adaptationRate: number;
   };
-  onSettingChange: (key: string, value: string | boolean | number) => void;
+  onSettingChange: (key: string, value: string | number | boolean | object) => void;
 }
 
 export const ChatLimitsSection = ({

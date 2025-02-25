@@ -125,7 +125,7 @@ export const ChatBehaviorSettings = () => {
     }
   };
 
-  const handleSettingChange = (key: string, value: string | boolean | object) => {
+  const handleSettingChange = (key: string, value: string | number | boolean | object) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
