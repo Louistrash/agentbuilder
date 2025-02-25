@@ -89,80 +89,97 @@ const Admin = () => {
 
   if (isLoading || isCheckingAdmin) {
     return (
-      <div className="min-h-screen bg-[#171923] flex items-center justify-center">
+      <div className="min-h-screen bg-[#0D1117] flex items-center justify-center">
         <div className="text-white animate-pulse">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#171923]">
-      <div className="container mx-auto p-6">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">CEO Dashboard</h1>
-          <p className="text-gray-400">Complete system overview and management</p>
+    <div className="min-h-screen bg-[#0D1117] text-white">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 min-h-screen bg-[#161B22] border-r border-[#30363D]">
+          <div className="p-6">
+            <h2 className="text-xl font-bold text-white mb-6">Admin Panel</h2>
+            <nav className="space-y-2">
+              {/* Add navigation items here */}
+            </nav>
+          </div>
         </div>
 
-        <MetricCards analytics={analytics} />
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          <div className="max-w-[1600px] mx-auto">
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
+                Dashboard Overview
+              </h1>
+              <p className="text-gray-400">Complete system management and analytics</p>
+            </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <RevenueChart data={chartData} />
-          <QuickStats 
-            stats={{
-              marketplaceItems: analytics.marketplaceItems,
-              integrations: analytics.integrations,
-              trainingDocs: analytics.trainingDocs,
-            }}
-          />
+            <MetricCards analytics={analytics} />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              <RevenueChart data={chartData} />
+              <QuickStats 
+                stats={{
+                  marketplaceItems: analytics.marketplaceItems,
+                  integrations: analytics.integrations,
+                  trainingDocs: analytics.trainingDocs,
+                }}
+              />
+            </div>
+
+            <Tabs defaultValue="general" className="space-y-6">
+              <div className="bg-[#161B22] rounded-lg p-4 backdrop-blur-sm border border-[#30363D]">
+                <AdminTabs />
+              </div>
+              
+              <div className="bg-[#161B22] rounded-lg p-6 border border-[#30363D]">
+                <TabsContent value="general" className="mt-0">
+                  <GeneralSettings />
+                </TabsContent>
+
+                <TabsContent value="chat" className="mt-0">
+                  <ChatSection />
+                </TabsContent>
+
+                <TabsContent value="users" className="mt-0">
+                  <UsersSection />
+                </TabsContent>
+
+                <TabsContent value="tokens" className="mt-0">
+                  <TokensSection />
+                </TabsContent>
+
+                <TabsContent value="analytics" className="mt-0">
+                  <AnalyticsSection />
+                </TabsContent>
+
+                <TabsContent value="appointments" className="mt-0">
+                  <AppointmentsSection />
+                </TabsContent>
+
+                <TabsContent value="marketplace" className="mt-0">
+                  <MarketplaceSection />
+                </TabsContent>
+
+                <TabsContent value="integrations" className="mt-0">
+                  <IntegrationsSection />
+                </TabsContent>
+
+                <TabsContent value="subscriptions" className="mt-0">
+                  <SubscriptionsSection />
+                </TabsContent>
+
+                <TabsContent value="training" className="mt-0">
+                  <TrainingSection />
+                </TabsContent>
+              </div>
+            </Tabs>
+          </div>
         </div>
-
-        <Tabs defaultValue="general" className="space-y-8">
-          <div className="bg-[#1E2028] rounded-lg p-4 backdrop-blur-sm border border-[#2D3748]/10">
-            <AdminTabs />
-          </div>
-          
-          <div className="bg-[#1E2028] rounded-lg p-6 border border-[#2D3748]/10">
-            <TabsContent value="general" className="mt-0">
-              <GeneralSettings />
-            </TabsContent>
-
-            <TabsContent value="chat" className="mt-0">
-              <ChatSection />
-            </TabsContent>
-
-            <TabsContent value="users" className="mt-0">
-              <UsersSection />
-            </TabsContent>
-
-            <TabsContent value="tokens" className="mt-0">
-              <TokensSection />
-            </TabsContent>
-
-            <TabsContent value="analytics" className="mt-0">
-              <AnalyticsSection />
-            </TabsContent>
-
-            <TabsContent value="appointments" className="mt-0">
-              <AppointmentsSection />
-            </TabsContent>
-
-            <TabsContent value="marketplace" className="mt-0">
-              <MarketplaceSection />
-            </TabsContent>
-
-            <TabsContent value="integrations" className="mt-0">
-              <IntegrationsSection />
-            </TabsContent>
-
-            <TabsContent value="subscriptions" className="mt-0">
-              <SubscriptionsSection />
-            </TabsContent>
-
-            <TabsContent value="training" className="mt-0">
-              <TrainingSection />
-            </TabsContent>
-          </div>
-        </Tabs>
       </div>
     </div>
   );

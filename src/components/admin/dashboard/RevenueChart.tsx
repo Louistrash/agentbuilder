@@ -1,6 +1,6 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface ChartData {
   name: string;
@@ -13,33 +13,38 @@ interface RevenueChartProps {
 
 export function RevenueChart({ data }: RevenueChartProps) {
   return (
-    <Card className="bg-[#2A2F3E] border-none shadow-lg lg:col-span-2">
+    <Card className="bg-[#161B22] border-[#30363D] lg:col-span-2">
       <CardHeader>
         <CardTitle className="text-white">Revenue Overview</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-              <XAxis dataKey="name" stroke="#666" />
-              <YAxis stroke="#666" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#2A2F3E',
-                  border: 'none',
+            <BarChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#30363D" />
+              <XAxis 
+                dataKey="name" 
+                stroke="#8B949E"
+                style={{ fontSize: '12px' }}
+              />
+              <YAxis 
+                stroke="#8B949E"
+                style={{ fontSize: '12px' }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#161B22',
+                  border: '1px solid #30363D',
                   borderRadius: '8px',
                   color: '#fff'
-                }} 
+                }}
               />
-              <Line 
-                type="monotone" 
-                dataKey="value" 
-                stroke="#1EAEDB" 
-                strokeWidth={2}
-                dot={{ fill: '#1EAEDB' }}
+              <Bar
+                dataKey="value"
+                fill="#6366F1"
+                radius={[4, 4, 0, 0]}
               />
-            </LineChart>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </CardContent>

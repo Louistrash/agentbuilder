@@ -12,30 +12,38 @@ interface QuickStatsProps {
 
 export function QuickStats({ stats }: QuickStatsProps) {
   return (
-    <Card className="bg-[#2A2F3E] border-none shadow-lg">
+    <Card className="bg-[#161B22] border-[#30363D]">
       <CardHeader>
         <CardTitle className="text-white">Quick Stats</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-[#1A1F2C]">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-[#0D1117] border border-[#30363D]">
             <div className="flex items-center gap-3">
-              <Boxes className="h-4 w-4 text-[#1EAEDB]" />
-              <span className="text-sm text-white">Marketplace Items</span>
+              <div className="w-8 h-8 rounded-full bg-[#6366F1]/10 flex items-center justify-center">
+                <Boxes className="h-4 w-4 text-[#6366F1]" />
+              </div>
+              <span className="text-sm text-gray-300">Marketplace Items</span>
             </div>
             <span className="text-sm font-bold text-white">{stats.marketplaceItems}</span>
           </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-[#1A1F2C]">
+          
+          <div className="flex items-center justify-between p-4 rounded-lg bg-[#0D1117] border border-[#30363D]">
             <div className="flex items-center gap-3">
-              <Rocket className="h-4 w-4 text-[#1EAEDB]" />
-              <span className="text-sm text-white">Active Integrations</span>
+              <div className="w-8 h-8 rounded-full bg-[#EC4899]/10 flex items-center justify-center">
+                <Rocket className="h-4 w-4 text-[#EC4899]" />
+              </div>
+              <span className="text-sm text-gray-300">Active Integrations</span>
             </div>
             <span className="text-sm font-bold text-white">{stats.integrations}</span>
           </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-[#1A1F2C]">
+          
+          <div className="flex items-center justify-between p-4 rounded-lg bg-[#0D1117] border border-[#30363D]">
             <div className="flex items-center gap-3">
-              <Lock className="h-4 w-4 text-[#1EAEDB]" />
-              <span className="text-sm text-white">Training Documents</span>
+              <div className="w-8 h-8 rounded-full bg-[#10B981]/10 flex items-center justify-center">
+                <Lock className="h-4 w-4 text-[#10B981]" />
+              </div>
+              <span className="text-sm text-gray-300">Training Documents</span>
             </div>
             <span className="text-sm font-bold text-white">{stats.trainingDocs}</span>
           </div>
