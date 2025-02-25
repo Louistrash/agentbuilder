@@ -1,9 +1,8 @@
 
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight, Menu } from "lucide-react";
+import { Settings, ArrowRight, Menu, LucideHeartHandshake } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 
 interface HeaderProps {
@@ -13,34 +12,26 @@ interface HeaderProps {
 export function Header({ logoUrl }: HeaderProps) {
   const navigate = useNavigate();
   const { isAdmin } = useAdmin();
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-  };
+  const [imageError, setImageError] = useState(false);
 
   return (
     <header className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center gap-3">
-            {imageLoading && (
-              <Skeleton className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-700/50" />
-            )}
-            <img
-              src={logoUrl || "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"}
-              alt="Chat Agent Builder Logo"
-              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover ${imageLoading ? 'hidden' : 'block'}`}
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-            />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
+              {logoUrl && !imageError ? (
+                <img
+                  src={logoUrl}
+                  alt="Chat Agent Builder Logo"
+                  className="w-full h-full object-cover"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <LucideHeartHandshake className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              )}
+            </div>
             <div className="flex flex-col">
               <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                 Chat Agent Builder
