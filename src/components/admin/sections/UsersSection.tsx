@@ -1,7 +1,5 @@
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
@@ -13,124 +11,26 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { UserTableRow } from "./users/UserTableRow";
 import { UserFilters } from "./users/UserFilters";
 import { BulkActions } from "./users/BulkActions";
-
-interface User {
-  id: string;
-  email: string;
-  roles: string[];
-}
+import { useUsers } from "@/hooks/useUsers";
 
 export const UsersSection = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { users, loading, fetchUsers, updateUserRole, deleteUsers, updateUsersRole } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const { toast } = useToast();
-
-  const fetchUsers = async () => {
-    try {
-      const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers();
-      if (usersError) throw usersError;
-
-      const { data: roles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('user_id, role');
-      if (rolesError) throw rolesError;
-
-      const userList = users.map(user => ({
-        id: user.id,
-        email: user.email || '',
-        roles: roles
-          .filter(r => r.user_id === user.id)
-          .map(r => r.role) || []
-      }));
-
-      setUsers(userList);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch users",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateUserRole = async (userId: string, role: string) => {
-    try {
-      const { error } = await supabase
-        .from('user_roles')
-        .upsert({ 
-          user_id: userId, 
-          role: role as 'admin' | 'moderator' | 'user'
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "User role updated successfully",
-      });
-
-      fetchUsers();
-    } catch (error) {
-      console.error('Error updating user role:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update user role",
-        variant: "destructive",
-      });
-    }
-  };
 
   const handleBulkAction = async (action: 'delete' | 'role', role?: string) => {
-    if (selectedUsers.length === 0) {
-      toast({
-        title: "No users selected",
-        description: "Please select users to perform this action",
-        variant: "destructive",
-      });
-      return;
+    if (selectedUsers.length === 0) return;
+
+    let success = false;
+    if (action === 'role' && role) {
+      success = await updateUsersRole(selectedUsers, role);
+    } else if (action === 'delete') {
+      success = await deleteUsers(selectedUsers);
     }
 
-    try {
-      if (action === 'role' && role) {
-        const promises = selectedUsers.map(userId => 
-          supabase
-            .from('user_roles')
-            .upsert({ user_id: userId, role: role as 'admin' | 'moderator' | 'user' })
-        );
-        
-        await Promise.all(promises);
-        
-        toast({
-          title: "Success",
-          description: `Updated roles for ${selectedUsers.length} users`,
-        });
-      } else if (action === 'delete') {
-        for (const userId of selectedUsers) {
-          const { error } = await supabase.auth.admin.deleteUser(userId);
-          if (error) throw error;
-        }
-        
-        toast({
-          title: "Success",
-          description: `Deleted ${selectedUsers.length} users`,
-        });
-      }
-
+    if (success) {
       setSelectedUsers([]);
-      fetchUsers();
-    } catch (error) {
-      console.error('Error performing bulk action:', error);
-      toast({
-        title: "Error",
-        description: "Failed to perform bulk action",
-        variant: "destructive",
-      });
     }
   };
 
