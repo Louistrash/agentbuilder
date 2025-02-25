@@ -18,16 +18,14 @@ export const useUsers = () => {
   
   const fetchUsers = async (): Promise<User[]> => {
     try {
-      // First get the auth users list
-      const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
+      // First get users from the profiles table
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id');
       
-      if (authError) {
-        console.error('Error fetching auth users:', authError);
-        throw authError;
-      }
-
-      if (!authUsers?.length) {
-        return [];
+      if (profilesError) {
+        console.error('Error fetching profiles:', profilesError);
+        throw profilesError;
       }
 
       // Get their roles from the user_roles table
@@ -40,21 +38,29 @@ export const useUsers = () => {
         throw rolesError;
       }
 
-      // Map the users data
-      const users = authUsers.map(authUser => {
+      // Fetch user details for each profile
+      const userPromises = profiles.map(async (profile) => {
+        const { data: userData, error: userError } = await supabase.auth.admin.getUserById(profile.id);
+        if (userError) {
+          console.error('Error fetching user:', userError);
+          return null;
+        }
+        
         const roles = userRoles
-          ?.filter(r => r.user_id === authUser.id)
+          ?.filter(r => r.user_id === profile.id)
           ?.map(r => r.role as UserRole) || [];
 
         return {
-          id: authUser.id,
-          email: authUser.email || '',
-          created_at: authUser.created_at,
+          id: profile.id,
+          email: userData?.user?.email || '',
+          created_at: userData?.user?.created_at || '',
           roles: roles
         };
       });
 
+      const users = (await Promise.all(userPromises)).filter((user): user is User => user !== null);
       return users;
+      
     } catch (error) {
       console.error('Error in fetchUsers:', error);
       toast({
@@ -72,7 +78,7 @@ export const useUsers = () => {
         .from('user_roles')
         .upsert({ 
           user_id: userId, 
-          role: role
+          role: role 
         });
 
       if (error) throw error;
@@ -96,6 +102,15 @@ export const useUsers = () => {
 
   const deleteUsers = async (userIds: string[]) => {
     try {
+      // First delete from profiles table
+      const { error: profilesError } = await supabase
+        .from('profiles')
+        .delete()
+        .in('id', userIds);
+
+      if (profilesError) throw profilesError;
+
+      // Then delete from auth.users
       for (const userId of userIds) {
         const { error } = await supabase.auth.admin.deleteUser(userId);
         if (error) throw error;
