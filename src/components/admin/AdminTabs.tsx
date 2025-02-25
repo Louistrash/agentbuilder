@@ -27,40 +27,40 @@ export function AdminTabs() {
         </TabsTrigger>
       </Card>
 
-      <Card className="border-none p-0 overflow-hidden bg-[#1EAEDB]/5">
+      <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="users"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#8B5CF6] data-[state=active]:text-white transition-all duration-300 hover:text-[#8B5CF6]/90 gap-2 p-4"
         >
           <Users className="h-4 w-4" />
           Users
         </TabsTrigger>
       </Card>
 
-      <Card className="border-none p-0 overflow-hidden bg-[#1EAEDB]/5">
+      <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="chat"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#EC4899] data-[state=active]:text-white transition-all duration-300 hover:text-[#EC4899]/90 gap-2 p-4"
         >
           <MessageSquare className="h-4 w-4" />
           Chat
         </TabsTrigger>
       </Card>
 
-      <Card className="border-none p-0 overflow-hidden bg-[#1EAEDB]/5">
+      <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="analytics"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#10B981] data-[state=active]:text-white transition-all duration-300 hover:text-[#10B981]/90 gap-2 p-4"
         >
           <BarChart3 className="h-4 w-4" />
           Analytics
         </TabsTrigger>
       </Card>
 
-      <Card className="border-none p-0 overflow-hidden bg-[#1EAEDB]/5">
+      <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="tokens"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#F59E0B] data-[state=active]:text-white transition-all duration-300 hover:text-[#F59E0B]/90 gap-2 p-4"
         >
           <Coins className="h-4 w-4" />
           Tokens
@@ -70,7 +70,7 @@ export function AdminTabs() {
       <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="appointments"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#6366F1] data-[state=active]:text-white transition-all duration-300 hover:text-[#6366F1]/90 gap-2 p-4"
         >
           <CalendarDays className="h-4 w-4" />
           Appointments
@@ -80,7 +80,7 @@ export function AdminTabs() {
       <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="marketplace"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#14B8A6] data-[state=active]:text-white transition-all duration-300 hover:text-[#14B8A6]/90 gap-2 p-4"
         >
           <Boxes className="h-4 w-4" />
           Marketplace
@@ -90,7 +90,7 @@ export function AdminTabs() {
       <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="integrations"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#8B5CF6] data-[state=active]:text-white transition-all duration-300 hover:text-[#8B5CF6]/90 gap-2 p-4"
         >
           <Rocket className="h-4 w-4" />
           Integrations
@@ -100,7 +100,7 @@ export function AdminTabs() {
       <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="subscriptions"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#EC4899] data-[state=active]:text-white transition-all duration-300 hover:text-[#EC4899]/90 gap-2 p-4"
         >
           <CreditCard className="h-4 w-4" />
           Subscriptions
@@ -110,7 +110,7 @@ export function AdminTabs() {
       <Card className="border-none p-0 overflow-hidden">
         <TabsTrigger 
           value="training"
-          className="w-full h-full data-[state=active]:bg-[#1EAEDB] data-[state=active]:text-white transition-all duration-300 hover:text-[#1EAEDB]/90 gap-2 p-4"
+          className="w-full h-full data-[state=active]:bg-[#10B981] data-[state=active]:text-white transition-all duration-300 hover:text-[#10B981]/90 gap-2 p-4"
         >
           <BookOpen className="h-4 w-4" />
           Training
