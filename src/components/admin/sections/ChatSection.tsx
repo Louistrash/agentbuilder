@@ -56,21 +56,21 @@ export const ChatSection = () => {
         </Card>
       </div>
 
-      <div className="bg-[#0D1117] border border-[#30363D] rounded-xl p-6">
-        <div className="space-y-6">
+      <Card className="bg-[#0D1117] border-[#30363D]">
+        <div className="p-6 space-y-6">
           <div>
-            <h2 className="text-xl font-semibold text-white">Chat Behavior & AI Responses</h2>
-            <p className="text-sm text-gray-400 mt-1">Configure how your AI assistant interacts with users</p>
+            <h2 className="text-lg font-semibold text-white">Chat Behavior & AI Responses</h2>
+            <p className="text-xs text-gray-400 mt-1">Configure how your AI assistant interacts with users</p>
           </div>
-          <div className="relative bg-gradient-to-br from-[#161B22] to-[#1F2937] rounded-lg p-8 border border-[#30363D] shadow-lg overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#161B22] to-[#1F2937] rounded-lg p-6 border border-[#30363D] shadow-lg overflow-hidden">
             <div className="absolute inset-0 bg-grid-white/[0.02] mask-gradient"></div>
             <div className="absolute inset-0 bg-gradient-to-tr from-[#4F46E5]/10 via-[#7C3AED]/10 to-[#EC4899]/10 animate-gradient-slow"></div>
-            <div className="relative z-10">
+            <div className="relative z-10 text-sm">
               <ChatBehaviorSettings />
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };
