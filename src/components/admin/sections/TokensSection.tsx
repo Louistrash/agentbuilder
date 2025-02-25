@@ -6,6 +6,7 @@ import { TokenTransaction, TokenStats } from "./tokens/types";
 import { TokenStatsCards } from "./tokens/TokenStatsCards";
 import { GrantTokensForm } from "./tokens/GrantTokensForm";
 import { TokenTransactionsTable } from "./tokens/TokenTransactionsTable";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const TokensSection = () => {
   const [transactions, setTransactions] = useState<TokenTransaction[]>([]);
@@ -58,14 +59,21 @@ export const TokensSection = () => {
 
   return (
     <div className="space-y-6 p-4">
-      <div>
-        <h2 className="text-xl sm:text-2xl font-bold">Token Management</h2>
-        <p className="text-sm sm:text-base text-muted-foreground">Manage and track token usage across the platform</p>
-      </div>
-
-      <TokenStatsCards stats={stats} />
-      <GrantTokensForm onSuccess={fetchTransactions} />
-      <TokenTransactionsTable transactions={transactions} />
+      <Card className="bg-[#222939]/95 border-[#1EAEDB]/10 shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
+            Token Management
+          </CardTitle>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Manage and track token usage across the platform
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <TokenStatsCards stats={stats} />
+          <GrantTokensForm onSuccess={fetchTransactions} />
+          <TokenTransactionsTable transactions={transactions} />
+        </CardContent>
+      </Card>
     </div>
   );
 };
