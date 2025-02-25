@@ -22,7 +22,7 @@ export const AIPersonalitySection = ({
       {/* AI Personality Configuration */}
       <div className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="aiPersonality" className="text-sm font-medium">
+          <label htmlFor="aiPersonality" className="text-sm font-medium bg-zinc-50">
             AI Personality Description
           </label>
           <Textarea id="aiPersonality" value={aiPersonality} onChange={e => onSettingChange('aiPersonality', e.target.value)} placeholder="Define your AI agent's personality, expertise, and communication style" className="h-64" />

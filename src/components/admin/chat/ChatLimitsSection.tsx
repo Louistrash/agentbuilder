@@ -21,12 +21,12 @@ export const ChatLimitsSection = ({
   learningMode,
   onSettingChange
 }: ChatLimitsSectionProps) => {
-  return <section className="space-y-6 bg-gray-800">
+  return <section className="space-y-6 bg-gray-900">
       <h2 className="text-xl font-semibold text-zinc-300">Chat Performance & Memory</h2>
       
       {/* Basic Chat Limits */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2 bg-gray-800">
+        <div className="space-y-2 bg-zinc-900">
           <Label htmlFor="maxMessages" className="bg-zinc-700">Maximum Messages per Chat</Label>
           <Input id="maxMessages" type="number" value={maxMessagesPerChat} onChange={e => onSettingChange('maxMessagesPerChat', e.target.value)} min="1" max="100" />
           <p className="text-sm text-gray-500">
@@ -58,7 +58,7 @@ export const ChatLimitsSection = ({
         </div>
         
         {contextMemory.enabled && <div className="space-y-2">
-            <Label htmlFor="messageHistory">Message History Length</Label>
+            <Label htmlFor="messageHistory" className="bg-zinc-50">Message History Length</Label>
             <Input id="messageHistory" type="number" value={contextMemory.messageHistory} onChange={e => onSettingChange('contextMemory', {
           ...contextMemory,
           messageHistory: parseInt(e.target.value)
