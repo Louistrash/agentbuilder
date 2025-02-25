@@ -21,7 +21,11 @@ const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
     className="border-[#30363D] p-4 bg-[#0D1117] hover:bg-[#161B22] transition-all duration-300 group cursor-pointer"
     onClick={() => {
       const element = document.getElementById(href);
-      element?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        console.log(`Section with id ${href} not found`);
+      }
     }}
   >
     <div className="flex items-center gap-4">
@@ -37,7 +41,7 @@ export function AdminMenu() {
   const menuItems = [
     {
       icon: <Settings2 className="h-6 w-6 text-[#6366F1]" />,
-      title: "General",
+      title: "General Settings",
       color: "bg-[#6366F1]/10",
       href: "general"
     },
