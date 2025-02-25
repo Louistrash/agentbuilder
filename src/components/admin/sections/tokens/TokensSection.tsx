@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { TokenTransaction, TokenStats } from "./tokens/types";
-import { TokenStatsCards } from "./tokens/TokenStatsCards";
-import { GrantTokensForm } from "./tokens/GrantTokensForm";
-import { TokenTransactionsTable } from "./tokens/TokenTransactionsTable";
+import { TokenTransaction, TokenStats } from "./types";
+import { TokenStatsCards } from "./TokenStatsCards";
+import { GrantTokensForm } from "./GrantTokensForm";
+import { TokenTransactionsTable } from "./TokenTransactionsTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const TokensSection = () => {
