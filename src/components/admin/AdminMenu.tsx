@@ -102,16 +102,20 @@ export function AdminMenu() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-      {menuItems.map((item) => (
-        <MenuItem
-          key={item.href}
-          icon={item.icon}
-          title={item.title}
-          color={item.color}
-          href={item.href}
-        />
-      ))}
+    <div className="fixed top-16 left-0 right-0 z-40 bg-[#0D1117] border-b border-[#30363D] px-4 py-4">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          {menuItems.map((item) => (
+            <MenuItem
+              key={item.href}
+              icon={item.icon}
+              title={item.title}
+              color={item.color}
+              href={item.href}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
