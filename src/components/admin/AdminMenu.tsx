@@ -78,7 +78,7 @@ export function AdminMenu() {
   ];
 
   return (
-    <div className="fixed top-16 lg:top-0 left-0 right-0 z-30 bg-[#0D1117] border-b border-[#30363D] px-4 py-4 lg:ml-64">
+    <div className="sticky top-16 lg:top-0 left-0 right-0 z-30 bg-[#0D1117] border-b border-[#30363D] px-4 py-4 lg:ml-64">
       <div className="max-w-[1600px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {menuItems.map((item) => (
