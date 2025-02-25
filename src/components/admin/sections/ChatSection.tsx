@@ -15,8 +15,8 @@ export const ChatSection = () => {
                   <MessageSquare className="h-6 w-6 text-admin-accent-purple" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Active Chats</p>
-                  <p className="text-xl font-semibold text-white">247</p>
+                  <p className="text-sm font-medium text-white/80">Active Chats</p>
+                  <p className="text-xl font-bold text-white">247</p>
                 </div>
               </div>
             </div>
@@ -29,8 +29,8 @@ export const ChatSection = () => {
                   <Bot className="h-6 w-6 text-admin-accent-blue" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Bot Status</p>
-                  <p className="text-xl font-semibold text-white">Online</p>
+                  <p className="text-sm font-medium text-white/80">Bot Status</p>
+                  <p className="text-xl font-bold text-white">Online</p>
                 </div>
               </div>
             </div>
@@ -45,8 +45,8 @@ export const ChatSection = () => {
                   <Brain className="h-6 w-6 text-admin-accent-pink" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">AI Model</p>
-                  <p className="text-xl font-semibold text-white">GPT-4</p>
+                  <p className="text-sm font-medium text-white/80">AI Model</p>
+                  <p className="text-xl font-bold text-white">GPT-4</p>
                 </div>
               </div>
             </div>
@@ -59,8 +59,8 @@ export const ChatSection = () => {
                   <Sliders className="h-6 w-6 text-admin-accent-purple" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Settings</p>
-                  <p className="text-xl font-semibold text-white">Configured</p>
+                  <p className="text-sm font-medium text-white/80">Settings</p>
+                  <p className="text-xl font-bold text-white">Configured</p>
                 </div>
               </div>
             </div>
@@ -70,18 +70,18 @@ export const ChatSection = () => {
 
       <Card className="bg-admin-card border-admin-border">
         <CardHeader>
-          <CardTitle className="text-white text-lg">Chat Behavior & AI Responses</CardTitle>
+          <CardTitle className="text-white text-xl font-bold">Chat Behavior & AI Responses</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-[#0D1117] rounded-lg p-4 border border-[#30363D]">
-              <h3 className="text-sm font-medium text-gray-400 mb-4">Chat Configuration</h3>
+              <h3 className="text-base font-semibold text-white mb-4">Chat Configuration</h3>
               <div className="space-y-4">
                 <ChatBehaviorSettings />
               </div>
             </div>
             <div className="bg-[#0D1117] rounded-lg p-4 border border-[#30363D]">
-              <h3 className="text-sm font-medium text-gray-400 mb-4">Response Settings</h3>
+              <h3 className="text-base font-semibold text-white mb-4">Response Settings</h3>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#9b87f5]/5 via-[#1EAEDB]/5 to-[#EC4899]/5 animate-gradient-flow rounded-lg"></div>
                 <div className="relative z-10">
