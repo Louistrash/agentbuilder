@@ -9,11 +9,12 @@ import {
   Link2,
   Users,
   CreditCard,
+  Store,
 } from "lucide-react";
 
 export const AdminTabs = () => {
   return (
-    <TabsList className="grid grid-cols-8 gap-4 px-4 py-2">
+    <TabsList className="grid grid-cols-9 gap-4 px-4 py-2">
       <TabsTrigger value="general" className="gap-2">
         <Settings className="h-4 w-4" />
         <span className="hidden md:inline">General</span>
@@ -52,6 +53,11 @@ export const AdminTabs = () => {
       <TabsTrigger value="subscriptions" className="gap-2">
         <CreditCard className="h-4 w-4" />
         <span className="hidden md:inline">Subscriptions</span>
+      </TabsTrigger>
+
+      <TabsTrigger value="marketplace" className="gap-2">
+        <Store className="h-4 w-4" />
+        <span className="hidden md:inline">Marketplace</span>
       </TabsTrigger>
     </TabsList>
   );
