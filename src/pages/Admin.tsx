@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -72,7 +73,7 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#1A1F2C] bg-opacity-95 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAA5klEQVRIx+2VQQ6CMBREf4ir3oGtN+AYrD0DYU/KmrJg4RFqwo4DYOIdegcXxBhjKKVlymLcsMu0nX79mQYYmJH8fTP5wqjlQKdrHVYZUEiF1h0bgwxYZmtjKpsNoEVl+wCgtNoCCGzdvgMAEK81AODF3gLwrr0BgMUkNwBCk9wAYClJAYC5JBcADKKcqwCgTeUGgJ7u2wHQU30AsNBNCgA2um8HwEz3AUD5VhcAqF/lBoCR7gOAme4DgI3uA4BSlzEAuOnmFICrTlMA/ik1Bdg3+9Yt4Ddu4SkA8K7LCICx/jXOVVv/vAHRGH1yTkH54QAAAABJRU5ErkJggg==')]">
+    <div className="min-h-screen bg-[#1A1F2C] bg-opacity-95 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEUAAAD8/vz08vT09PT8/Pz///8nZzVxAAAABXRSTlMACAwQEBvb/XgAAACSSURBVDjLvZA7EgMhCEQpvP+di2z2Atvb2mAJPyYZR8qnePCYklrrWuu1VO9jDvFBGJuGhPB7Zxxm4YSQgXnGjBwxA2cEjtkxg2f0gNkzR8HuWRR8niUFp2dZAZcR28ClxB3ALcU9wDXGQ8CtxlMA1xzPAVx7vAhwL/EyAPcWrwNwrwECcO9RBODeBATg3qMYgPsPYwDsNP4AZLrVs0E+tWEAAAAASUVORK5CYII=')] bg-repeat">
       <div className="max-w-[1400px] mx-auto p-4 space-y-4">
         <div className="rounded-xl overflow-hidden bg-[#222939]/95 shadow-2xl border border-[#1EAEDB]/10 backdrop-blur-sm transition-all duration-300">
           <AdminHeader />
@@ -91,36 +92,16 @@ const Admin = () => {
                 <ChatSection />
               </TabsContent>
 
-              <TabsContent value="appointments" className="mt-0 space-y-4">
-                <AppointmentsSection />
-              </TabsContent>
-
-              <TabsContent value="analytics" className="mt-0 space-y-4">
-                <AnalyticsSection />
-              </TabsContent>
-
-              <TabsContent value="training" className="mt-0 space-y-4">
-                <TrainingSection />
-              </TabsContent>
-
-              <TabsContent value="integrations" className="mt-0 space-y-4">
-                <IntegrationsSection />
-              </TabsContent>
-
               <TabsContent value="users" className="mt-0 space-y-4">
                 <UsersSection />
               </TabsContent>
 
-              <TabsContent value="subscriptions" className="mt-0 space-y-4">
-                <SubscriptionsSection />
-              </TabsContent>
-
-              <TabsContent value="marketplace" className="mt-0 space-y-4">
-                <MarketplaceSection />
-              </TabsContent>
-
               <TabsContent value="tokens" className="mt-0 space-y-4">
                 <TokensSection />
+              </TabsContent>
+
+              <TabsContent value="analytics" className="mt-0 space-y-4">
+                <AnalyticsSection />
               </TabsContent>
             </div>
           </Tabs>
@@ -128,6 +109,6 @@ const Admin = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Admin;
