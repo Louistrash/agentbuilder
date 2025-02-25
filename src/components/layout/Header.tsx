@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -63,7 +63,7 @@ export function Header({ logoUrl }: HeaderProps) {
               onClick={() => navigate('/auth')}
               className="text-gray-300 hover:text-white hover:bg-white/10"
             >
-              Sign In
+              Get Started <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
         </div>
