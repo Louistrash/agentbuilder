@@ -52,7 +52,7 @@ const Index = () => {
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
-      icon: <Rocket className="h-16 w-16 text-blue-400" />,
+      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-blue-400" />,
       gradientClasses: 'bg-gradient-to-b from-[#1a237e]/20 to-[#1a1f35]',
       bgColor: 'bg-[#1a1f35]'
     },
@@ -61,7 +61,7 @@ const Index = () => {
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
-      icon: <Rocket className="h-16 w-16 text-teal-400" />,
+      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-teal-400" />,
       gradientClasses: 'bg-gradient-to-b from-[#004d40]/20 to-[#1a2b29]',
       bgColor: 'bg-[#1a2b29]'
     },
@@ -70,7 +70,7 @@ const Index = () => {
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
-      icon: <ChartBar className="h-16 w-16 text-orange-400" />,
+      icon: <ChartBar className="h-12 w-12 sm:h-16 sm:w-16 text-orange-400" />,
       gradientClasses: 'bg-gradient-to-b from-[#bf360c]/20 to-[#2b1f1a]',
       bgColor: 'bg-[#2b1f1a]'
     }
@@ -81,36 +81,36 @@ const Index = () => {
       <Header logoUrl={logoUrl} />
 
       <main className="relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
               Create Intelligent Chat Agents
             </h2>
-            <p className="text-gray-400 text-xl max-w-2xl mx-auto mb-8">
+            <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
               Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col gap-3">
               <Button
-                size="lg"
+                size="default"
                 onClick={() => navigate('/agents')}
-                className="w-full sm:w-auto bg-white text-[#0f1116] hover:bg-gray-200"
+                className="w-full bg-white text-[#0f1116] hover:bg-gray-200 h-10"
               >
-                <Plus className="h-5 w-5 mr-2" />
+                <Plus className="h-4 w-4 mr-2" />
                 Create Your First Agent
               </Button>
               <Button
-                size="lg"
+                size="default"
                 variant="outline"
                 onClick={() => setShowOnboarding(true)}
-                className="w-full sm:w-auto border-gray-700 text-gray-300 hover:bg-gray-800"
+                className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-10"
               >
-                <Play className="h-5 w-5 mr-2" />
+                <Play className="h-4 w-4 mr-2" />
                 Watch Demo
               </Button>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-[1200px] mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6 max-w-lg mx-auto">
             {features.map((feature) => (
               <FeatureCard
                 key={feature.id}
