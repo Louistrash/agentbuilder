@@ -1,5 +1,8 @@
 
 import { DashboardGrid } from "./dashboard/DashboardGrid";
+import { AnalyticsOverview } from "./analytics/AnalyticsOverview";
+import { ChatMetricsChart } from "./analytics/ChatMetricsChart";
+import { TopQueriesTable } from "./analytics/TopQueriesTable";
 
 export const GeneralSettings = () => {
   return (
@@ -9,7 +12,12 @@ export const GeneralSettings = () => {
         <p className="text-muted-foreground">Overview of key metrics and performance indicators</p>
       </div>
 
-      <DashboardGrid />
+      <AnalyticsOverview />
+      
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+        <ChatMetricsChart />
+        <TopQueriesTable />
+      </div>
 
       <div className="mt-8">
         <h3 className="text-xl font-semibold">General Settings</h3>
