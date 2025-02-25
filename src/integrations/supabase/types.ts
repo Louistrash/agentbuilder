@@ -437,6 +437,30 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["role_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["role_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["role_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       website_training_sources: {
         Row: {
           created_at: string
@@ -486,6 +510,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_role: {
+        Args: {
+          user_id: string
+          role: Database["public"]["Enums"]["role_type"]
+        }
+        Returns: boolean
+      }
       update_daily_analytics: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -499,7 +530,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      role_type: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never

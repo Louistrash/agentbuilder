@@ -1,54 +1,54 @@
 
-import { Settings, MessageSquare, Calendar, BarChart3, Link2, Globe } from "lucide-react";
-import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Settings,
+  MessagesSquare,
+  Calendar,
+  BarChart3,
+  BookOpen,
+  Link2,
+  Users,
+} from "lucide-react";
 
 export const AdminTabs = () => {
   return (
-    <div className="border-b border-luxury-100">
-      <TabsList className="p-0 h-auto bg-transparent border-b border-luxury-100">
-        <TabsTrigger 
-          value="general" 
-          className="flex items-center gap-2 px-6 py-3 data-[state=active]:border-b-2 data-[state=active]:border-luxury-600"
-        >
+    <Tabs defaultValue="general" className="w-full">
+      <TabsList className="grid grid-cols-7 gap-4 px-4 py-2">
+        <TabsTrigger value="general" className="gap-2">
           <Settings className="h-4 w-4" />
-          General Settings
+          <span className="hidden md:inline">General</span>
         </TabsTrigger>
-        <TabsTrigger 
-          value="chat" 
-          className="flex items-center gap-2 px-6 py-3 data-[state=active]:border-b-2 data-[state=active]:border-luxury-600"
-        >
-          <MessageSquare className="h-4 w-4" />
-          Chat Behavior
+        
+        <TabsTrigger value="chat" className="gap-2">
+          <MessagesSquare className="h-4 w-4" />
+          <span className="hidden md:inline">Chat</span>
         </TabsTrigger>
-        <TabsTrigger 
-          value="appointments" 
-          className="flex items-center gap-2 px-6 py-3 data-[state=active]:border-b-2 data-[state=active]:border-luxury-600"
-        >
+        
+        <TabsTrigger value="appointments" className="gap-2">
           <Calendar className="h-4 w-4" />
-          Appointments
+          <span className="hidden md:inline">Appointments</span>
         </TabsTrigger>
-        <TabsTrigger 
-          value="analytics" 
-          className="flex items-center gap-2 px-6 py-3 data-[state=active]:border-b-2 data-[state=active]:border-luxury-600"
-        >
+        
+        <TabsTrigger value="analytics" className="gap-2">
           <BarChart3 className="h-4 w-4" />
-          Analytics
+          <span className="hidden md:inline">Analytics</span>
         </TabsTrigger>
-        <TabsTrigger 
-          value="training" 
-          className="flex items-center gap-2 px-6 py-3 data-[state=active]:border-b-2 data-[state=active]:border-luxury-600"
-        >
-          <Globe className="h-4 w-4" />
-          Training
+        
+        <TabsTrigger value="training" className="gap-2">
+          <BookOpen className="h-4 w-4" />
+          <span className="hidden md:inline">Training</span>
         </TabsTrigger>
-        <TabsTrigger 
-          value="integrations" 
-          className="flex items-center gap-2 px-6 py-3 data-[state=active]:border-b-2 data-[state=active]:border-luxury-600"
-        >
+        
+        <TabsTrigger value="integrations" className="gap-2">
           <Link2 className="h-4 w-4" />
-          Integrations
+          <span className="hidden md:inline">Integrations</span>
+        </TabsTrigger>
+
+        <TabsTrigger value="users" className="gap-2">
+          <Users className="h-4 w-4" />
+          <span className="hidden md:inline">Users</span>
         </TabsTrigger>
       </TabsList>
-    </div>
+    </Tabs>
   );
 };
