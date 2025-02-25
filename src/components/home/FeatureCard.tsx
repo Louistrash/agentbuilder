@@ -15,7 +15,7 @@ interface FeatureCardProps {
   onMouseLeave: () => void;
   isClicked: boolean;
   gradientClasses: string;
-  customAnimation?: React.ReactNode;
+  bgColor: string;
 }
 
 export function FeatureCard({
@@ -30,31 +30,23 @@ export function FeatureCard({
   onMouseLeave,
   isClicked,
   gradientClasses,
-  customAnimation
+  bgColor
 }: FeatureCardProps) {
-  const getCardClassName = () => {
-    const baseClasses = "p-4 sm:p-6 bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-300 cursor-pointer transform";
-    const hoverClasses = isHovered ? "border-white/30 translate-y-[-4px]" : "hover:border-white/20 hover:translate-y-[-2px]";
-    const clickedClasses = isClicked ? "scale-95 opacity-75" : "";
-    return `${baseClasses} ${hoverClasses} ${clickedClasses}`;
-  };
-
   return (
     <Card
-      className={getCardClassName()}
+      className={`p-6 ${bgColor} rounded-xl border border-gray-800 hover:border-gray-700 transition-all duration-300`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className={`relative mb-4 sm:mb-6 h-32 sm:h-40 ${gradientClasses} rounded-lg flex items-center justify-center overflow-hidden`}>
-        {customAnimation || icon}
+      <div className={`${gradientClasses} rounded-lg h-40 mb-6 flex items-center justify-center`}>
+        {icon}
       </div>
-      <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">{title}</h3>
-      <p className="text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">{description}</p>
-      <p className="text-xs sm:text-sm text-gray-500 mb-4">{demoContent}</p>
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <p className="text-gray-400 mb-4 text-sm">{description}</p>
+      <p className="text-gray-500 mb-6 text-sm">{demoContent}</p>
       <Button
         variant="outline"
-        size="sm"
-        className="w-full"
+        className="w-full border-gray-700 text-gray-300 hover:bg-gray-800"
         onClick={onClick}
       >
         <Play className="h-4 w-4 mr-2" />

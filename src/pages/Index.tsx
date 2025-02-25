@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Plus, Rocket, ChartBar, MessageSquare, Play } from "lucide-react";
+import { Plus, Rocket, ChartBar, Play } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { ProFeatures } from "@/components/home/ProFeatures";
@@ -52,82 +52,49 @@ const Index = () => {
       id: 'build',
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
-      icon: <Rocket className="h-16 w-16 text-blue-400" />,
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
-      gradientClasses: 'bg-gradient-to-br from-blue-500/20 to-purple-500/20',
-      customAnimation: (
-        <>
-          <Rocket 
-            className={`h-16 w-16 text-blue-400 transition-all duration-500 transform
-              ${hoveredCard === 'build' ? 'translate-y-[-8px] scale-110' : ''}`} 
-          />
-          <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity duration-300
-            ${hoveredCard === 'build' ? 'opacity-100' : ''}`} />
-        </>
-      )
+      icon: <Rocket className="h-16 w-16 text-blue-400" />,
+      gradientClasses: 'bg-gradient-to-br from-[#1a237e]/20 to-[#283593]/20',
+      bgColor: 'bg-[#1a1f35]'
     },
     {
       id: 'smart',
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
-      icon: <MessageSquare className="h-16 w-16 text-green-400" />,
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
-      gradientClasses: 'bg-gradient-to-br from-green-500/20 to-teal-500/20',
-      customAnimation: (
-        <>
-          <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-500
-            ${hoveredCard === 'smart' ? 'translate-y-0' : 'translate-y-full'}`}>
-            <MessageSquare className="h-16 w-16 text-green-400 animate-bounce" />
-          </div>
-          <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-500
-            ${hoveredCard === 'smart' ? 'translate-y-[-100%]' : 'translate-y-0'}`}>
-            <Rocket className="h-16 w-16 text-teal-400" />
-          </div>
-        </>
-      )
+      icon: <Rocket className="h-16 w-16 text-teal-400" />,
+      gradientClasses: 'bg-gradient-to-br from-[#004d40]/20 to-[#00695c]/20',
+      bgColor: 'bg-[#1a2b29]'
     },
     {
       id: 'analytics',
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
-      icon: <ChartBar className="h-16 w-16 text-orange-400" />,
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
-      gradientClasses: 'bg-gradient-to-br from-orange-500/20 to-red-500/20',
-      customAnimation: (
-        <div className="flex flex-col items-center space-y-2 transition-transform duration-500">
-          <ChartBar 
-            className={`h-16 w-16 text-orange-400 transition-all duration-300
-              ${hoveredCard === 'analytics' ? 'scale-110' : ''}`}
-          />
-          <div className={`flex space-x-2 transition-opacity duration-300
-            ${hoveredCard === 'analytics' ? 'opacity-100' : 'opacity-0'}`}>
-            <div className="w-2 h-8 bg-orange-400/50 rounded-t animate-pulse" />
-            <div className="w-2 h-12 bg-orange-400/70 rounded-t animate-pulse" />
-            <div className="w-2 h-6 bg-orange-400/40 rounded-t animate-pulse" />
-          </div>
-        </div>
-      )
+      icon: <ChartBar className="h-16 w-16 text-orange-400" />,
+      gradientClasses: 'bg-gradient-to-br from-[#bf360c]/20 to-[#d84315]/20',
+      bgColor: 'bg-[#2b1f1a]'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <div className="min-h-screen bg-[#0f1116] text-white">
       <Header logoUrl={logoUrl} />
 
       <main className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
           <div className="text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6 animate-fade-up">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
               Create Intelligent Chat Agents
             </h2>
-            <p className="text-base sm:text-xl text-gray-400 mb-6 sm:mb-8 max-w-2xl mx-auto animate-fade-up">
+            <p className="text-base sm:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
               Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <Button
                 size="lg"
                 onClick={() => navigate('/agents')}
-                className="w-full sm:w-auto animate-fade-up bg-white text-gray-900 hover:bg-gray-200"
+                className="w-full sm:w-auto bg-white text-[#0f1116] hover:bg-gray-200"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 Create Your First Agent
@@ -136,7 +103,7 @@ const Index = () => {
                 size="lg"
                 variant="outline"
                 onClick={() => setShowOnboarding(true)}
-                className="w-full sm:w-auto animate-fade-up"
+                className="w-full sm:w-auto border-gray-700 text-gray-300 hover:bg-gray-800"
               >
                 <Play className="h-5 w-5 mr-2" />
                 Watch Demo
@@ -144,7 +111,7 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-12 sm:mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature) => (
               <FeatureCard
                 key={feature.id}
@@ -159,12 +126,10 @@ const Index = () => {
                 onMouseLeave={() => setHoveredCard(null)}
                 isClicked={clickedCard === feature.id}
                 gradientClasses={feature.gradientClasses}
-                customAnimation={feature.customAnimation}
+                bgColor={feature.bgColor}
               />
             ))}
           </div>
-
-          <ProFeatures />
         </div>
       </main>
 
