@@ -77,17 +77,21 @@ export const ChatSection = () => {
         </CardHeader>
         <CardContent className="p-6">
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-2xl bg-[#0D1117]/80 backdrop-blur-sm p-5 border border-white/10">
-              <h3 className="text-base font-semibold text-white/90 mb-4">Chat Configuration</h3>
-              <div className="space-y-4">
-                <ChatBehaviorSettings />
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/20 via-[#1EAEDB]/10 to-[#EC4899]/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+              <div className="rounded-2xl bg-[#161B22]/95 backdrop-blur-2xl p-6 border border-white/10 relative z-10 overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-lg hover:shadow-white/5">
+                <h3 className="text-base font-semibold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent mb-4">Chat Configuration</h3>
+                <div className="space-y-4">
+                  <ChatBehaviorSettings />
+                </div>
               </div>
             </div>
-            <div className="rounded-2xl bg-[#0D1117]/80 backdrop-blur-sm p-5 border border-white/10">
-              <h3 className="text-base font-semibold text-white/90 mb-4">Response Settings</h3>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/5 via-[#1EAEDB]/5 to-[#EC4899]/5 animate-gradient-flow rounded-xl"></div>
-                <div className="relative z-10">
+
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#EC4899]/20 via-[#6366F1]/10 to-[#1EAEDB]/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+              <div className="rounded-2xl bg-[#161B22]/95 backdrop-blur-2xl p-6 border border-white/10 relative z-10 overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-lg hover:shadow-white/5">
+                <h3 className="text-base font-semibold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent mb-4">Response Settings</h3>
+                <div className="relative">
                   <ChatBehaviorSettings />
                 </div>
               </div>
