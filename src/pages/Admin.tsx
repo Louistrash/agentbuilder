@@ -136,46 +136,49 @@ const Admin = () => {
                 <AdminTabs />
               </div>
               
-              <div className="bg-[#161B22] rounded-lg p-6 border border-[#30363D] mt-[70px]">
-                <TabsContent value="general" className="mt-0">
-                  <GeneralSettings />
-                </TabsContent>
+              <div className="bg-[#161B22]/95 backdrop-blur-xl rounded-xl p-8 border border-[#30363D]/50 mt-[70px] shadow-2xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/5 via-transparent to-[#EC4899]/5 pointer-events-none"></div>
+                <div className="relative z-10">
+                  <TabsContent value="general" className="mt-0">
+                    <GeneralSettings />
+                  </TabsContent>
 
-                <TabsContent value="chat" className="mt-0">
-                  <ChatSection />
-                </TabsContent>
+                  <TabsContent value="chat" className="mt-0">
+                    <ChatSection />
+                  </TabsContent>
 
-                <TabsContent value="users" className="mt-0">
-                  <UsersSection />
-                </TabsContent>
+                  <TabsContent value="users" className="mt-0">
+                    <UsersSection />
+                  </TabsContent>
 
-                <TabsContent value="tokens" className="mt-0">
-                  <TokensSection />
-                </TabsContent>
+                  <TabsContent value="tokens" className="mt-0">
+                    <TokensSection />
+                  </TabsContent>
 
-                <TabsContent value="analytics" className="mt-0">
-                  <AnalyticsSection />
-                </TabsContent>
+                  <TabsContent value="analytics" className="mt-0">
+                    <AnalyticsSection />
+                  </TabsContent>
 
-                <TabsContent value="appointments" className="mt-0">
-                  <AppointmentsSection />
-                </TabsContent>
+                  <TabsContent value="appointments" className="mt-0">
+                    <AppointmentsSection />
+                  </TabsContent>
 
-                <TabsContent value="marketplace" className="mt-0">
-                  <MarketplaceSection />
-                </TabsContent>
+                  <TabsContent value="marketplace" className="mt-0">
+                    <MarketplaceSection />
+                  </TabsContent>
 
-                <TabsContent value="integrations" className="mt-0">
-                  <IntegrationsSection />
-                </TabsContent>
+                  <TabsContent value="integrations" className="mt-0">
+                    <IntegrationsSection />
+                  </TabsContent>
 
-                <TabsContent value="subscriptions" className="mt-0">
-                  <SubscriptionsSection />
-                </TabsContent>
+                  <TabsContent value="subscriptions" className="mt-0">
+                    <SubscriptionsSection />
+                  </TabsContent>
 
-                <TabsContent value="training" className="mt-0">
-                  <TrainingSection />
-                </TabsContent>
+                  <TabsContent value="training" className="mt-0">
+                    <TrainingSection />
+                  </TabsContent>
+                </div>
               </div>
             </Tabs>
           </div>
