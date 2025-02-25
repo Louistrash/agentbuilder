@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AvailableDays } from "./components/AvailableDays";
 import { BusinessHours } from "./components/BusinessHours";
 import { TimeSlot, AgentAvailability } from "./types";
+import { Json } from "@/integrations/supabase/types";
 
 interface AgentAvailabilityFormProps {
   agentId: string;
@@ -41,10 +42,18 @@ export const AgentAvailabilityForm = ({
 
       if (error && error.code !== 'PGRST116') throw error;
       if (data) {
-        // Convert the JSON time_slots to our TimeSlot type
+        // Safely convert the JSON time_slots to our TimeSlot type
+        const jsonTimeSlots = data.time_slots as Json[];
+        const timeSlots = Array.isArray(jsonTimeSlots) 
+          ? jsonTimeSlots.map(slot => ({
+              start: String(slot.start || "09:00"),
+              end: String(slot.end || "17:00")
+            }))
+          : [{ start: "09:00", end: "17:00" }];
+
         setAvailability({
           ...data,
-          time_slots: data.time_slots as TimeSlot[]
+          time_slots: timeSlots
         });
       }
     } catch (error) {
@@ -68,10 +77,16 @@ export const AgentAvailabilityForm = ({
         .eq('agent_id', agentId)
         .single();
 
+      // Convert TimeSlot[] to Json type for Supabase
+      const timeSlotsJson = availability.time_slots?.map(slot => ({
+        start: slot.start,
+        end: slot.end
+      })) as Json;
+
       const availabilityData = {
         agent_id: agentId,
         available_days: availability.available_days,
-        time_slots: availability.time_slots
+        time_slots: timeSlotsJson
       };
 
       if (existing) {
