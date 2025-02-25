@@ -32,6 +32,7 @@ export const UsersSection = () => {
 
     if (success) {
       setSelectedUsers([]);
+      fetchUsers();
     }
   };
 
