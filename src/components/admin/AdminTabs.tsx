@@ -11,54 +11,84 @@ import {
   CreditCard,
   Store,
 } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const AdminTabs = () => {
   return (
-    <TabsList className="grid grid-cols-9 gap-4 px-4 py-2">
-      <TabsTrigger value="general" className="gap-2">
-        <Settings className="h-4 w-4" />
-        <span className="hidden md:inline">General</span>
-      </TabsTrigger>
-      
-      <TabsTrigger value="chat" className="gap-2">
-        <MessagesSquare className="h-4 w-4" />
-        <span className="hidden md:inline">Chat</span>
-      </TabsTrigger>
-      
-      <TabsTrigger value="appointments" className="gap-2">
-        <Calendar className="h-4 w-4" />
-        <span className="hidden md:inline">Appointments</span>
-      </TabsTrigger>
-      
-      <TabsTrigger value="analytics" className="gap-2">
-        <BarChart3 className="h-4 w-4" />
-        <span className="hidden md:inline">Analytics</span>
-      </TabsTrigger>
-      
-      <TabsTrigger value="training" className="gap-2">
-        <BookOpen className="h-4 w-4" />
-        <span className="hidden md:inline">Training</span>
-      </TabsTrigger>
-      
-      <TabsTrigger value="integrations" className="gap-2">
-        <Link2 className="h-4 w-4" />
-        <span className="hidden md:inline">Integrations</span>
-      </TabsTrigger>
+    <ScrollArea className="w-full">
+      <TabsList className="flex p-2 overflow-x-auto space-x-2 sm:grid sm:grid-cols-3 md:grid-cols-9 md:gap-4">
+        <TabsTrigger 
+          value="general" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <Settings className="h-4 w-4" />
+          <span className="inline">General</span>
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="chat" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <MessagesSquare className="h-4 w-4" />
+          <span className="inline">Chat</span>
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="appointments" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <Calendar className="h-4 w-4" />
+          <span className="inline">Appointments</span>
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="analytics" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <BarChart3 className="h-4 w-4" />
+          <span className="inline">Analytics</span>
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="training" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <BookOpen className="h-4 w-4" />
+          <span className="inline">Training</span>
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="integrations" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <Link2 className="h-4 w-4" />
+          <span className="inline">Integrations</span>
+        </TabsTrigger>
 
-      <TabsTrigger value="users" className="gap-2">
-        <Users className="h-4 w-4" />
-        <span className="hidden md:inline">Users</span>
-      </TabsTrigger>
+        <TabsTrigger 
+          value="users" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <Users className="h-4 w-4" />
+          <span className="inline">Users</span>
+        </TabsTrigger>
 
-      <TabsTrigger value="subscriptions" className="gap-2">
-        <CreditCard className="h-4 w-4" />
-        <span className="hidden md:inline">Subscriptions</span>
-      </TabsTrigger>
+        <TabsTrigger 
+          value="subscriptions" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <CreditCard className="h-4 w-4" />
+          <span className="inline">Subscriptions</span>
+        </TabsTrigger>
 
-      <TabsTrigger value="marketplace" className="gap-2">
-        <Store className="h-4 w-4" />
-        <span className="hidden md:inline">Marketplace</span>
-      </TabsTrigger>
-    </TabsList>
+        <TabsTrigger 
+          value="marketplace" 
+          className="flex items-center justify-center gap-2 min-w-[120px] sm:min-w-0 px-4 py-2 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-colors"
+        >
+          <Store className="h-4 w-4" />
+          <span className="inline">Marketplace</span>
+        </TabsTrigger>
+      </TabsList>
+    </ScrollArea>
   );
 };
