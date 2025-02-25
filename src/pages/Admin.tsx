@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -65,65 +66,70 @@ const Admin = () => {
 
   if (isLoading || isCheckingAdmin) {
     return (
-      <div className="min-h-screen bg-luxury-50 flex items-center justify-center">
-        <p className="text-luxury-900">Loading...</p>
+      <div className="min-h-screen bg-[#1A1F2C] flex items-center justify-center">
+        <p className="text-white">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-luxury-50 p-4">
-      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-        <AdminHeader />
+    <div className="min-h-screen bg-[#1A1F2C]">
+      <div className="max-w-[1400px] mx-auto p-4 space-y-4">
+        <div className="rounded-lg overflow-hidden bg-[#222939] shadow-xl border border-[#1EAEDB]/10">
+          <AdminHeader />
 
-        <Tabs defaultValue="general" className="w-full">
-          <AdminTabs />
+          <Tabs defaultValue="general" className="w-full">
+            <div className="border-b border-[#1EAEDB]/10">
+              <AdminTabs />
+            </div>
 
-          <div className="p-6">
-            <TabsContent value="general" className="mt-0">
-              <GeneralSettings />
-            </TabsContent>
+            <div className="p-6">
+              <TabsContent value="general" className="mt-0 space-y-4">
+                <GeneralSettings />
+              </TabsContent>
 
-            <TabsContent value="chat" className="mt-0">
-              <ChatSection />
-            </TabsContent>
+              <TabsContent value="chat" className="mt-0 space-y-4">
+                <ChatSection />
+              </TabsContent>
 
-            <TabsContent value="appointments" className="mt-0">
-              <AppointmentsSection />
-            </TabsContent>
+              <TabsContent value="appointments" className="mt-0 space-y-4">
+                <AppointmentsSection />
+              </TabsContent>
 
-            <TabsContent value="analytics" className="mt-0">
-              <AnalyticsSection />
-            </TabsContent>
+              <TabsContent value="analytics" className="mt-0 space-y-4">
+                <AnalyticsSection />
+              </TabsContent>
 
-            <TabsContent value="training" className="mt-0">
-              <TrainingSection />
-            </TabsContent>
+              <TabsContent value="training" className="mt-0 space-y-4">
+                <TrainingSection />
+              </TabsContent>
 
-            <TabsContent value="integrations" className="mt-0">
-              <IntegrationsSection />
-            </TabsContent>
+              <TabsContent value="integrations" className="mt-0 space-y-4">
+                <IntegrationsSection />
+              </TabsContent>
 
-            <TabsContent value="users" className="mt-0">
-              <UsersSection />
-            </TabsContent>
+              <TabsContent value="users" className="mt-0 space-y-4">
+                <UsersSection />
+              </TabsContent>
 
-            <TabsContent value="subscriptions" className="mt-0">
-              <SubscriptionsSection />
-            </TabsContent>
+              <TabsContent value="subscriptions" className="mt-0 space-y-4">
+                <SubscriptionsSection />
+              </TabsContent>
 
-            <TabsContent value="marketplace" className="mt-0">
-              <MarketplaceSection />
-            </TabsContent>
+              <TabsContent value="marketplace" className="mt-0 space-y-4">
+                <MarketplaceSection />
+              </TabsContent>
 
-            <TabsContent value="tokens" className="mt-0">
-              <TokensSection />
-            </TabsContent>
-          </div>
-        </Tabs>
+              <TabsContent value="tokens" className="mt-0 space-y-4">
+                <TokensSection />
+              </TabsContent>
+            </div>
+          </Tabs>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Admin;
+
