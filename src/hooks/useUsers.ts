@@ -16,23 +16,30 @@ export const useUsers = () => {
   
   const fetchUsers = async (): Promise<User[]> => {
     try {
-      // First get users with their basic info from auth
-      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
-      if (authError) throw authError;
+      // First get the auth users list
+      const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
+      
+      if (authError) {
+        console.error('Error fetching auth users:', authError);
+        throw authError;
+      }
 
-      if (!authUsers?.users?.length) {
+      if (!authUsers?.length) {
         return [];
       }
 
-      // Get their roles
+      // Get their roles from the user_roles table
       const { data: userRoles, error: rolesError } = await supabase
         .from('user_roles')
         .select('user_id, role');
 
-      if (rolesError) throw rolesError;
+      if (rolesError) {
+        console.error('Error fetching user roles:', rolesError);
+        throw rolesError;
+      }
 
-      // Map the data
-      const users = authUsers.users.map(authUser => {
+      // Map the users data
+      const users = authUsers.map(authUser => {
         const roles = userRoles
           ?.filter(r => r.user_id === authUser.id)
           ?.map(r => r.role) || [];
@@ -47,10 +54,10 @@ export const useUsers = () => {
 
       return users;
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('Error in fetchUsers:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch users",
+        description: "Failed to fetch users. Please make sure you have admin access.",
         variant: "destructive",
       });
       throw error;
@@ -63,7 +70,7 @@ export const useUsers = () => {
         .from('user_roles')
         .upsert({ 
           user_id: userId, 
-          role: role as 'admin' | 'moderator' | 'user'
+          role: role
         });
 
       if (error) throw error;
@@ -78,7 +85,7 @@ export const useUsers = () => {
       console.error('Error updating user role:', error);
       toast({
         title: "Error",
-        description: "Failed to update user role",
+        description: "Failed to update user role. Please check your permissions.",
         variant: "destructive",
       });
       return false;
@@ -87,12 +94,14 @@ export const useUsers = () => {
 
   const deleteUsers = async (userIds: string[]) => {
     try {
-      const { error } = await supabase.auth.admin.deleteUser(userIds[0]); // For now, handle one user at a time
-      if (error) throw error;
+      for (const userId of userIds) {
+        const { error } = await supabase.auth.admin.deleteUser(userId);
+        if (error) throw error;
+      }
       
       toast({
         title: "Success",
-        description: `Deleted user successfully`,
+        description: `Deleted ${userIds.length} user(s) successfully`,
       });
       
       return true;
@@ -100,7 +109,7 @@ export const useUsers = () => {
       console.error('Error deleting users:', error);
       toast({
         title: "Error",
-        description: "Failed to delete users",
+        description: "Failed to delete users. Please check your permissions.",
         variant: "destructive",
       });
       return false;
@@ -112,7 +121,7 @@ export const useUsers = () => {
       const promises = userIds.map(userId => 
         supabase
           .from('user_roles')
-          .upsert({ user_id: userId, role: role as 'admin' | 'moderator' | 'user' })
+          .upsert({ user_id: userId, role: role })
       );
       
       await Promise.all(promises);
@@ -127,7 +136,7 @@ export const useUsers = () => {
       console.error('Error updating user roles:', error);
       toast({
         title: "Error",
-        description: "Failed to update user roles",
+        description: "Failed to update user roles. Please check your permissions.",
         variant: "destructive",
       });
       return false;
