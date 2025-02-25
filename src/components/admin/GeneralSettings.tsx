@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { DashboardGrid } from "./dashboard/DashboardGrid";
+import { PlatformOverview } from "./platform/PlatformOverview";
 import { AnalyticsOverview } from "./analytics/AnalyticsOverview";
 import { ChatMetricsChart } from "./analytics/ChatMetricsChart";
 import { TopQueriesTable } from "./analytics/TopQueriesTable";
@@ -135,6 +135,10 @@ export const GeneralSettings = () => {
 
       {renderLogoUpload()}
 
+      <Separator className="my-8" />
+
+      <PlatformOverview />
+      
       <Separator className="my-8" />
 
       <AnalyticsOverview />
