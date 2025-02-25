@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,27 +52,27 @@ const Index = () => {
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
-      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-[#9b87f5]" />,
-      gradientClasses: 'bg-gradient-to-b from-[#9b87f5]/10 to-[#1A1F2C]',
-      bgColor: 'bg-[#1A1F2C]'
+      icon: <Rocket className="h-6 w-6 text-[#9b87f5]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#9b87f5]/5 to-transparent',
+      bgColor: 'bg-black/20'
     },
     {
       id: 'smart',
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
-      icon: <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-[#9b87f5]" />,
-      gradientClasses: 'bg-gradient-to-b from-[#9b87f5]/10 to-[#1A1F2C]',
-      bgColor: 'bg-[#1A1F2C]'
+      icon: <Rocket className="h-6 w-6 text-[#9b87f5]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#9b87f5]/5 to-transparent',
+      bgColor: 'bg-black/20'
     },
     {
       id: 'analytics',
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
-      icon: <ChartBar className="h-12 w-12 sm:h-16 sm:w-16 text-[#9b87f5]" />,
-      gradientClasses: 'bg-gradient-to-b from-[#9b87f5]/10 to-[#1A1F2C]',
-      bgColor: 'bg-[#1A1F2C]'
+      icon: <ChartBar className="h-6 w-6 text-[#9b87f5]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#9b87f5]/5 to-transparent',
+      bgColor: 'bg-black/20'
     }
   ];
 
@@ -111,7 +110,7 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature) => (
               <FeatureCard
                 key={feature.id}
