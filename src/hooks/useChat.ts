@@ -74,8 +74,31 @@ export const useChat = () => {
 
       if (error) throw error;
 
-      if (data?.chat_settings) {
-        setSettings(data.chat_settings as ChatSettings);
+      if (data?.chat_settings && typeof data.chat_settings === 'object') {
+        // Type assertion and validation
+        const chatSettings = data.chat_settings as unknown as ChatSettings;
+        if (
+          chatSettings.multimodalSupport &&
+          chatSettings.voiceSettings &&
+          typeof chatSettings.multimodalSupport === 'object' &&
+          typeof chatSettings.voiceSettings === 'object'
+        ) {
+          setSettings(chatSettings);
+        } else {
+          // Set default settings if data is invalid
+          setSettings({
+            multimodalSupport: {
+              images: false,
+              voice: false,
+              video: false
+            },
+            voiceSettings: {
+              enabled: false,
+              language: 'en-US',
+              voice: 'natural'
+            }
+          });
+        }
       }
     } catch (error) {
       console.error('Error loading chat settings:', error);
@@ -195,10 +218,10 @@ export const useChat = () => {
         processedContent = await translateMessage(processedContent, settings?.voiceSettings.language || 'en-US');
       }
 
-      const userMessage = { 
-        content: processedContent, 
-        isBot: false, 
-        role: 'user' as const,
+      const userMessage: Message = {
+        content: processedContent,
+        isBot: false,
+        role: 'user',
         type,
         language,
         mediaUrl
@@ -227,10 +250,14 @@ export const useChat = () => {
       
       await logChatMessage(botResponse, 'bot', startTime);
       
-      setMessages((prev) => [
-        ...prev,
-        { content: botResponse, isBot: true, role: 'assistant', type: 'text' }
-      ]);
+      const botMessage: Message = {
+        content: botResponse,
+        isBot: true,
+        role: 'assistant',
+        type: 'text'
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -265,10 +292,10 @@ export const useChat = () => {
 
     setSessionId(session.id);
 
-    const welcomeMessage = {
+    const welcomeMessage: Message = {
       content: "Hello, I'm Archibot, your personal sleep advisor. I can help you find the perfect mattress or answer questions about healthy sleep. I can understand voice, images, and videos too! How may I assist you today?",
       isBot: true,
-      role: 'assistant' as const,
+      role: 'assistant',
       type: 'text'
     };
     
