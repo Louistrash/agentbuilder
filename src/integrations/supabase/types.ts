@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: string | null
+          resource_id: string | null
+          resource_type: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          resource_id?: string | null
+          resource_type: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          resource_id?: string | null
+          resource_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       appointment_settings: {
         Row: {
           appointment_duration: number | null
@@ -516,6 +549,15 @@ export type Database = {
           role: Database["public"]["Enums"]["role_type"]
         }
         Returns: boolean
+      }
+      log_admin_activity: {
+        Args: {
+          action: string
+          resource_type: string
+          resource_id?: string
+          details?: Json
+        }
+        Returns: undefined
       }
       update_daily_analytics: {
         Args: Record<PropertyKey, never>
