@@ -77,11 +77,20 @@ const featureContent = {
       }
     ]
   }
-};
+} as const;
+
+type FeatureType = keyof typeof featureContent;
 
 export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardingProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const content = featureContent[feature as keyof typeof featureContent];
+  
+  // Early return if feature is not valid
+  if (!feature || !(feature in featureContent)) {
+    console.error(`Invalid feature: ${feature}`);
+    return null;
+  }
+
+  const content = featureContent[feature as FeatureType];
 
   const handleNext = () => {
     if (currentStep < content.steps.length - 1) {
