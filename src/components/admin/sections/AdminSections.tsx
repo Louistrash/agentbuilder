@@ -1,4 +1,3 @@
-
 import { Settings2 } from "lucide-react";
 import { GeneralSettings } from "../GeneralSettings";
 import { ChatSection } from "./ChatSection";
@@ -10,10 +9,8 @@ import { MarketplaceSection } from "./MarketplaceSection";
 import { IntegrationsSection } from "./IntegrationsSection";
 import { SubscriptionsSection } from "./SubscriptionsSection";
 import { TrainingSection } from "./TrainingSection";
-
 export function AdminSections() {
-  return (
-    <div className="space-y-8">
+  return <div className="space-y-8">
       <section id="general" className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
         <div className="border-b border-[#30363D] bg-[#0D1117]/50 p-4 sm:p-6">
           <h2 className="text-lg sm:text-xl font-semibold text-white flex items-center gap-3">
@@ -73,10 +70,9 @@ export function AdminSections() {
         <SubscriptionsSection />
       </section>
 
-      <section id="training" className="bg-[#161B22] rounded-xl p-4 border border-[#30363D]">
+      <section id="training" className="rounded-xl p-4 border border-[#30363D] bg-gray-800">
         <h2 className="text-xl font-semibold mb-6 text-white">Training</h2>
         <TrainingSection />
       </section>
-    </div>
-  );
+    </div>;
 }

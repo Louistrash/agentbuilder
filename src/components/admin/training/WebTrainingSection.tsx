@@ -1,29 +1,25 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { WebTrainingForm } from "./components/WebTrainingForm";
 import { UsageStats } from "./components/UsageStats";
 import { WebTrainingList } from "./WebTrainingList";
-
 interface UsageStats {
   totalWordsUsed: number;
   wordsLimit: number;
 }
-
 export const WebTrainingSection = () => {
   const [usage, setUsage] = useState<UsageStats | null>(null);
-
   const fetchUsageStats = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: {
+          user
+        }
+      } = await supabase.auth.getUser();
       if (!user) return;
-
-      const { data: existingUsage } = await supabase
-        .from('organization_usage')
-        .select()
-        .eq('profile_id', user.id)
-        .maybeSingle();
-
+      const {
+        data: existingUsage
+      } = await supabase.from('organization_usage').select().eq('profile_id', user.id).maybeSingle();
       if (!existingUsage) {
         await supabase.from('organization_usage').insert({
           profile_id: user.id,
@@ -31,13 +27,9 @@ export const WebTrainingSection = () => {
           words_limit: 100000
         });
       }
-
-      const { data } = await supabase
-        .from('organization_usage')
-        .select('total_words_used, words_limit')
-        .eq('profile_id', user.id)
-        .maybeSingle();
-
+      const {
+        data
+      } = await supabase.from('organization_usage').select('total_words_used, words_limit').eq('profile_id', user.id).maybeSingle();
       if (data) {
         setUsage({
           totalWordsUsed: data.total_words_used,
@@ -48,16 +40,13 @@ export const WebTrainingSection = () => {
       console.error('Error fetching usage stats:', error);
     }
   };
-
   useEffect(() => {
     fetchUsageStats();
   }, []);
-
-  return (
-    <section className="space-y-6">
+  return <section className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl font-semibold">Web Training Sources</h2>
-        <p className="text-sm text-gray-600">
+        <h2 className="text-xl font-semibold text-gray-100">Web Training Sources</h2>
+        <p className="text-sm text-zinc-400">
           Add website URLs to train the AI with your content. Only public pages will be processed.
         </p>
       </div>
@@ -70,6 +59,5 @@ export const WebTrainingSection = () => {
         <h3 className="text-lg font-semibold mb-4">Processing Status</h3>
         <WebTrainingList />
       </div>
-    </section>
-  );
+    </section>;
 };
