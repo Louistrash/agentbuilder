@@ -1,16 +1,12 @@
 
 import { Card } from "@/components/ui/card";
 import { 
-  BarChart3, 
-  MessageSquare, 
-  Settings, 
+  Settings2, 
   Users, 
-  Coins, 
+  MessageSquare, 
   CalendarDays,
-  Boxes,
-  Rocket,
-  CreditCard,
-  BookOpen
+  ShoppingBag,
+  Link
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -40,7 +36,7 @@ const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
 export function AdminMenu() {
   const menuItems = [
     {
-      icon: <Settings className="h-6 w-6 text-[#6366F1]" />,
+      icon: <Settings2 className="h-6 w-6 text-[#6366F1]" />,
       title: "General",
       color: "bg-[#6366F1]/10",
       href: "general"
@@ -58,53 +54,29 @@ export function AdminMenu() {
       href: "chat"
     },
     {
-      icon: <BarChart3 className="h-6 w-6 text-[#10B981]" />,
-      title: "Analytics",
-      color: "bg-[#10B981]/10",
-      href: "analytics"
-    },
-    {
-      icon: <Coins className="h-6 w-6 text-[#F59E0B]" />,
-      title: "Tokens",
-      color: "bg-[#F59E0B]/10",
-      href: "tokens"
-    },
-    {
-      icon: <CalendarDays className="h-6 w-6 text-[#6366F1]" />,
+      icon: <CalendarDays className="h-6 w-6 text-[#10B981]" />,
       title: "Appointments",
-      color: "bg-[#6366F1]/10",
+      color: "bg-[#10B981]/10",
       href: "appointments"
     },
     {
-      icon: <Boxes className="h-6 w-6 text-[#EC4899]" />,
+      icon: <ShoppingBag className="h-6 w-6 text-[#F59E0B]" />,
       title: "Marketplace",
-      color: "bg-[#EC4899]/10",
+      color: "bg-[#F59E0B]/10",
       href: "marketplace"
     },
     {
-      icon: <Rocket className="h-6 w-6 text-[#10B981]" />,
+      icon: <Link className="h-6 w-6 text-[#6366F1]" />,
       title: "Integrations",
-      color: "bg-[#10B981]/10",
+      color: "bg-[#6366F1]/10",
       href: "integrations"
-    },
-    {
-      icon: <CreditCard className="h-6 w-6 text-[#F59E0B]" />,
-      title: "Subscriptions",
-      color: "bg-[#F59E0B]/10",
-      href: "subscriptions"
-    },
-    {
-      icon: <BookOpen className="h-6 w-6 text-[#3B82F6]" />,
-      title: "Training",
-      color: "bg-[#3B82F6]/10",
-      href: "training"
     }
   ];
 
   return (
     <div className="fixed top-16 left-0 right-0 z-40 bg-[#0D1117] border-b border-[#30363D] px-4 py-4">
       <div className="max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {menuItems.map((item) => (
             <MenuItem
               key={item.href}
