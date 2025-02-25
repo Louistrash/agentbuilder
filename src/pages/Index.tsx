@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,9 +11,9 @@ import { Card } from "@/components/ui/card";
 const Index = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAdmin();
-  const { messages, isTyping, sendMessage, initializeChat, endSession } = useChat();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [clickedCard, setClickedCard] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLogo();
@@ -40,12 +39,20 @@ const Index = () => {
   };
 
   const handleFeatureClick = (feature: string) => {
-    navigate('/agents', { state: { feature } });
+    setClickedCard(feature);
+    setTimeout(() => {
+      navigate('/agents', { state: { feature } });
+    }, 300);
+  };
+
+  const getCardClassName = (feature: string) => {
+    const baseClasses = "p-6 bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer transform";
+    const clickedClasses = clickedCard === feature ? "scale-95 opacity-75" : "hover:scale-105";
+    return `${baseClasses} ${clickedClasses}`;
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-      {/* Header */}
       <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
@@ -85,7 +92,6 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
       <main className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
@@ -105,14 +111,13 @@ const Index = () => {
             </Button>
           </div>
 
-          {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-8 mt-20">
             <Card 
-              className="p-6 bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+              className={getCardClassName('build')}
               onClick={() => handleFeatureClick('build')}
             >
-              <div className="mb-6 h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center">
-                <Rocket className="h-16 w-16 text-blue-400" />
+              <div className="mb-6 h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+                <Rocket className={`h-16 w-16 text-blue-400 transition-transform duration-300 ${clickedCard === 'build' ? 'scale-90' : 'hover:scale-110'}`} />
               </div>
               <h3 className="text-xl font-semibold mb-3">Easy to Build</h3>
               <p className="text-gray-400">
@@ -121,14 +126,14 @@ const Index = () => {
             </Card>
 
             <Card 
-              className="p-6 bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+              className={getCardClassName('smart')}
               onClick={() => handleFeatureClick('smart')}
             >
-              <div className="mb-6 h-40 bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-lg flex items-center justify-center">
+              <div className="mb-6 h-40 bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-lg flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-105">
                 <img
                   src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
                   alt="Smart Response"
-                  className="h-full w-full object-cover rounded-lg opacity-75"
+                  className={`h-full w-full object-cover rounded-lg opacity-75 transition-transform duration-300 ${clickedCard === 'smart' ? 'scale-110' : 'hover:scale-105'}`}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-3">Smart Responses</h3>
@@ -138,11 +143,11 @@ const Index = () => {
             </Card>
 
             <Card 
-              className="p-6 bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+              className={getCardClassName('analytics')}
               onClick={() => handleFeatureClick('analytics')}
             >
-              <div className="mb-6 h-40 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg flex items-center justify-center">
-                <ChartBar className="h-16 w-16 text-orange-400" />
+              <div className="mb-6 h-40 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+                <ChartBar className={`h-16 w-16 text-orange-400 transition-transform duration-300 ${clickedCard === 'analytics' ? 'scale-90' : 'hover:scale-110'}`} />
               </div>
               <h3 className="text-xl font-semibold mb-3">Analytics & Insights</h3>
               <p className="text-gray-400">
@@ -151,7 +156,6 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* Pro Section */}
           <div className="mt-24 text-center">
             <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-sm font-medium mb-4">
               Pro Features
