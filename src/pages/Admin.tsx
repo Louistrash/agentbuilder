@@ -136,7 +136,7 @@ const Admin = () => {
                 <AdminTabs />
               </div>
               
-              <div className="bg-[#161B22] rounded-lg p-6 border border-[#30363D]">
+              <div className="bg-[#161B22] rounded-lg p-6 border border-[#30363D] mt-[70px]">
                 <TabsContent value="general" className="mt-0">
                   <GeneralSettings />
                 </TabsContent>
