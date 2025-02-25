@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Plus, Rocket, ChartBar, MessageSquare } from "lucide-react";
+import { Plus, Rocket, ChartBar, MessageSquare, Play } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { ProFeatures } from "@/components/home/ProFeatures";
@@ -53,6 +53,7 @@ const Index = () => {
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       icon: <Rocket className="h-16 w-16 text-blue-400" />,
+      demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
       gradientClasses: 'bg-gradient-to-br from-blue-500/20 to-purple-500/20',
       customAnimation: (
         <>
@@ -70,6 +71,7 @@ const Index = () => {
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       icon: <MessageSquare className="h-16 w-16 text-green-400" />,
+      demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
       gradientClasses: 'bg-gradient-to-br from-green-500/20 to-teal-500/20',
       customAnimation: (
         <>
@@ -89,6 +91,7 @@ const Index = () => {
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       icon: <ChartBar className="h-16 w-16 text-orange-400" />,
+      demoContent: 'View sample analytics and see how you can optimize your chat agents.',
       gradientClasses: 'bg-gradient-to-br from-orange-500/20 to-red-500/20',
       customAnimation: (
         <div className="flex flex-col items-center space-y-2 transition-transform duration-500">
@@ -120,14 +123,25 @@ const Index = () => {
             <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto animate-fade-up">
               Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
             </p>
-            <Button
-              size="lg"
-              onClick={() => navigate('/agents')}
-              className="animate-fade-up bg-white text-gray-900 hover:bg-gray-200"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Create Your First Agent
-            </Button>
+            <div className="flex items-center justify-center gap-4 mb-12">
+              <Button
+                size="lg"
+                onClick={() => navigate('/agents')}
+                className="animate-fade-up bg-white text-gray-900 hover:bg-gray-200"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Create Your First Agent
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => setShowOnboarding(true)}
+                className="animate-fade-up"
+              >
+                <Play className="h-5 w-5 mr-2" />
+                Watch Demo
+              </Button>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mt-20">
@@ -137,6 +151,7 @@ const Index = () => {
                 feature={feature.id}
                 title={feature.title}
                 description={feature.description}
+                demoContent={feature.demoContent}
                 icon={feature.icon}
                 onClick={() => handleFeatureClick(feature.id)}
                 isHovered={hoveredCard === feature.id}

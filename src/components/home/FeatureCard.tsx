@@ -1,11 +1,13 @@
 
 import { Card } from "@/components/ui/card";
-import { LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
 
 interface FeatureCardProps {
   feature: string;
   title: string;
   description: string;
+  demoContent: string;
   icon: React.ReactNode;
   onClick: () => void;
   isHovered: boolean;
@@ -20,6 +22,7 @@ export function FeatureCard({
   feature,
   title,
   description,
+  demoContent,
   icon,
   onClick,
   isHovered,
@@ -39,7 +42,6 @@ export function FeatureCard({
   return (
     <Card
       className={getCardClassName()}
-      onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -47,7 +49,17 @@ export function FeatureCard({
         {customAnimation || icon}
       </div>
       <h3 className="text-xl font-semibold mb-3">{title}</h3>
-      <p className="text-gray-400">{description}</p>
+      <p className="text-gray-400 mb-4">{description}</p>
+      <p className="text-sm text-gray-500 mb-4">{demoContent}</p>
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full"
+        onClick={onClick}
+      >
+        <Play className="h-4 w-4 mr-2" />
+        Try it out
+      </Button>
     </Card>
   );
 }
