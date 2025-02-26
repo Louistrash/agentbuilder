@@ -12,16 +12,13 @@ const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 Deno.serve(async (req) => {
-  // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Get the user and tier ID from request
     const { tierId, userId } = await req.json()
 
-    // Get the subscription tier details
     const { data: tier, error: tierError } = await supabase
       .from('subscription_tiers')
       .select('*')
@@ -29,10 +26,9 @@ Deno.serve(async (req) => {
       .single()
 
     if (tierError || !tier) {
-      throw new Error('Invalid subscription tier')
+      throw new Error('Ongeldig abonnement')
     }
 
-    // Get or create Stripe customer
     const { data: profile } = await supabase
       .from('profiles')
       .select('stripe_customer_id')
@@ -49,25 +45,23 @@ Deno.serve(async (req) => {
       })
       customerId = customer.id
 
-      // Save Stripe customer ID
       await supabase
         .from('profiles')
         .update({ stripe_customer_id: customerId })
         .eq('id', userId)
     }
 
-    // Create Stripe Checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: 'eur', // Changed to EUR for Dutch market
             product_data: {
-              name: `${tier.name.toUpperCase()} Plan`,
-              description: `Up to ${tier.words_limit.toLocaleString()} words and ${tier.pages_limit} pages`,
+              name: `${tier.name.toUpperCase()} Abonnement`,
+              description: `Tot ${tier.words_limit.toLocaleString()} woorden en ${tier.pages_limit} pagina's`,
             },
-            unit_amount: tier.price * 100, // Convert to cents
+            unit_amount: tier.price * 100,
             recurring: {
               interval: 'month',
             },
@@ -82,6 +76,7 @@ Deno.serve(async (req) => {
         userId,
         tierId,
       },
+      locale: 'nl', // Set checkout language to Dutch
     })
 
     return new Response(
@@ -92,7 +87,7 @@ Deno.serve(async (req) => {
       },
     )
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Fout:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       {
