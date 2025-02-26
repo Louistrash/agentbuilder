@@ -14,6 +14,7 @@ import { Users, SendHorizontal, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
+import { Agent } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Agent {
@@ -280,7 +281,21 @@ export default function AgentBuilder() {
             <div className="lg:col-span-4 space-y-8">
               <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
                 <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-                  <h2 className="text-lg font-semibold text-white">Test Interface</h2>
+                  <div className="flex items-center gap-2">
+                    {avatarUrl ? (
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={avatarUrl} />
+                        <AvatarFallback>
+                          <Agent className="w-4 h-4 text-[#9B87F5]" />
+                        </AvatarFallback>
+                      </Avatar>
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-[#9B87F5]/20 flex items-center justify-center">
+                        <Agent className="w-4 h-4 text-[#9B87F5]" />
+                      </div>
+                    )}
+                    <h2 className="text-lg font-semibold text-white">Test Interface</h2>
+                  </div>
                 </div>
                 <div className="p-6">
                   <TestInterface />
