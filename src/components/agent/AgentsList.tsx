@@ -2,7 +2,8 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bot, Settings } from "lucide-react";
+import { Bot, Settings, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Agent {
   id: number;
@@ -16,10 +17,20 @@ interface AgentsListProps {
 }
 
 export function AgentsList({ agents = [] }: AgentsListProps) {
+  const navigate = useNavigate();
+
+  const handleAgentClick = (agentId: number) => {
+    navigate(`/agents/${agentId}/configure`);
+  };
+
   return (
     <div className="space-y-4">
       {agents.map((agent) => (
-        <Card key={agent.id} className="bg-[#1C2128] border-[#30363D] hover:border-purple-500/50 transition-colors">
+        <Card 
+          key={agent.id} 
+          className="bg-[#1C2128] border-[#30363D] hover:border-purple-500/50 transition-colors cursor-pointer"
+          onClick={() => handleAgentClick(agent.id)}
+        >
           <CardContent className="p-4">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
@@ -31,9 +42,12 @@ export function AgentsList({ agents = [] }: AgentsListProps) {
                   <p className="text-sm text-gray-400 mt-1">{agent.description}</p>
                 </div>
               </div>
-              <button className="p-2 hover:bg-white/5 rounded-lg transition-colors">
-                <Settings className="w-4 h-4 text-gray-400" />
-              </button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+                  <Settings className="w-4 h-4 text-gray-400" />
+                </Button>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              </div>
             </div>
           </CardContent>
         </Card>
