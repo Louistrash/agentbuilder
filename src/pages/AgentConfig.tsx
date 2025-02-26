@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -105,33 +106,45 @@ export default function AgentConfig() {
             <Button 
               variant="ghost" 
               onClick={() => navigate('/agents')}
-              className="text-gray-400 hover:text-white"
+              className="text-gray-400 hover:text-white transition-colors duration-200"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Agents
             </Button>
             <div className="flex-1" />
-            <Badge variant="outline" className="bg-[#1A1F2C] text-white px-3 py-1.5">
+            <Badge variant="outline" className="bg-gradient-to-r from-[#1A1F2C] to-[#161B22] border-[#30363D] px-3 py-1.5 shadow-lg">
               <Coins className="w-4 h-4 mr-2 text-[#1EAEDB]" />
               {availableTokens} tokens available
             </Badge>
           </div>
 
           <Tabs defaultValue="config" className="space-y-6">
-            <TabsList className="bg-[#161B22] border-[#30363D] p-1 rounded-lg">
-              <TabsTrigger value="config" className="data-[state=active]:bg-[#1C2128] text-sm">
+            <TabsList className="bg-gradient-to-b from-[#161B22] to-[#1C2128] border border-[#30363D] p-1 rounded-lg shadow-xl w-full flex space-x-1">
+              <TabsTrigger 
+                value="config" 
+                className="flex-1 data-[state=active]:bg-[#1EAEDB]/10 data-[state=active]:text-[#1EAEDB] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <Bot className="w-4 h-4 mr-2" />
                 Configuration
               </TabsTrigger>
-              <TabsTrigger value="test" className="data-[state=active]:bg-[#1C2128] text-sm">
+              <TabsTrigger 
+                value="test" 
+                className="flex-1 data-[state=active]:bg-[#9B87F5]/10 data-[state=active]:text-[#9B87F5] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Test Agent
               </TabsTrigger>
-              <TabsTrigger value="train" className="data-[state=active]:bg-[#1C2128] text-sm">
+              <TabsTrigger 
+                value="train" 
+                className="flex-1 data-[state=active]:bg-[#EC4899]/10 data-[state=active]:text-[#EC4899] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <Globe className="w-4 h-4 mr-2" />
                 Training
               </TabsTrigger>
-              <TabsTrigger value="embed" className="data-[state=active]:bg-[#1C2128] text-sm">
+              <TabsTrigger 
+                value="embed" 
+                className="flex-1 data-[state=active]:bg-[#F97316]/10 data-[state=active]:text-[#F97316] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <Code className="w-4 h-4 mr-2" />
                 Embed
               </TabsTrigger>
