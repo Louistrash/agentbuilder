@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { AgentsList } from "@/components/agent/AgentsList";
 import { AdvancedConfig } from "@/components/agent/AdvancedConfig";
@@ -37,7 +36,7 @@ export default function AgentBuilder() {
         <div className="space-y-8">
           <Header />
           
-          {/* Agent Templates - Moved up */}
+          {/* Agent Templates */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
             <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
               <h2 className="text-lg font-semibold text-white">Agent Templates</h2>
@@ -56,9 +55,6 @@ export default function AgentBuilder() {
               <AgentsList agents={agents} />
             </div>
           </div>
-
-          {/* Tokens Card */}
-          <TokensCard />
 
           <ProFeatures />
 
