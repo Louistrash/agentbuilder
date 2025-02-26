@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -153,21 +154,23 @@ export const ChatBehaviorSettings = () => {
 
   return (
     <div className="space-y-6">
-      <ChatLimitsSection
-        maxMessagesPerChat={settings.maxMessagesPerChat}
-        responseDelay={settings.responseDelay}
-        contextMemory={settings.contextMemory}
-        learningMode={settings.learningMode}
-        onSettingChange={handleSettingChange}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ChatLimitsSection
+          maxMessagesPerChat={settings.maxMessagesPerChat}
+          responseDelay={settings.responseDelay}
+          contextMemory={settings.contextMemory}
+          learningMode={settings.learningMode}
+          onSettingChange={handleSettingChange}
+        />
 
-      <AIPersonalitySection
-        aiPersonality={settings.aiPersonality}
-        fallbackMessage={settings.fallbackMessage}
-        reasoningLevel={settings.reasoningLevel}
-        emotionalIntelligence={settings.emotionalIntelligence}
-        onSettingChange={handleSettingChange}
-      />
+        <AIPersonalitySection
+          aiPersonality={settings.aiPersonality}
+          fallbackMessage={settings.fallbackMessage}
+          reasoningLevel={settings.reasoningLevel}
+          emotionalIntelligence={settings.emotionalIntelligence}
+          onSettingChange={handleSettingChange}
+        />
+      </div>
 
       <MultimodalSection
         multimodalSupport={settings.multimodalSupport}
