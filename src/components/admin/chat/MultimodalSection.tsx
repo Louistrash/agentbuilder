@@ -120,16 +120,16 @@ export const MultimodalSection = ({
                   })
                 }
               >
-                <SelectTrigger className="w-full bg-[#1A1F2C] border-white/10">
+                <SelectTrigger className="w-full bg-[#1A1F2C] border-white/10 text-white">
                   <SelectValue placeholder="Select language" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en-US">English (US)</SelectItem>
-                  <SelectItem value="en-GB">English (UK)</SelectItem>
-                  <SelectItem value="es-ES">Spanish</SelectItem>
-                  <SelectItem value="fr-FR">French</SelectItem>
-                  <SelectItem value="de-DE">German</SelectItem>
-                  <SelectItem value="nl-NL">Dutch</SelectItem>
+                <SelectContent className="bg-[#1A1F2C] border-white/10">
+                  <SelectItem value="en-US" className="text-white hover:bg-[#2A303C]">English (US)</SelectItem>
+                  <SelectItem value="en-GB" className="text-white hover:bg-[#2A303C]">English (UK)</SelectItem>
+                  <SelectItem value="es-ES" className="text-white hover:bg-[#2A303C]">Spanish</SelectItem>
+                  <SelectItem value="fr-FR" className="text-white hover:bg-[#2A303C]">French</SelectItem>
+                  <SelectItem value="de-DE" className="text-white hover:bg-[#2A303C]">German</SelectItem>
+                  <SelectItem value="nl-NL" className="text-white hover:bg-[#2A303C]">Dutch</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -145,13 +145,13 @@ export const MultimodalSection = ({
                   })
                 }
               >
-                <SelectTrigger className="w-full bg-[#1A1F2C] border-white/10">
+                <SelectTrigger className="w-full bg-[#1A1F2C] border-white/10 text-white">
                   <SelectValue placeholder="Select voice" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="natural">Natural</SelectItem>
-                  <SelectItem value="classic">Classic</SelectItem>
-                  <SelectItem value="enhanced">Enhanced</SelectItem>
+                <SelectContent className="bg-[#1A1F2C] border-white/10">
+                  <SelectItem value="natural" className="text-white hover:bg-[#2A303C]">Natural</SelectItem>
+                  <SelectItem value="classic" className="text-white hover:bg-[#2A303C]">Classic</SelectItem>
+                  <SelectItem value="enhanced" className="text-white hover:bg-[#2A303C]">Enhanced</SelectItem>
                 </SelectContent>
               </Select>
             </div>
