@@ -106,11 +106,7 @@ const Auth = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-3 mb-16">
             <div className="w-10 h-10 rounded-2xl shadow-xl bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
-              <img
-                src="/logo.png"
-                alt="Chat Agent Builder Logo"
-                className="w-full h-full object-cover"
-              />
+              <div className="text-[#1EAEDB] font-bold text-xl">L</div>
             </div>
             <div className="flex flex-col">
               <h1 className="text-xl font-semibold text-white">Chat Agent Builder</h1>
