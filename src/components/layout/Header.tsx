@@ -18,6 +18,7 @@ export function Header({
   const { isAdmin } = useAdmin();
   const { user } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <header className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
@@ -25,11 +26,16 @@ export function Header({
         <div className="relative flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
-              <img 
-                src="/lovable-uploads/c2500b5c-076b-4965-bf93-b63a8894f04a.png"
-                alt="Chat Agent Builder Logo"
-                className="w-full h-full object-cover"
-              />
+              {logoUrl && !imageError ? (
+                <img 
+                  src={logoUrl} 
+                  alt="Chat Agent Builder Logo" 
+                  className="w-full h-full object-contain p-1" 
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="text-[#1EAEDB] font-bold text-lg">L</div>
+              )}
             </div>
             <div className="flex flex-col">
               <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
