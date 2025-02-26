@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -54,7 +53,6 @@ export default function AgentConfig() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    // In a real app, fetch the agent data from your backend
     const fakeAgent = {
       id: Number(id),
       name: "Customer Service Agent",
@@ -87,7 +85,6 @@ export default function AgentConfig() {
     if (!trainingUrl) return;
 
     setIsProcessing(true);
-    // Simulated API call
     setTimeout(() => {
       toast({
         title: "Training Started",
@@ -101,7 +98,7 @@ export default function AgentConfig() {
   if (!agent) return null;
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-white p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#0D1117] via-[#1A1F2C] to-[#161B22] text-white p-8">
       <div className="container mx-auto max-w-6xl">
         <div className="space-y-6">
           <div className="flex items-center gap-4">
