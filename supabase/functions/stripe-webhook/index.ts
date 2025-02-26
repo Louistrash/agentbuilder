@@ -13,11 +13,14 @@ serve(async (req) => {
   try {
     const signature = req.headers.get('stripe-signature')
     if (!signature) {
-      throw new Error('No signature')
+      console.error('Webhook Fout: Geen handtekening gevonden')
+      throw new Error('Geen handtekening gevonden')
     }
 
     const body = await req.text()
     const event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
+
+    console.log(`Webhook event ontvangen: ${event.type}`)
 
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -30,21 +33,23 @@ serve(async (req) => {
         const { userId, tierId } = session.metadata || {}
 
         if (!userId || !tierId) {
-          throw new Error('Missing metadata')
+          console.error('Webhook Fout: Ontbrekende metadata', { userId, tierId })
+          throw new Error('Ontbrekende metadata')
         }
 
-        // Get subscription tier details
-        const { data: tier } = await supabaseClient
+        // Abonnement details ophalen
+        const { data: tier, error: tierError } = await supabaseClient
           .from('subscription_tiers')
           .select('*')
           .eq('id', tierId)
           .single()
 
-        if (!tier) {
-          throw new Error('Invalid tier')
+        if (tierError || !tier) {
+          console.error('Webhook Fout: Ongeldig abonnementsniveau', tierError)
+          throw new Error('Ongeldig abonnementsniveau')
         }
 
-        // Create or update subscription
+        // Maak of update abonnement
         await supabaseClient
           .from('subscriptions')
           .upsert({
@@ -53,22 +58,32 @@ serve(async (req) => {
             stripe_subscription_id: session.subscription as string,
             level: tier.name === 'pro' ? 'enhanced' : 'basic',
             current_period_start: new Date(session.created * 1000).toISOString(),
-            current_period_end: new Date().toISOString(), // Will be updated by subscription event
+            current_period_end: new Date().toISOString(), // Wordt bijgewerkt door subscription event
             messages_limit: tier.name === 'pro' ? 1000 : 200,
           })
 
-        console.log(`✅ Created subscription for user ${userId}`)
+        console.log(`✅ Abonnement aangemaakt voor gebruiker ${userId}`)
         break
       }
 
       case 'customer.subscription.updated':
       case 'customer.subscription.created': {
         const subscription = event.data.object as Stripe.Subscription
-        const { supabaseUserId } = subscription.customer as { supabaseUserId: string }
+        const customerId = subscription.customer as string
 
-        if (!supabaseUserId) {
-          throw new Error('No Supabase user ID in customer metadata')
+        // Zoek de gebruiker op basis van Stripe customer ID
+        const { data: profiles, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('id')
+          .eq('stripe_customer_id', customerId)
+          .limit(1)
+
+        if (profileError || !profiles.length) {
+          console.error('Webhook Fout: Gebruiker niet gevonden', { customerId, profileError })
+          throw new Error('Gebruiker niet gevonden')
         }
+
+        const userId = profiles[0].id
 
         await supabaseClient
           .from('subscriptions')
@@ -76,21 +91,31 @@ serve(async (req) => {
             current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
             current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
           })
-          .eq('profile_id', supabaseUserId)
+          .eq('profile_id', userId)
 
-        console.log(`✅ Updated subscription periods for user ${supabaseUserId}`)
+        console.log(`✅ Abonnementsperiode bijgewerkt voor gebruiker ${userId}`)
         break
       }
 
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription
-        const { supabaseUserId } = subscription.customer as { supabaseUserId: string }
+        const customerId = subscription.customer as string
 
-        if (!supabaseUserId) {
-          throw new Error('No Supabase user ID in customer metadata')
+        // Zoek de gebruiker op basis van Stripe customer ID
+        const { data: profiles, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('id')
+          .eq('stripe_customer_id', customerId)
+          .limit(1)
+
+        if (profileError || !profiles.length) {
+          console.error('Webhook Fout: Gebruiker niet gevonden bij annulering', { customerId, profileError })
+          throw new Error('Gebruiker niet gevonden bij annulering')
         }
 
-        // Reset to free tier
+        const userId = profiles[0].id
+
+        // Reset naar gratis abonnement
         await supabaseClient
           .from('subscriptions')
           .update({
@@ -99,19 +124,19 @@ serve(async (req) => {
             level: 'basic',
             messages_limit: 200,
           })
-          .eq('profile_id', supabaseUserId)
+          .eq('profile_id', userId)
 
-        console.log(`✅ Subscription cancelled for user ${supabaseUserId}`)
+        console.log(`✅ Abonnement geannuleerd voor gebruiker ${userId}`)
         break
       }
     }
 
-    return new Response(JSON.stringify({ received: true }), {
+    return new Response(JSON.stringify({ ontvangen: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     })
   } catch (error) {
-    console.error('❌ Webhook error:', error.message)
+    console.error('❌ Webhook fout:', error.message)
     return new Response(
       JSON.stringify({ error: error.message }),
       {
