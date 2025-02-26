@@ -1,7 +1,7 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import Stripe from 'https://esm.sh/stripe@12.7.0'
+import Stripe from 'https://esm.sh/stripe@14.12.0'
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
   apiVersion: '2023-10-16',
@@ -24,39 +24,86 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session
-      const { user_id, features } = session.metadata || {}
-      
-      if (!user_id || !features) {
-        throw new Error('Missing metadata')
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session
+        const { userId, tierId } = session.metadata || {}
+
+        if (!userId || !tierId) {
+          throw new Error('Missing metadata')
+        }
+
+        // Get subscription tier details
+        const { data: tier } = await supabaseClient
+          .from('subscription_tiers')
+          .select('*')
+          .eq('id', tierId)
+          .single()
+
+        if (!tier) {
+          throw new Error('Invalid tier')
+        }
+
+        // Create or update subscription
+        await supabaseClient
+          .from('subscriptions')
+          .upsert({
+            profile_id: userId,
+            tier_id: tierId,
+            stripe_subscription_id: session.subscription as string,
+            level: tier.name === 'pro' ? 'enhanced' : 'basic',
+            current_period_start: new Date(session.created * 1000).toISOString(),
+            current_period_end: new Date().toISOString(), // Will be updated by subscription event
+            messages_limit: tier.name === 'pro' ? 1000 : 200,
+          })
+
+        console.log(`✅ Created subscription for user ${userId}`)
+        break
       }
 
-      const featureIds = JSON.parse(features) as string[]
+      case 'customer.subscription.updated':
+      case 'customer.subscription.created': {
+        const subscription = event.data.object as Stripe.Subscription
+        const { supabaseUserId } = subscription.customer as { supabaseUserId: string }
 
-      // Update transaction status
-      await supabaseClient
-        .from('marketplace_transactions')
-        .update({ status: 'completed' })
-        .eq('stripe_session_id', session.id)
+        if (!supabaseUserId) {
+          throw new Error('No Supabase user ID in customer metadata')
+        }
 
-      // Create purchased features records
-      const purchasedFeatures = featureIds.map(featureId => ({
-        user_id,
-        feature_id: featureId,
-        status: 'active',
-        purchased_at: new Date().toISOString(),
-      }))
+        await supabaseClient
+          .from('subscriptions')
+          .update({
+            current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          })
+          .eq('profile_id', supabaseUserId)
 
-      const { error: purchaseError } = await supabaseClient
-        .from('purchased_features')
-        .insert(purchasedFeatures)
-
-      if (purchaseError) {
-        throw new Error('Failed to create purchased features')
+        console.log(`✅ Updated subscription periods for user ${supabaseUserId}`)
+        break
       }
 
-      console.log(`✅ Successfully processed payment for user ${user_id}`)
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription
+        const { supabaseUserId } = subscription.customer as { supabaseUserId: string }
+
+        if (!supabaseUserId) {
+          throw new Error('No Supabase user ID in customer metadata')
+        }
+
+        // Reset to free tier
+        await supabaseClient
+          .from('subscriptions')
+          .update({
+            tier_id: null,
+            stripe_subscription_id: null,
+            level: 'basic',
+            messages_limit: 200,
+          })
+          .eq('profile_id', supabaseUserId)
+
+        console.log(`✅ Subscription cancelled for user ${supabaseUserId}`)
+        break
+      }
     }
 
     return new Response(JSON.stringify({ received: true }), {
