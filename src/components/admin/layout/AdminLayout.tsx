@@ -21,7 +21,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           variant="ghost"
           size="icon"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="text-white"
+          className="text-white hover:bg-white/5"
         >
           {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
@@ -39,8 +39,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Main Content */}
       <main className="flex-1 w-full">
-        <AdminMenu />
-        <div className="container mx-auto p-4 lg:p-8 max-w-[1600px] mt-[280px] md:mt-[200px] lg:mt-[160px]">
+        <div className="sticky top-0 z-40 bg-[#0D1117]">
+          <AdminMenu />
+        </div>
+        <div className="container mx-auto p-4 lg:p-8 max-w-[1600px]">
           {children}
         </div>
       </main>
