@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -98,7 +97,6 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white overflow-hidden relative">
-      {/* Background blur effects */}
       <div className="absolute inset-0">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl"></div>
@@ -107,11 +105,13 @@ const Auth = () => {
       <div className="relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-3 mb-16">
-            <img
-              src="/placeholder.svg"
-              alt="Chat Agent Builder Logo"
-              className="w-10 h-10 rounded-2xl shadow-xl"
-            />
+            <div className="w-10 h-10 rounded-2xl shadow-xl bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
+              <img
+                src="/lovable-uploads/c2500b5c-076b-4965-bf93-b63a8894f04a.png"
+                alt="Chat Agent Builder Logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div className="flex flex-col">
               <h1 className="text-xl font-semibold text-white">Chat Agent Builder</h1>
               <p className="text-sm text-gray-400">Build. Deploy. Engage.</p>
