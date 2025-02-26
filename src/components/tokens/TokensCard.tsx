@@ -46,7 +46,14 @@ export function TokensCard() {
         .limit(5);
 
       if (error) throw error;
-      setTransactions(data || []);
+      
+      // Type cast the transaction_type to ensure it matches our TokenTransaction type
+      const typedTransactions: TokenTransaction[] = (data || []).map(transaction => ({
+        ...transaction,
+        transaction_type: transaction.transaction_type as 'credit' | 'debit'
+      }));
+      
+      setTransactions(typedTransactions);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {
