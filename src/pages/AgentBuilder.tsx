@@ -9,6 +9,7 @@ import { TutorialOverlay } from "@/components/onboarding/TutorialOverlay";
 import { Header } from "@/components/agent/Header";
 import { ProFeatures } from "@/components/agent/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
+import { TokensCard } from "@/components/tokens/TokensCard";
 
 interface Agent {
   id: number;
@@ -22,7 +23,7 @@ export default function AgentBuilder() {
 
   const handleCreateAgent = (template: { name: string; description: string; }) => {
     const newAgent: Agent = {
-      id: Date.now(), // Simple ID generation for demo
+      id: Date.now(),
       name: template.name,
       description: template.description,
       type: template.name.toLowerCase().replace(' ', '_')
@@ -36,6 +37,9 @@ export default function AgentBuilder() {
         <div className="space-y-8">
           <Header />
           
+          {/* Tokens Card */}
+          <TokensCard />
+
           {/* Agents List */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
             <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
