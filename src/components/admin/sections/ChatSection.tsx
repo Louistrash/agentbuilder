@@ -82,7 +82,7 @@ export const ChatSection = () => {
             Chat Behavior & AI Responses
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 [&_[data-state=checked]]:bg-gradient-to-r [&_[data-state=checked]]:from-[#8B5CF6] [&_[data-state=checked]]:to-[#D946EF]">
           <ChatBehaviorSettings />
         </CardContent>
       </Card>
