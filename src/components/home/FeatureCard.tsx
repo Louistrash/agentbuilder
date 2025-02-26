@@ -37,7 +37,7 @@ export function FeatureCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="scale-[1.14]" // 14% size increase
+      className="scale-[1.14]"
     >
       <Card
         className={`${bgColor} rounded-xl border border-[#1EAEDB]/10 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#1EAEDB]/5 backdrop-blur-sm`}
@@ -45,7 +45,6 @@ export function FeatureCard({
         onMouseLeave={onMouseLeave}
       >
         <div className="relative">
-          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent pointer-events-none" />
           
           <div className={`p-6 flex items-center justify-center relative z-10`}>
@@ -71,7 +70,7 @@ export function FeatureCard({
             onClick={onClick}
           >
             <Play className="h-4 w-4 mr-2" />
-            Try it out
+            Learn More
           </Button>
         </div>
       </Card>
