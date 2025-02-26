@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { AgentsList } from "@/components/agent/AgentsList";
 import { AdvancedConfig } from "@/components/agent/AdvancedConfig";
 import { TestInterface } from "@/components/agent/TestInterface";
@@ -8,8 +8,28 @@ import { FeatureOnboarding } from "@/components/onboarding/FeatureOnboarding";
 import { TutorialOverlay } from "@/components/onboarding/TutorialOverlay";
 import { Header } from "@/components/agent/Header";
 import { ProFeatures } from "@/components/agent/ProFeatures";
+import { AgentTemplates } from "@/components/agent/AgentTemplates";
+
+interface Agent {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+}
 
 export default function AgentBuilder() {
+  const [agents, setAgents] = useState<Agent[]>([]);
+
+  const handleCreateAgent = (template: { name: string; description: string; }) => {
+    const newAgent: Agent = {
+      id: Date.now(), // Simple ID generation for demo
+      name: template.name,
+      description: template.description,
+      type: template.name.toLowerCase().replace(' ', '_')
+    };
+    setAgents(prev => [...prev, newAgent]);
+  };
+
   return (
     <div className="min-h-screen bg-[#0D1117] text-white">
       <div className="container mx-auto py-8 px-4 lg:px-8">
@@ -19,10 +39,20 @@ export default function AgentBuilder() {
           {/* Agents List */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
             <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-              <h2 className="text-lg font-semibold text-white">Agents List</h2>
+              <h2 className="text-lg font-semibold text-white">Your Agents</h2>
             </div>
             <div className="p-6">
-              <AgentsList />
+              <AgentsList agents={agents} />
+            </div>
+          </div>
+
+          {/* Templates */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
+              <h2 className="text-lg font-semibold text-white">Agent Templates</h2>
+            </div>
+            <div className="p-6">
+              <AgentTemplates onCreateAgent={handleCreateAgent} />
             </div>
           </div>
 

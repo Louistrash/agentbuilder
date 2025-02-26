@@ -28,10 +28,16 @@ const templates = [{
   buttonColor: 'bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20 text-[#8B5CF6] hover:text-[#8B5CF6]/90 border border-[#8B5CF6]/20'
 }];
 
-export function AgentTemplates() {
+interface AgentTemplatesProps {
+  onCreateAgent: (template: { name: string; description: string; }) => void;
+}
+
+export function AgentTemplates({ onCreateAgent }: AgentTemplatesProps) {
   const handleUseTemplate = (template: typeof templates[0]) => {
-    // Here you would typically make an API call to create the agent
-    console.log('Creating agent from template:', template);
+    onCreateAgent({
+      name: template.name,
+      description: template.description,
+    });
     toast.success(`Created ${template.name} agent`);
   };
 
