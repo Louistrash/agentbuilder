@@ -39,13 +39,9 @@ const proFeatures = [{
 }];
 
 export default function AgentConfig() {
-  const {
-    id
-  } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [agent, setAgent] = useState<any>(null);
   const [availableTokens, setAvailableTokens] = useState(50);
   const [trainingUrl, setTrainingUrl] = useState('');
@@ -98,7 +94,7 @@ export default function AgentConfig() {
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
-              onClick={() => navigate('/agents')}
+              onClick={() => navigate('/agent-builder/free')}
               className="text-gray-400 hover:text-[#1EAEDB] transition-colors duration-200 hover:bg-transparent"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
