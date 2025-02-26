@@ -15,21 +15,23 @@ export default function AgentBuilder() {
       <div className="container mx-auto py-8 px-4 lg:px-8">
         <div className="space-y-8">
           <Header />
+          
+          {/* Agents List */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
+              <h2 className="text-lg font-semibold text-white">Agents List</h2>
+            </div>
+            <div className="p-6">
+              <AgentsList />
+            </div>
+          </div>
+
           <ProFeatures />
 
           {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left Column */}
             <div className="lg:col-span-8 space-y-8">
-              <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-                <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-                  <h2 className="text-lg font-semibold text-white">Agents List</h2>
-                </div>
-                <div className="p-6">
-                  <AgentsList />
-                </div>
-              </div>
-              
               <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
                 <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
                   <h2 className="text-lg font-semibold text-white">Advanced Configuration</h2>

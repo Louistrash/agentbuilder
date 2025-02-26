@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, MessageSquare, Brain, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 
 const templates = [{
   id: 1,
@@ -28,6 +29,12 @@ const templates = [{
 }];
 
 export function AgentTemplates() {
+  const handleUseTemplate = (template: typeof templates[0]) => {
+    // Here you would typically make an API call to create the agent
+    console.log('Creating agent from template:', template);
+    toast.success(`Created ${template.name} agent`);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {templates.map(template => {
@@ -46,6 +53,7 @@ export function AgentTemplates() {
                 <Button 
                   variant="secondary"
                   className={`w-full ${template.buttonColor} transition-all duration-200 shadow-lg hover:shadow-[#1EAEDB]/20`}
+                  onClick={() => handleUseTemplate(template)}
                 >
                   Use Template
                 </Button>
