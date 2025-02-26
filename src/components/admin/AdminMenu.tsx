@@ -9,7 +9,8 @@ import {
   ShoppingBag,
   Link,
   CreditCard,
-  BookOpen
+  BookOpen,
+  Shield
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -46,6 +47,12 @@ export function AdminMenu() {
       title: "Users & Roles",
       color: "bg-[#EC4899]/10",
       href: "users"
+    },
+    {
+      icon: <Shield className="h-4 w-4 text-[#3B82F6]" />,
+      title: "Clients",
+      color: "bg-[#3B82F6]/10",
+      href: "clients"
     },
     {
       icon: <MessageSquare className="h-4 w-4 text-[#3B82F6]" />,

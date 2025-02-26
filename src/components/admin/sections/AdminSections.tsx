@@ -1,5 +1,4 @@
-
-import { Settings2, MessageSquare, Users, PieChart, Calendar, ShoppingBag, Link2, CreditCard, BookOpen } from "lucide-react";
+import { Settings2, MessageSquare, Users, PieChart, Calendar, ShoppingBag, Link2, CreditCard, BookOpen, Shield } from "lucide-react";
 import { GeneralSettings } from "../GeneralSettings";
 import { ChatSection } from "./ChatSection";
 import { UsersSection } from "./UsersSection";
@@ -10,6 +9,7 @@ import { MarketplaceSection } from "./MarketplaceSection";
 import { IntegrationsSection } from "./IntegrationsSection";
 import { SubscriptionsSection } from "./SubscriptionsSection";
 import { TrainingSection } from "./TrainingSection";
+import { ClientsSection } from "./clients/ClientsSection";
 
 const SectionHeader = ({ icon: Icon, title, subtitle }: { icon: any, title: string, subtitle: string }) => (
   <div className="border-b border-[#1F2937] bg-[#111827]/50 p-6">
@@ -129,6 +129,17 @@ export function AdminSections() {
         />
         <div className="p-6">
           <TrainingSection />
+        </div>
+      </section>
+
+      <section id="clients" className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden hover:border-purple-500/30 transition-colors">
+        <SectionHeader 
+          icon={Shield}
+          title="Client Management"
+          subtitle="Manage client access and features"
+        />
+        <div className="p-6">
+          <ClientsSection />
         </div>
       </section>
     </div>
