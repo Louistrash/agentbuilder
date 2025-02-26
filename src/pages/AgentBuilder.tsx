@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AgentsList } from "@/components/agent/AgentsList";
 import { AdvancedConfig } from "@/components/agent/AdvancedConfig";
 import { TestInterface } from "@/components/agent/TestInterface";
@@ -14,6 +13,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Users, SendHorizontal, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AvatarUpload } from "@/components/profile/AvatarUpload";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Agent {
   id: number;
@@ -34,7 +35,27 @@ export default function AgentBuilder() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchUserAvatar();
+  }, []);
+
+  const fetchUserAvatar = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('id', user.id)
+        .single();
+      
+      if (profile?.avatar_url) {
+        setAvatarUrl(profile.avatar_url);
+      }
+    }
+  };
 
   const handleCreateAgent = (template: { name: string; description: string; }) => {
     const newAgent: Agent = {
@@ -101,6 +122,19 @@ export default function AgentBuilder() {
         <div className="space-y-8">
           <Header />
           
+          {/* Avatar Upload */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
+              <h2 className="text-lg font-semibold text-white">Your Chat Avatar</h2>
+            </div>
+            <div className="p-6">
+              <AvatarUpload 
+                currentAvatarUrl={avatarUrl || undefined}
+                onAvatarUpdate={(url) => setAvatarUrl(url)}
+              />
+            </div>
+          </div>
+
           {/* Agent Templates */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
             <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
@@ -121,22 +155,38 @@ export default function AgentBuilder() {
                 <div className="bg-[#1C2128] rounded-lg p-4 space-y-4">
                   <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto">
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#FEC6A1]/20 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-[#FEC6A1]" />
-                      </div>
+                      {avatarUrl ? (
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={avatarUrl} />
+                          <AvatarFallback>AI</AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-[#FEC6A1]/20 flex items-center justify-center">
+                          <Users className="w-4 h-4 text-[#FEC6A1]" />
+                        </div>
+                      )}
                       <div className="flex-1 bg-[#30363D] rounded-lg p-3">
                         <p className="text-sm text-gray-300">Hi! I'm {selectedAgent.name}. How can I help you today?</p>
                       </div>
                     </div>
                     {messages.map((message, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <div className={`w-8 h-8 rounded-full ${
-                          message.role === 'user' ? 'bg-blue-500/20' : 'bg-[#FEC6A1]/20'
-                        } flex items-center justify-center`}>
-                          <Users className={`w-4 h-4 ${
-                            message.role === 'user' ? 'text-blue-500' : 'text-[#FEC6A1]'
-                          }`} />
-                        </div>
+                        {message.role === 'assistant' ? (
+                          avatarUrl ? (
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage src={avatarUrl} />
+                              <AvatarFallback>AI</AvatarFallback>
+                            </Avatar>
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-[#FEC6A1]/20 flex items-center justify-center">
+                              <Users className="w-4 h-4 text-[#FEC6A1]" />
+                            </div>
+                          )
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <Users className="w-4 h-4 text-blue-500" />
+                          </div>
+                        )}
                         <div className="flex-1 bg-[#30363D] rounded-lg p-3">
                           <p className="text-sm text-gray-300">{message.content}</p>
                         </div>
