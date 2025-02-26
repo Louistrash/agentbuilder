@@ -130,20 +130,20 @@ export default function AgentConfig() {
           </div>
 
           <Tabs defaultValue="config" className="space-y-6">
-            <TabsList className="bg-[#161B22] border-[#30363D]">
-              <TabsTrigger value="config" className="data-[state=active]:bg-[#1C2128]">
+            <TabsList className="bg-[#161B22] border-[#30363D] p-1 rounded-lg">
+              <TabsTrigger value="config" className="data-[state=active]:bg-[#1C2128] text-sm">
                 <Bot className="w-4 h-4 mr-2" />
                 Configuration
               </TabsTrigger>
-              <TabsTrigger value="test" className="data-[state=active]:bg-[#1C2128]">
+              <TabsTrigger value="test" className="data-[state=active]:bg-[#1C2128] text-sm">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Test Agent
               </TabsTrigger>
-              <TabsTrigger value="train" className="data-[state=active]:bg-[#1C2128]">
+              <TabsTrigger value="train" className="data-[state=active]:bg-[#1C2128] text-sm">
                 <Globe className="w-4 h-4 mr-2" />
                 Training
               </TabsTrigger>
-              <TabsTrigger value="embed" className="data-[state=active]:bg-[#1C2128]">
+              <TabsTrigger value="embed" className="data-[state=active]:bg-[#1C2128] text-sm">
                 <Code className="w-4 h-4 mr-2" />
                 Embed
               </TabsTrigger>
@@ -153,35 +153,38 @@ export default function AgentConfig() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                   <Card className="bg-[#161B22] border-[#30363D]">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Bot className="w-5 h-5 text-purple-500" />
+                    <CardHeader className="border-b border-[#30363D]">
+                      <CardTitle className="flex items-center gap-2 text-lg font-medium">
+                        <Bot className="w-5 h-5 text-[#1EAEDB]" />
                         Basic Configuration
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-6 pt-6">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Agent Name</Label>
+                        <Label htmlFor="name" className="text-gray-300">Agent Name</Label>
                         <Input
                           id="name"
                           value={agent.name}
-                          className="bg-[#1C2128] border-[#30363D]"
+                          className="bg-[#1C2128] border-[#30363D] text-white"
+                          placeholder="Enter agent name"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="description" className="text-gray-300">Description</Label>
                         <Textarea
                           id="description"
                           value={agent.description}
-                          className="bg-[#1C2128] border-[#30363D]"
+                          className="bg-[#1C2128] border-[#30363D] text-white min-h-[100px]"
+                          placeholder="Describe your agent's purpose"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="systemPrompt">System Prompt</Label>
+                        <Label htmlFor="systemPrompt" className="text-gray-300">System Prompt</Label>
                         <Textarea
                           id="systemPrompt"
                           value={agent.systemPrompt}
-                          className="bg-[#1C2128] border-[#30363D] h-32"
+                          className="bg-[#1C2128] border-[#30363D] text-white min-h-[150px]"
+                          placeholder="Define how your agent should behave"
                         />
                       </div>
                     </CardContent>
@@ -190,13 +193,13 @@ export default function AgentConfig() {
 
                 <div className="space-y-6">
                   <Card className="bg-[#161B22] border-[#30363D]">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Lock className="w-5 h-5 text-purple-500" />
+                    <CardHeader className="border-b border-[#30363D]">
+                      <CardTitle className="flex items-center gap-2 text-lg font-medium">
+                        <Lock className="w-5 h-5 text-[#1EAEDB]" />
                         Pro Features
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 pt-6">
                       {proFeatures.map((feature) => (
                         <div
                           key={feature.id}
@@ -209,7 +212,7 @@ export default function AgentConfig() {
                                 {feature.description}
                               </p>
                             </div>
-                            <Badge variant="secondary" className="bg-purple-500/10 text-purple-400 border-0">
+                            <Badge variant="secondary" className="bg-[#1EAEDB]/10 text-[#1EAEDB] border-0">
                               {feature.tokens} tokens
                             </Badge>
                           </div>
@@ -222,7 +225,7 @@ export default function AgentConfig() {
                     </CardContent>
                   </Card>
 
-                  <Button className="w-full bg-purple-500 hover:bg-purple-600">
+                  <Button className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90">
                     Save Changes
                   </Button>
                 </div>
