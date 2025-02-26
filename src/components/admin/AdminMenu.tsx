@@ -21,7 +21,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
   <Card 
-    className="border-[#30363D] p-4 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer"
+    className="border-[#30363D] p-3 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer"
     onClick={() => {
       const element = document.getElementById(href);
       if (element) {
@@ -29,11 +29,11 @@ const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
       }
     }}
   >
-    <div className="flex items-center gap-4">
-      <div className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center group-hover:bg-opacity-20 transition-colors`}>
+    <div className="flex items-center gap-3">
+      <div className={`w-8 h-8 rounded-lg ${color} flex items-center justify-center group-hover:bg-opacity-20 transition-colors`}>
         {icon}
       </div>
-      <span className="font-medium text-white group-hover:text-white/90">{title}</span>
+      <span className="font-medium text-sm text-white group-hover:text-white/90">{title}</span>
     </div>
   </Card>
 );
@@ -41,55 +41,55 @@ const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
 export function AdminMenu() {
   const menuItems = [
     {
-      icon: <Settings2 className="h-6 w-6 text-[#6366F1]" />,
+      icon: <Settings2 className="h-4 w-4 text-[#6366F1]" />,
       title: "General Settings",
       color: "bg-[#6366F1]/10",
       href: "general"
     },
     {
-      icon: <MessageSquare className="h-6 w-6 text-[#3B82F6]" />,
+      icon: <MessageSquare className="h-4 w-4 text-[#3B82F6]" />,
       title: "Chat",
       color: "bg-[#3B82F6]/10",
       href: "chat"
     },
     {
-      icon: <Users className="h-6 w-6 text-[#EC4899]" />,
+      icon: <Users className="h-4 w-4 text-[#EC4899]" />,
       title: "Users",
       color: "bg-[#EC4899]/10",
       href: "users"
     },
     {
-      icon: <PieChart className="h-6 w-6 text-[#10B981]" />,
+      icon: <PieChart className="h-4 w-4 text-[#10B981]" />,
       title: "Analytics",
       color: "bg-[#10B981]/10",
       href: "analytics"
     },
     {
-      icon: <CalendarDays className="h-6 w-6 text-[#6366F1]" />,
+      icon: <CalendarDays className="h-4 w-4 text-[#6366F1]" />,
       title: "Appointments",
       color: "bg-[#6366F1]/10",
       href: "appointments"
     },
     {
-      icon: <ShoppingBag className="h-6 w-6 text-[#F59E0B]" />,
+      icon: <ShoppingBag className="h-4 w-4 text-[#F59E0B]" />,
       title: "Marketplace",
       color: "bg-[#F59E0B]/10",
       href: "marketplace"
     },
     {
-      icon: <Link className="h-6 w-6 text-[#8B5CF6]" />,
+      icon: <Link className="h-4 w-4 text-[#8B5CF6]" />,
       title: "Integrations",
       color: "bg-[#8B5CF6]/10",
       href: "integrations"
     },
     {
-      icon: <CreditCard className="h-6 w-6 text-[#EC4899]" />,
+      icon: <CreditCard className="h-4 w-4 text-[#EC4899]" />,
       title: "Subscriptions",
       color: "bg-[#EC4899]/10",
       href: "subscriptions"
     },
     {
-      icon: <BookOpen className="h-6 w-6 text-[#6366F1]" />,
+      icon: <BookOpen className="h-4 w-4 text-[#6366F1]" />,
       title: "Training",
       color: "bg-[#6366F1]/10",
       href: "training"
@@ -97,9 +97,9 @@ export function AdminMenu() {
   ];
 
   return (
-    <div className="bg-[#0D1117] border-b border-[#30363D] px-4 py-6">
+    <div className="bg-[#0D1117] border-b border-[#30363D] px-4 py-3">
       <div className="max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {menuItems.map((item) => (
             <MenuItem
               key={item.href}
