@@ -36,11 +36,11 @@ export const TopQueriesTable = () => {
 
   if (isLoading) {
     return (
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Top User Queries</h3>
+      <Card className="bg-[#1A1F2C] border-[#30363D] p-6">
+        <h3 className="text-lg font-semibold mb-4 text-white">Top User Queries</h3>
         <div className="animate-pulse space-y-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-10 bg-gray-100 rounded" />
+            <div key={i} className="h-10 bg-[#222939] rounded" />
           ))}
         </div>
       </Card>
@@ -48,22 +48,22 @@ export const TopQueriesTable = () => {
   }
 
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-semibold mb-4">Top User Queries</h3>
+    <Card className="bg-[#1A1F2C] border-[#30363D] p-6">
+      <h3 className="text-lg font-semibold mb-4 text-white">Top User Queries</h3>
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead>Query</TableHead>
-            <TableHead className="text-right">Frequency</TableHead>
-            <TableHead className="text-right">Avg. Response Time</TableHead>
+          <TableRow className="border-[#30363D] hover:bg-[#222939]">
+            <TableHead className="text-gray-400">Query</TableHead>
+            <TableHead className="text-right text-gray-400">Frequency</TableHead>
+            <TableHead className="text-right text-gray-400">Avg. Response Time</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {queries?.map((item) => (
-            <TableRow key={item.query}>
-              <TableCell className="font-medium">{item.query}</TableCell>
-              <TableCell className="text-right">{item.count}</TableCell>
-              <TableCell className="text-right">{item.avgResponseTime}</TableCell>
+            <TableRow key={item.query} className="border-[#30363D] hover:bg-[#222939]">
+              <TableCell className="font-medium text-white">{item.query}</TableCell>
+              <TableCell className="text-right text-gray-300">{item.count}</TableCell>
+              <TableCell className="text-right text-gray-300">{item.avgResponseTime}</TableCell>
             </TableRow>
           ))}
         </TableBody>
