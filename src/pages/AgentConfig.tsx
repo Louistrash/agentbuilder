@@ -113,19 +113,31 @@ export default function AgentConfig() {
 
           <Tabs defaultValue="config" className="space-y-6">
             <TabsList className="bg-gradient-to-b from-[#161B22] to-[#1C2128] border border-[#30363D] p-1 rounded-lg shadow-xl w-full flex space-x-1">
-              <TabsTrigger value="config" className="flex-1 data-[state=active]:bg-[#1EAEDB]/10 data-[state=active]:text-[#1EAEDB] text-sm px-4 py-2 rounded-md transition-all duration-200">
+              <TabsTrigger 
+                value="config" 
+                className="flex-1 text-zinc-200 hover:text-[#1EAEDB] hover:bg-[#1EAEDB]/10 data-[state=active]:bg-[#1EAEDB]/10 data-[state=active]:text-[#1EAEDB] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <Bot className="w-4 h-4 mr-2" />
                 Configuration
               </TabsTrigger>
-              <TabsTrigger value="test" className="flex-1 data-[state=active]:bg-[#9B87F5]/10 data-[state=active]:text-[#9B87F5] text-sm px-4 py-2 rounded-md transition-all duration-200">
+              <TabsTrigger 
+                value="test" 
+                className="flex-1 text-zinc-200 hover:text-[#9B87F5] hover:bg-[#9B87F5]/10 data-[state=active]:bg-[#9B87F5]/10 data-[state=active]:text-[#9B87F5] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Test Agent
               </TabsTrigger>
-              <TabsTrigger value="train" className="flex-1 data-[state=active]:bg-[#EC4899]/10 data-[state=active]:text-[#EC4899] text-sm px-4 py-2 rounded-md transition-all duration-200">
+              <TabsTrigger 
+                value="train" 
+                className="flex-1 text-zinc-200 hover:text-[#EC4899] hover:bg-[#EC4899]/10 data-[state=active]:bg-[#EC4899]/10 data-[state=active]:text-[#EC4899] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <Globe className="w-4 h-4 mr-2" />
                 Training
               </TabsTrigger>
-              <TabsTrigger value="embed" className="flex-1 data-[state=active]:bg-[#F97316]/10 data-[state=active]:text-[#F97316] text-sm px-4 py-2 rounded-md transition-all duration-200">
+              <TabsTrigger 
+                value="embed" 
+                className="flex-1 text-zinc-200 hover:text-[#F97316] hover:bg-[#F97316]/10 data-[state=active]:bg-[#F97316]/10 data-[state=active]:text-[#F97316] text-sm px-4 py-2 rounded-md transition-all duration-200"
+              >
                 <Code className="w-4 h-4 mr-2" />
                 Embed
               </TabsTrigger>
