@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,8 +41,8 @@ const Index = () => {
   };
 
   const handleCreateAgentClick = () => {
-    console.log("Navigating to free agent builder");
-    navigate('/agent-builder/free');
+    console.log("Navigating to agent builder");
+    navigate('/agent-builder');
   };
 
   const handleFeatureClick = (feature: string) => {
