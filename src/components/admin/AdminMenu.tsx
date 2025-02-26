@@ -21,7 +21,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
   <Card 
-    className="border-[#30363D] p-2.5 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer"
+    className="border-[#30363D] p-4 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer w-[88%]"
     onClick={() => {
       const element = document.getElementById(href);
       if (element) {
