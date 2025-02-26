@@ -7,31 +7,34 @@ export const ChatSection = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Stats Cards with Apple-style design */}
         <div className="space-y-4">
-          <Card className="bg-[#161B22]/90 backdrop-blur-xl border border-white/10 group hover:border-white/20 transition-all duration-300">
-            <div className="px-5 py-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#6366F1]/20 to-[#6366F1]/5 flex items-center justify-center group-hover:from-[#6366F1]/30 group-hover:to-[#6366F1]/10 transition-all duration-300">
-                  <MessageSquare className="h-6 w-6 text-[#6366F1]" />
+          <Card className="bg-gradient-to-br from-[#161B22] to-[#1A1F2C] border-none shadow-xl">
+            <div className="px-6 py-5">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6366F1] to-[#9b87f5] p-[1px]">
+                  <div className="w-full h-full rounded-2xl bg-[#161B22] flex items-center justify-center">
+                    <MessageSquare className="h-6 w-6 text-[#6366F1]" />
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-white/60">Active Chats</p>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">247</p>
+                  <p className="text-sm font-medium text-[#9b87f5]">Active Chats</p>
+                  <p className="text-3xl font-bold text-white mt-1">247</p>
                 </div>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-[#161B22]/90 backdrop-blur-xl border border-white/10 group hover:border-white/20 transition-all duration-300">
-            <div className="px-5 py-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1EAEDB]/20 to-[#1EAEDB]/5 flex items-center justify-center group-hover:from-[#1EAEDB]/30 group-hover:to-[#1EAEDB]/10 transition-all duration-300">
-                  <Bot className="h-6 w-6 text-[#1EAEDB]" />
+          <Card className="bg-gradient-to-br from-[#161B22] to-[#1A1F2C] border-none shadow-xl">
+            <div className="px-6 py-5">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1EAEDB] to-[#33C3F0] p-[1px]">
+                  <div className="w-full h-full rounded-2xl bg-[#161B22] flex items-center justify-center">
+                    <Bot className="h-6 w-6 text-[#1EAEDB]" />
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-white/60">Bot Status</p>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Online</p>
+                  <p className="text-sm font-medium text-[#1EAEDB]">Bot Status</p>
+                  <p className="text-3xl font-bold text-white mt-1">Online</p>
                 </div>
               </div>
             </div>
@@ -39,29 +42,33 @@ export const ChatSection = () => {
         </div>
 
         <div className="space-y-4">
-          <Card className="bg-[#161B22]/90 backdrop-blur-xl border border-white/10 group hover:border-white/20 transition-all duration-300">
-            <div className="px-5 py-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#EC4899]/20 to-[#EC4899]/5 flex items-center justify-center group-hover:from-[#EC4899]/30 group-hover:to-[#EC4899]/10 transition-all duration-300">
-                  <Brain className="h-6 w-6 text-[#EC4899]" />
+          <Card className="bg-gradient-to-br from-[#161B22] to-[#1A1F2C] border-none shadow-xl">
+            <div className="px-6 py-5">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#EC4899] to-[#D6BCFA] p-[1px]">
+                  <div className="w-full h-full rounded-2xl bg-[#161B22] flex items-center justify-center">
+                    <Brain className="h-6 w-6 text-[#EC4899]" />
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-white/60">AI Model</p>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">GPT-4</p>
+                  <p className="text-sm font-medium text-[#EC4899]">AI Model</p>
+                  <p className="text-3xl font-bold text-white mt-1">GPT-4</p>
                 </div>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-[#161B22]/90 backdrop-blur-xl border border-white/10 group hover:border-white/20 transition-all duration-300">
-            <div className="px-5 py-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#6366F1]/20 to-[#6366F1]/5 flex items-center justify-center group-hover:from-[#6366F1]/30 group-hover:to-[#6366F1]/10 transition-all duration-300">
-                  <Sliders className="h-6 w-6 text-[#6366F1]" />
+          <Card className="bg-gradient-to-br from-[#161B22] to-[#1A1F2C] border-none shadow-xl">
+            <div className="px-6 py-5">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6366F1] to-[#9b87f5] p-[1px]">
+                  <div className="w-full h-full rounded-2xl bg-[#161B22] flex items-center justify-center">
+                    <Sliders className="h-6 w-6 text-[#6366F1]" />
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-white/60">Settings</p>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Configured</p>
+                  <p className="text-sm font-medium text-[#6366F1]">Settings</p>
+                  <p className="text-3xl font-bold text-white mt-1">Configured</p>
                 </div>
               </div>
             </div>
