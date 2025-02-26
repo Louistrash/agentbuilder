@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Plus, Rocket, ChartBar, Play } from "lucide-react";
+import { Plus, Rocket, ChartBar, Play, BarChart3, Brain, Zap } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { ProFeatures } from "@/components/home/ProFeatures";
@@ -62,38 +62,44 @@ const Index = () => {
       title: 'Easy to Build',
       description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
       demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
-      icon: <Rocket className="h-6 w-6 text-[#1EAEDB] filter drop-shadow-[0_0_8px_rgba(30,174,219,0.5)]" />,
-      gradientClasses: 'bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent',
-      bgColor: 'bg-black/20'
+      icon: <Brain className="h-6 w-6 text-[#8B5CF6] filter drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#8B5CF6]/5 to-transparent',
+      bgColor: 'bg-[#1A1F2C]/60'
     },
     {
       id: 'smart',
       title: 'Smart Responses',
       description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
       demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
-      icon: <Rocket className="h-6 w-6 text-[#1EAEDB] filter drop-shadow-[0_0_8px_rgba(30,174,219,0.5)]" />,
-      gradientClasses: 'bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent',
-      bgColor: 'bg-black/20'
+      icon: <Zap className="h-6 w-6 text-[#D946EF] filter drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#D946EF]/5 to-transparent',
+      bgColor: 'bg-[#1A1F2C]/60'
     },
     {
       id: 'analytics',
       title: 'Analytics & Insights',
       description: 'Track performance and gather insights to continuously improve your chat agents.',
       demoContent: 'View sample analytics and see how you can optimize your chat agents.',
-      icon: <ChartBar className="h-6 w-6 text-[#1EAEDB] filter drop-shadow-[0_0_8px_rgba(30,174,219,0.5)]" />,
-      gradientClasses: 'bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent',
-      bgColor: 'bg-black/20'
+      icon: <BarChart3 className="h-6 w-6 text-[#0EA5E9] filter drop-shadow-[0_0_8px_rgba(14,165,233,0.5)]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#0EA5E9]/5 to-transparent',
+      bgColor: 'bg-[#1A1F2C]/60'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#1A1F2C] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#1A1F2C] text-white overflow-x-hidden relative">
+      <div className="absolute inset-0 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI/wN4sFuqkQAAAABJRU5ErkJggg==')] opacity-20"></div>
+      
       <Header logoUrl={logoUrl} />
 
       <main className="relative">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
           <div className="text-center mb-8 sm:mb-12 animate-fade-up">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
+            <div className="inline-flex items-center px-4 py-1 bg-[#8B5CF6]/10 rounded-full text-sm font-medium text-[#8B5CF6] mb-4 backdrop-blur-sm border border-[#8B5CF6]/20">
+              <Rocket className="h-4 w-4 mr-2" />
+              AI-Powered Platform
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#0EA5E9] bg-clip-text text-transparent">
               Create Intelligent Chat Agents
             </h2>
             <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
@@ -103,7 +109,7 @@ const Index = () => {
               <Button
                 size="default"
                 onClick={() => handleCreateAgentClick('free')}
-                className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
+                className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#8B5CF6]/25 transform hover:scale-[1.02] backdrop-blur-sm"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 Create Your First Agent (Free)
@@ -112,7 +118,7 @@ const Index = () => {
                 size="default"
                 variant="outline"
                 onClick={() => handleCreateAgentClick('pro')}
-                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
+                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#D946EF]/20 text-white hover:bg-[#D946EF]/10 hover:border-[#D946EF]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
                 <Rocket className="h-5 w-5 mr-2" />
                 Access Pro Features
