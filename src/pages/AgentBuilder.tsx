@@ -52,25 +52,6 @@ export default function AgentBuilder() {
             </div>
           </div>
 
-          {/* Agents List */}
-          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-            <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <h2 className="text-lg font-semibold text-white">Your Agents</h2>
-                <button 
-                  onClick={() => setIsDialogOpen(true)}
-                  className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEC6A1]/10 text-[#FEC6A1] hover:bg-[#FEC6A1]/20 transition-colors"
-                >
-                  <Users className="w-4 h-4" />
-                  <span>{agents.length}</span>
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <AgentsList agents={agents} />
-            </div>
-          </div>
-
           {/* Chat Demo */}
           {selectedAgent && (
             <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
@@ -103,6 +84,25 @@ export default function AgentBuilder() {
               </div>
             </div>
           )}
+
+          {/* Agents List */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-semibold text-white">Your Agents</h2>
+                <button 
+                  onClick={() => setIsDialogOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEC6A1]/10 text-[#FEC6A1] hover:bg-[#FEC6A1]/20 transition-colors"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>{agents.length}</span>
+                </button>
+              </div>
+            </div>
+            <div className="p-6">
+              <AgentsList agents={agents} />
+            </div>
+          </div>
 
           <ProFeatures />
 
