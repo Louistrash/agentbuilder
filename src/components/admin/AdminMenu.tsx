@@ -21,7 +21,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
   <Card 
-    className="border-[#30363D] p-3 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer"
+    className="border-[#30363D] p-2.5 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer"
     onClick={() => {
       const element = document.getElementById(href);
       if (element) {
@@ -29,11 +29,11 @@ const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
       }
     }}
   >
-    <div className="flex items-center gap-3">
-      <div className={`w-8 h-8 rounded-lg ${color} flex items-center justify-center group-hover:bg-opacity-20 transition-colors`}>
+    <div className="flex items-center gap-2.5">
+      <div className={`w-7 h-7 rounded-lg ${color} flex items-center justify-center group-hover:bg-opacity-20 transition-colors`}>
         {icon}
       </div>
-      <span className="font-medium text-sm text-white group-hover:text-white/90">{title}</span>
+      <span className="font-medium text-xs text-white group-hover:text-white/90">{title}</span>
     </div>
   </Card>
 );
@@ -99,7 +99,7 @@ export function AdminMenu() {
   return (
     <div className="bg-[#0D1117] border-b border-[#30363D] px-4 py-3">
       <div className="max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {menuItems.map((item) => (
             <MenuItem
               key={item.href}
