@@ -11,7 +11,7 @@ import { ProFeatures } from "@/components/agent/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
 import { TokensCard } from "@/components/tokens/TokensCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Users, SendHorizontal } from "lucide-react";
+import { Users, SendHorizontal, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -197,14 +197,28 @@ export default function AgentBuilder() {
 
           {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left Column */}
+            {/* Left Column - Advanced Configuration */}
             <div className="lg:col-span-8 space-y-8">
-              <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+              <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden w-[60%]">
                 <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-                  <h2 className="text-lg font-semibold text-white">Advanced Configuration</h2>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-white">Advanced Configuration</h2>
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-[#FEC6A1]" />
+                      <span className="text-xs text-[#FEC6A1]">Pro</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <AdvancedConfig />
+                <div className="p-6 bg-gradient-card">
+                  <div className="filter blur-[2px] pointer-events-none">
+                    <AdvancedConfig />
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <button className="px-4 py-2 bg-[#FEC6A1]/20 text-[#FEC6A1] rounded-lg hover:bg-[#FEC6A1]/30 transition-colors flex items-center gap-2">
+                      <Lock className="h-4 w-4" />
+                      Upgrade to Pro
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
