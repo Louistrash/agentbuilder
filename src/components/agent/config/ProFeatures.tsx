@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Lock } from "lucide-react";
-
 interface ProFeature {
   id: string;
   name: string;
@@ -12,27 +10,23 @@ interface ProFeature {
   tokens: number;
   enabled: boolean;
 }
-
 interface ProFeaturesProps {
   features: ProFeature[];
   onFeatureToggle: (featureId: string) => void;
 }
-
-export function ProFeatures({ features, onFeatureToggle }: ProFeaturesProps) {
-  return (
-    <Card className="bg-[#161B22] border-[#30363D]">
+export function ProFeatures({
+  features,
+  onFeatureToggle
+}: ProFeaturesProps) {
+  return <Card className="bg-[#161B22] border-[#30363D]">
       <CardHeader className="border-b border-[#30363D]">
-        <CardTitle className="flex items-center gap-2 text-lg font-medium">
+        <CardTitle className="flex items-center gap-2 text-lg font-medium text-zinc-200">
           <Lock className="w-5 h-5 text-[#1EAEDB]" />
           Pro Features
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 pt-6">
-        {features.map((feature) => (
-          <div
-            key={feature.id}
-            className="p-4 rounded-lg bg-[#1C2128] border border-[#30363D] space-y-3"
-          >
+        {features.map(feature => <div key={feature.id} className="p-4 rounded-lg bg-[#1C2128] border border-[#30363D] space-y-3">
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="font-medium text-white">{feature.name}</h3>
@@ -44,13 +38,8 @@ export function ProFeatures({ features, onFeatureToggle }: ProFeaturesProps) {
                 {feature.tokens} tokens
               </Badge>
             </div>
-            <Switch
-              checked={feature.enabled}
-              onCheckedChange={() => onFeatureToggle(feature.id)}
-            />
-          </div>
-        ))}
+            <Switch checked={feature.enabled} onCheckedChange={() => onFeatureToggle(feature.id)} />
+          </div>)}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 }
