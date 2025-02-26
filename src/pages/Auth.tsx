@@ -107,7 +107,7 @@ const Auth = () => {
           <div className="flex items-center gap-3 mb-16">
             <div className="w-10 h-10 rounded-2xl shadow-xl bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
               <img
-                src="/lovable-uploads/c2500b5c-076b-4965-bf93-b63a8894f04a.png"
+                src="/logo.png"
                 alt="Chat Agent Builder Logo"
                 className="w-full h-full object-cover"
               />
