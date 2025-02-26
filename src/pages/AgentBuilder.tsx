@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Bot } from "lucide-react";
 import { AgentsList } from "@/components/agent/AgentsList";
@@ -18,12 +19,19 @@ export default function AgentBuilder() {
     const fetchAgents = async () => {
       // Example data
       const mockAgents = [
-        { id: 1, name: 'Sales Agent', description: 'Automates sales tasks' },
-        { id: 2, name: 'Support Agent', description: 'Handles customer support' },
+        {
+          id: 1,
+          name: 'Sales Agent',
+          description: 'Automates sales tasks'
+        },
+        {
+          id: 2,
+          name: 'Support Agent',
+          description: 'Handles customer support'
+        }
       ];
       setAgents(mockAgents);
     };
-
     fetchAgents();
   }, []);
 
@@ -45,8 +53,8 @@ export default function AgentBuilder() {
           {/* Header Section */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] p-6 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-purple-500/10">
-                <Bot className="w-5 h-5 text-purple-500" />
+              <div className="p-2 rounded-xl bg-[#1EAEDB]/10">
+                <Bot className="w-5 h-5 text-[#1EAEDB]" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">Agent Builder</h1>
@@ -54,7 +62,7 @@ export default function AgentBuilder() {
               </div>
             </div>
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 via-transparent to-pink-500/5"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#1EAEDB]/5 via-transparent to-[#0FA0CE]/5"></div>
               <div className="relative">
                 <AgentTemplates />
               </div>
