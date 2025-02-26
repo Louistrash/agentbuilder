@@ -3,23 +3,27 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Loader2, Send } from "lucide-react";
 
 export function TestInterface() {
   const [messages, setMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
   const handleSend = () => {
     if (!input.trim()) return;
     
     setMessages(prev => [...prev, { role: 'user', content: input }]);
     setInput('');
+    setIsTyping(true);
     
     // Simulate AI response
     setTimeout(() => {
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: 'This is a simulated response from the AI agent.' 
+        content: 'This is a simulated response from the AI agent. In production, this would be connected to your AI model.' 
       }]);
+      setIsTyping(false);
     }, 1000);
   };
 
@@ -32,13 +36,21 @@ export function TestInterface() {
               key={i}
               className={`p-3 rounded-lg ${
                 message.role === 'user' 
-                  ? 'bg-purple-500/10 ml-8' 
-                  : 'bg-[#1C2128] mr-8'
+                  ? 'bg-[#9B87F5]/10 ml-8 border border-[#9B87F5]/20' 
+                  : 'bg-[#1C2128] mr-8 border border-[#30363D]'
               }`}
             >
-              <p className="text-sm">{message.content}</p>
+              <p className="text-sm text-white">{message.content}</p>
             </div>
           ))}
+          {isTyping && (
+            <div className="bg-[#1C2128] mr-8 p-3 rounded-lg border border-[#30363D]">
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin text-[#9B87F5]" />
+                <span className="text-sm text-gray-400">AI is typing...</span>
+              </div>
+            </div>
+          )}
         </div>
       </ScrollArea>
       
@@ -50,8 +62,12 @@ export function TestInterface() {
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           className="bg-[#1C2128] border-[#30363D]"
         />
-        <Button onClick={handleSend} size="sm">
-          Send
+        <Button 
+          onClick={handleSend}
+          disabled={!input.trim() || isTyping}
+          className="bg-[#9B87F5] hover:bg-[#9B87F5]/90"
+        >
+          <Send className="w-4 h-4" />
         </Button>
       </div>
     </div>
