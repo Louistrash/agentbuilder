@@ -42,25 +42,40 @@ export const ChatMetricsChart = () => {
 
   if (isLoading) {
     return (
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Weekly Chat Activity</h3>
-        <div className="h-[180px] sm:h-[300px] animate-pulse bg-gray-100 rounded" />
+      <Card className="bg-[#1A1F2C] border-[#30363D] p-6">
+        <h3 className="text-lg font-semibold mb-4 text-white">Weekly Chat Activity</h3>
+        <div className="h-[180px] sm:h-[300px] animate-pulse bg-[#222939] rounded" />
       </Card>
     );
   }
 
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-semibold mb-4">Weekly Chat Activity</h3>
+    <Card className="bg-[#1A1F2C] border-[#30363D] p-6">
+      <h3 className="text-lg font-semibold mb-4 text-white">Weekly Chat Activity</h3>
       <div className="h-[180px] sm:h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <RechartsBarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="chats" fill="#3b82f6" name="Total Chats" />
-            <Bar dataKey="messages" fill="#10b981" name="Total Messages" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#30363D" />
+            <XAxis 
+              dataKey="date" 
+              stroke="#94A3B8" 
+              tick={{ fill: '#94A3B8' }}
+            />
+            <YAxis 
+              stroke="#94A3B8" 
+              tick={{ fill: '#94A3B8' }}
+            />
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#1A1F2C', 
+                border: '1px solid #30363D',
+                borderRadius: '6px',
+                color: '#fff'
+              }}
+              labelStyle={{ color: '#94A3B8' }}
+            />
+            <Bar dataKey="chats" fill="#3B82F6" name="Total Chats" />
+            <Bar dataKey="messages" fill="#10B981" name="Total Messages" />
           </RechartsBarChart>
         </ResponsiveContainer>
       </div>
