@@ -272,12 +272,6 @@ export default function AgentBuilder() {
                   <div className="filter blur-[2px] pointer-events-none">
                     <AdvancedConfig />
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="px-4 py-2 bg-[#FEC6A1]/20 text-[#FEC6A1] rounded-lg hover:bg-[#FEC6A1]/30 transition-colors flex items-center gap-2">
-                      <Lock className="h-4 w-4" />
-                      Upgrade to Pro
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
