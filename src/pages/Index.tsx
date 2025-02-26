@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -66,6 +65,19 @@ const Index = () => {
     navigate('/agents', { state: { showTutorial: true } });
   };
 
+  const handleProFeatureClick = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to access pro features",
+        variant: "default"
+      });
+      navigate('/auth');
+      return;
+    }
+    navigate('/agent-builder/pro');
+  };
+
   const features = [
     {
       id: 'build',
@@ -116,16 +128,16 @@ const Index = () => {
                 className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
-                Create Your First Agent
+                Create Your First Agent (Free)
               </Button>
               <Button
                 size="default"
                 variant="outline"
-                onClick={() => setShowOnboarding(true)}
+                onClick={handleProFeatureClick}
                 className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
-                <Play className="h-5 w-5 mr-2" />
-                Watch Demo
+                <Rocket className="h-5 w-5 mr-2" />
+                Access Pro Features
               </Button>
             </div>
           </div>
