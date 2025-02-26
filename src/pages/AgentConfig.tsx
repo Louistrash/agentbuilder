@@ -99,7 +99,7 @@ export default function AgentConfig() {
             <Button 
               variant="ghost" 
               onClick={() => navigate('/agents')}
-              className="text-gray-400 hover:text-[#1EAEDB] transition-colors duration-200"
+              className="text-gray-400 hover:text-[#1EAEDB] transition-colors duration-200 hover:bg-transparent"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Agents
