@@ -1,30 +1,17 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Plus, X, Filter, CheckCircle } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { loadStripe } from "@stripe/stripe-js";
+import { CategoryFilter } from "./marketplace/CategoryFilter";
+import { FeatureCard } from "./marketplace/FeatureCard";
+import { Cart } from "./marketplace/Cart";
+import { Feature, PurchasedFeature } from "./marketplace/types";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-
-interface Feature {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  status: string;
-}
-
-interface PurchasedFeature {
-  id: string;
-  feature_id: string;
-  status: string;
-  activated_at: string | null;
-}
 
 export const MarketplaceSection = () => {
   const [features, setFeatures] = useState<Feature[]>([]);
@@ -109,34 +96,6 @@ export const MarketplaceSection = () => {
 
   const isFeaturePurchased = (featureId: string) => {
     return purchasedFeatures.some(pf => pf.feature_id === featureId);
-  };
-
-  const activateFeature = async (featureId: string) => {
-    if (!user) return;
-
-    const { error } = await supabase
-      .from('purchased_features')
-      .update({ 
-        status: 'active',
-        activated_at: new Date().toISOString()
-      })
-      .eq('feature_id', featureId)
-      .eq('user_id', user.id);
-
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to activate feature",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    await fetchPurchasedFeatures();
-    toast({
-      title: "Success",
-      description: "Feature has been activated",
-    });
   };
 
   const handleCheckout = async () => {
@@ -232,109 +191,34 @@ export const MarketplaceSection = () => {
         </Button>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto py-2">
-        <Filter className="h-4 w-4 mt-2" />
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={selectedCategory === category ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
-          </Button>
-        ))}
-      </div>
+      <CategoryFilter
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        categories={categories}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredFeatures.map((feature) => (
-          <Card key={feature.id} className="flex flex-col">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-xl">{feature.name}</CardTitle>
-                <Badge>{feature.category}</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="text-muted-foreground">{feature.description}</p>
-            </CardContent>
-            <CardFooter className="flex justify-between items-center">
-              <span className="text-lg font-bold">${feature.price}</span>
-              {isFeaturePurchased(feature.id) ? (
-                <Button variant="outline" className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Purchased
-                </Button>
-              ) : cart.includes(feature.id) ? (
-                <Button 
-                  variant="destructive" 
-                  onClick={() => removeFromCart(feature.id)}
-                >
-                  Remove
-                </Button>
-              ) : (
-                <Button 
-                  onClick={() => addToCart(feature.id)} 
-                  className="gap-2"
-                >
-                  <Plus className="h-4 w-4" />
-                  Add to Cart
-                </Button>
-              )}
-            </CardFooter>
-          </Card>
+          <FeatureCard
+            key={feature.id}
+            feature={feature}
+            isFeaturePurchased={isFeaturePurchased}
+            cart={cart}
+            removeFromCart={removeFromCart}
+            addToCart={addToCart}
+          />
         ))}
       </div>
 
-      {showCart && cart.length > 0 && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <Card className="w-full max-w-md mx-4">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Shopping Cart</CardTitle>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setShowCart(false)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {features
-                .filter(feature => cart.includes(feature.id))
-                .map(feature => (
-                  <div key={feature.id} className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">{feature.name}</h3>
-                      <p className="text-sm text-muted-foreground">{feature.category}</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">${feature.price}</span>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        onClick={() => removeFromCart(feature.id)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total</p>
-                <p className="text-lg font-bold">${getCartTotal()}</p>
-              </div>
-              <Button onClick={handleCheckout}>
-                Checkout
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-      )}
+      <Cart
+        showCart={showCart}
+        setShowCart={setShowCart}
+        cart={cart}
+        features={features}
+        removeFromCart={removeFromCart}
+        getCartTotal={getCartTotal}
+        handleCheckout={handleCheckout}
+      />
     </div>
   );
 };
