@@ -26,13 +26,6 @@ type SubscriptionTier = {
 
 type DbSubscriptionTier = Database['public']['Tables']['subscription_tiers']['Row'];
 
-const tierFeatureLabels = {
-  api_access: 'API Toegang',
-  priority_support: 'Priority Support',
-  custom_training: 'Aangepaste Training',
-  custom_models: 'Aangepaste Modellen',
-};
-
 export function SubscriptionTiers() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -57,8 +50,8 @@ export function SubscriptionTiers() {
   const handleUpgrade = async (tierId: string) => {
     if (!user) {
       toast({
-        title: "Authenticatie Vereist",
-        description: "Log in om je abonnement te upgraden.",
+        title: "Authentication Required",
+        description: "Please sign in to upgrade your subscription.",
         variant: "destructive",
       });
       return;
@@ -74,10 +67,10 @@ export function SubscriptionTiers() {
         window.location.href = data.url;
       }
     } catch (error) {
-      console.error('Fout bij het maken van checkout sessie:', error);
+      console.error('Error creating checkout session:', error);
       toast({
-        title: "Fout",
-        description: "Upgrade proces mislukt. Probeer het opnieuw.",
+        title: "Error",
+        description: "Failed to initiate upgrade process. Please try again.",
         variant: "destructive",
       });
     }
@@ -85,8 +78,8 @@ export function SubscriptionTiers() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
       </div>
     );
   }
@@ -94,47 +87,72 @@ export function SubscriptionTiers() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {tiers?.map((tier) => (
-        <Card key={tier.id} className="relative bg-card border-border">
+        <Card 
+          key={tier.id}
+          className={`bg-[#161B22] border-[#30363D] ${
+            tier.name === 'pro' ? 'ring-2 ring-[#EC4899]' : ''
+          }`}
+        >
           <CardHeader>
-            <CardTitle className="text-xl font-bold">
-              {tier.name === 'free' ? 'Gratis' : tier.name === 'pro' ? 'Pro' : 'Enterprise'}
+            <CardTitle className="flex flex-col gap-2">
+              <span className="text-zinc-200">{tier.name.toUpperCase()}</span>
+              <span className="text-3xl font-bold text-white">
+                ${tier.price}
+                <span className="text-sm text-gray-400">/month</span>
+              </span>
             </CardTitle>
-            <div className="text-3xl font-bold">
-              €{tier.price}{' '}
-              <span className="text-sm font-normal text-muted-foreground">/maand</span>
-            </div>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  Tot {tier.words_limit.toLocaleString()} woorden
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {tier.pages_limit} pagina's
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {tier.storage_days} dagen opslag
-                </p>
-              </div>
-              <div className="space-y-2">
-                {Object.entries(tier.features).map(([key, enabled]) => (
-                  <div key={key} className="flex items-center">
-                    <Check className={`h-4 w-4 mr-2 ${enabled ? 'text-green-500' : 'text-gray-300'}`} />
-                    <span className={`text-sm ${enabled ? 'text-foreground' : 'text-muted-foreground'}`}>
-                      {tierFeatureLabels[key as keyof typeof tierFeatureLabels]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <Button
-                className="w-full"
-                onClick={() => handleUpgrade(tier.id)}
-                variant={tier.name === 'free' ? 'outline' : 'default'}
-              >
-                {tier.name === 'free' ? 'Huidige Plan' : 'Nu Upgraden'}
-              </Button>
-            </div>
+          <CardContent className="space-y-6">
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-gray-300">
+                <Check className="w-5 h-5 text-[#EC4899]" />
+                {tier.words_limit.toLocaleString()} words
+              </li>
+              <li className="flex items-center gap-2 text-gray-300">
+                <Check className="w-5 h-5 text-[#EC4899]" />
+                {tier.pages_limit} pages
+              </li>
+              <li className="flex items-center gap-2 text-gray-300">
+                <Check className="w-5 h-5 text-[#EC4899]" />
+                {tier.storage_days} days data retention
+              </li>
+              {tier.features.api_access && (
+                <li className="flex items-center gap-2 text-gray-300">
+                  <Check className="w-5 h-5 text-[#EC4899]" />
+                  API Access
+                </li>
+              )}
+              {tier.features.priority_support && (
+                <li className="flex items-center gap-2 text-gray-300">
+                  <Check className="w-5 h-5 text-[#EC4899]" />
+                  Priority Support
+                </li>
+              )}
+              {tier.features.custom_training && (
+                <li className="flex items-center gap-2 text-gray-300">
+                  <Check className="w-5 h-5 text-[#EC4899]" />
+                  Custom Training Options
+                </li>
+              )}
+              {tier.features.custom_models && (
+                <li className="flex items-center gap-2 text-gray-300">
+                  <Check className="w-5 h-5 text-[#EC4899]" />
+                  Custom AI Models
+                </li>
+              )}
+            </ul>
+
+            <Button
+              onClick={() => handleUpgrade(tier.id)}
+              className={
+                tier.name === 'free' 
+                  ? 'w-full bg-gray-600 hover:bg-gray-700 cursor-not-allowed'
+                  : 'w-full bg-[#EC4899] hover:bg-[#EC4899]/90'
+              }
+              disabled={tier.name === 'free'}
+            >
+              {tier.name === 'free' ? 'Current Plan' : 'Upgrade Now'}
+            </Button>
           </CardContent>
         </Card>
       ))}
