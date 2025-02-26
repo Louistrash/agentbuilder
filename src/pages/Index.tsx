@@ -9,10 +9,12 @@ import { FeatureCard } from "@/components/home/FeatureCard";
 import { ProFeatures } from "@/components/home/ProFeatures";
 import { FeatureOnboarding } from "@/components/agent-builder/FeatureOnboarding";
 import { useAuth } from "@/lib/auth";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [clickedCard, setClickedCard] = useState<string | null>(null);
@@ -50,11 +52,18 @@ const Index = () => {
   };
 
   const handleCreateAgentClick = () => {
-    if (user) {
-      navigate('/agents', { state: { showTutorial: true } });
-    } else {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to create an agent",
+        variant: "default"
+      });
       navigate('/auth');
+      return;
     }
+
+    console.log("Navigating to agents with tutorial state");
+    navigate('/agents', { state: { showTutorial: true } });
   };
 
   const features = [
@@ -113,7 +122,7 @@ const Index = () => {
                 size="default"
                 variant="outline"
                 onClick={() => setShowOnboarding(true)}
-                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
+                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
                 <Play className="h-5 w-5 mr-2" />
                 Watch Demo
