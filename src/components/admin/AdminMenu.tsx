@@ -4,10 +4,10 @@ import {
   Settings2, 
   Users, 
   MessageSquare, 
+  PieChart,
   CalendarDays,
   ShoppingBag,
   Link,
-  PieChart,
   CreditCard,
   BookOpen
 } from "lucide-react";
@@ -40,30 +40,26 @@ const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
 
 export function AdminMenu() {
   const menuItems = [
-    {
-      icon: <Settings2 className="h-4 w-4 text-[#6366F1]" />,
-      title: "General Settings",
-      color: "bg-[#6366F1]/10",
-      href: "general"
-    },
-    {
-      icon: <MessageSquare className="h-4 w-4 text-[#3B82F6]" />,
-      title: "Chat",
-      color: "bg-[#3B82F6]/10",
-      href: "chat"
-    },
+    // Core Setup & Management
     {
       icon: <Users className="h-4 w-4 text-[#EC4899]" />,
-      title: "Users",
+      title: "Users & Roles",
       color: "bg-[#EC4899]/10",
       href: "users"
     },
     {
-      icon: <PieChart className="h-4 w-4 text-[#10B981]" />,
-      title: "Analytics",
-      color: "bg-[#10B981]/10",
-      href: "analytics"
+      icon: <MessageSquare className="h-4 w-4 text-[#3B82F6]" />,
+      title: "Chat Management",
+      color: "bg-[#3B82F6]/10",
+      href: "chat"
     },
+    {
+      icon: <BookOpen className="h-4 w-4 text-[#6366F1]" />,
+      title: "Training & Data",
+      color: "bg-[#6366F1]/10",
+      href: "training"
+    },
+    // Business Operations
     {
       icon: <CalendarDays className="h-4 w-4 text-[#6366F1]" />,
       title: "Appointments",
@@ -76,6 +72,7 @@ export function AdminMenu() {
       color: "bg-[#F59E0B]/10",
       href: "marketplace"
     },
+    // Integrations & Analytics
     {
       icon: <Link className="h-4 w-4 text-[#8B5CF6]" />,
       title: "Integrations",
@@ -83,16 +80,23 @@ export function AdminMenu() {
       href: "integrations"
     },
     {
+      icon: <PieChart className="h-4 w-4 text-[#10B981]" />,
+      title: "Analytics",
+      color: "bg-[#10B981]/10",
+      href: "analytics"
+    },
+    // Configuration
+    {
       icon: <CreditCard className="h-4 w-4 text-[#EC4899]" />,
-      title: "Subscriptions",
+      title: "Billing",
       color: "bg-[#EC4899]/10",
       href: "subscriptions"
     },
     {
-      icon: <BookOpen className="h-4 w-4 text-[#6366F1]" />,
-      title: "Training",
+      icon: <Settings2 className="h-4 w-4 text-[#6366F1]" />,
+      title: "Settings",
       color: "bg-[#6366F1]/10",
-      href: "training"
+      href: "general"
     }
   ];
 
