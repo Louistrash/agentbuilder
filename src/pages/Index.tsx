@@ -39,6 +39,11 @@ const Index = () => {
     }
   };
 
+  const handleCreateAgentClick = () => {
+    console.log("Navigating to free agent builder");
+    navigate('/agent-builder/free');
+  };
+
   const handleFeatureClick = (feature: string) => {
     setClickedCard(feature);
     setSelectedFeature(feature);
@@ -48,34 +53,6 @@ const Index = () => {
   const handleOnboardingClose = () => {
     setShowOnboarding(false);
     navigate('/agents', { state: { feature: selectedFeature } });
-  };
-
-  const handleCreateAgentClick = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to create an agent",
-        variant: "default"
-      });
-      navigate('/auth');
-      return;
-    }
-
-    console.log("Navigating to agents with tutorial state");
-    navigate('/agents', { state: { showTutorial: true } });
-  };
-
-  const handleProFeatureClick = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to access pro features",
-        variant: "default"
-      });
-      navigate('/auth');
-      return;
-    }
-    navigate('/agent-builder/pro');
   };
 
   const features = [
@@ -133,11 +110,11 @@ const Index = () => {
               <Button
                 size="default"
                 variant="outline"
-                onClick={handleProFeatureClick}
+                onClick={handleCreateAgentClick}
                 className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
                 <Rocket className="h-5 w-5 mr-2" />
-                Access Pro Features
+                Get Started
               </Button>
             </div>
           </div>
