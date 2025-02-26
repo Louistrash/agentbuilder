@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, MessageSquare, Brain, ShoppingCart } from "lucide-react";
+
 const templates = [{
   id: 1,
   name: 'Customer Support',
@@ -18,15 +20,16 @@ const templates = [{
   description: 'Answer questions from your documentation',
   icon: Brain
 }];
+
 export function AgentTemplates() {
   return <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {templates.map(template => {
-      const Icon = template.icon;
-      return <Card key={template.id} className="bg-[#1C2128] border-[#30363D] hover:border-purple-500/50 transition-colors">
+        const Icon = template.icon;
+        return <Card key={template.id} className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors">
             <CardContent className="p-4">
               <div className="space-y-4">
-                <div className="p-2 w-fit rounded-lg bg-[#0b181b]/10">
-                  <Icon className="w-5 h-5 text-purple-500 bg-[#1eaedb]/10" />
+                <div className="p-2 w-fit rounded-lg bg-[#1EAEDB]/10">
+                  <Icon className="w-5 h-5 text-[#1EAEDB]" />
                 </div>
                 <div>
                   <h3 className="font-medium text-white">{template.name}</h3>
@@ -38,6 +41,6 @@ export function AgentTemplates() {
               </div>
             </CardContent>
           </Card>;
-    })}
+      })}
     </div>;
 }
