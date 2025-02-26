@@ -1,12 +1,13 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Index from '@/pages';
-import Auth from '@/pages/Auth';
-import Admin from '@/pages/Admin';
-import NotFound from '@/pages/NotFound';
-import AgentBuilder from '@/pages/AgentBuilder';
-import { Toaster } from "@/components/ui/toaster"
-import AgentConfig from '@/pages/AgentConfig';
+import Index from './pages/Index';
+import Auth from './pages/Auth';
+import Admin from './pages/Admin';
+import NotFound from './pages/NotFound';
+import AgentBuilder from './pages/AgentBuilder';
+import { Toaster } from "./components/ui/toaster";
+import AgentConfig from './pages/AgentConfig';
 
 function App() {
   return (
