@@ -1,4 +1,3 @@
-
 import { ChatBehaviorSettings } from "@/components/ChatBehaviorSettings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare, Bot, Brain, Sliders } from "lucide-react";
@@ -82,7 +81,7 @@ export const ChatSection = () => {
             Chat Behavior & AI Responses
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6 [&_[data-state=checked]]:bg-gradient-to-r [&_[data-state=checked]]:from-[#8B5CF6] [&_[data-state=checked]]:to-[#D946EF]">
+        <CardContent className="p-6">
           <ChatBehaviorSettings />
         </CardContent>
       </Card>
