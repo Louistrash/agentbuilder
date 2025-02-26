@@ -6,12 +6,19 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader2, Send, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
+
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 export function TestInterface() {
-  const [messages, setMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchUserAvatar();
@@ -41,21 +48,40 @@ export function TestInterface() {
     }
   };
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || isTyping) return;
     
-    setMessages(prev => [...prev, { role: 'user', content: input }]);
+    const userMessage: Message = { role: 'user', content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
     
-    // Simulate AI response
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'This is a simulated response from the AI agent. In production, this would be connected to your AI model.' 
-      }]);
+    try {
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
+          messages: [...messages, userMessage],
+          systemPrompt: 'You are a helpful AI assistant that provides clear and concise responses.'
+        }
+      });
+
+      if (error) throw error;
+
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: data.choices[0].message.content
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Error calling chat function:', error);
+      toast({
+        title: "Error",
+        description: "Failed to get response from the AI. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   return (

@@ -28,7 +28,7 @@ serve(async (req) => {
 
     // Prepare messages array with system prompt
     const chatMessages: ChatMessage[] = [
-      { role: 'system', content: systemPrompt },
+      { role: 'system', content: systemPrompt || 'You are a helpful AI assistant.' },
       ...messages
     ]
 
