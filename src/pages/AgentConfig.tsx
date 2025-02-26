@@ -11,6 +11,7 @@ import { WidgetCode } from "@/components/agent/WidgetCode";
 import { BasicConfig } from "@/components/agent/config/BasicConfig";
 import { ProFeatures } from "@/components/agent/config/ProFeatures";
 import { TrainingSection } from "@/components/agent/config/TrainingSection";
+
 const proFeatures = [{
   id: 'multimodal',
   name: 'Multimodal Support',
@@ -36,6 +37,7 @@ const proFeatures = [{
   tokens: 40,
   enabled: false
 }];
+
 export default function AgentConfig() {
   const {
     id
@@ -48,6 +50,7 @@ export default function AgentConfig() {
   const [availableTokens, setAvailableTokens] = useState(50);
   const [trainingUrl, setTrainingUrl] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+
   useEffect(() => {
     const fakeAgent = {
       id: Number(id),
@@ -58,6 +61,7 @@ export default function AgentConfig() {
     };
     setAgent(fakeAgent);
   }, [id]);
+
   const handleFeatureToggle = (featureId: string) => {
     const feature = proFeatures.find(f => f.id === featureId);
     if (!feature) return;
@@ -71,6 +75,7 @@ export default function AgentConfig() {
     }
     setAvailableTokens(prev => feature.enabled ? prev + feature.tokens : prev - feature.tokens);
   };
+
   const handleTrainAgent = async () => {
     if (!trainingUrl) return;
     setIsProcessing(true);
@@ -83,19 +88,26 @@ export default function AgentConfig() {
       setTrainingUrl('');
     }, 2000);
   };
+
   if (!agent) return null;
-  return <div className="min-h-screen bg-gradient-to-br from-[#0D1117] via-[#1A1F2C] to-[#161B22] text-white p-8">
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0D1117] via-[#1A1F2C] to-[#161B22] text-white p-8">
       <div className="container mx-auto max-w-6xl">
         <div className="space-y-6">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate('/agents')} className="text-gray-400 hover:text-white transition-colors duration-200">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/agents')}
+              className="text-gray-400 hover:text-white transition-colors duration-200"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Agents
             </Button>
             <div className="flex-1" />
             <Badge variant="outline" className="bg-gradient-to-r from-[#1A1F2C] to-[#161B22] border-[#30363D] px-3 py-1.5 shadow-lg">
               <Coins className="w-4 h-4 mr-2 text-[#1EAEDB]" />
-              {availableTokens} tokens available
+              <span className="text-white">{availableTokens} tokens available</span>
             </Badge>
           </div>
 
@@ -167,5 +179,6 @@ export default function AgentConfig() {
           </Tabs>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }

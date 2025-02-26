@@ -29,7 +29,7 @@ export function TrainingSection({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="url" className="bg-zinc-800">Website URL</Label>
+          <Label htmlFor="url" className="text-white">Website URL</Label>
           <div className="flex gap-2">
             <Input
               id="url"
