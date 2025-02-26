@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-interface SubscriptionTier {
+type SubscriptionTier = {
   id: string;
   name: 'free' | 'pro' | 'enterprise';
   words_limit: number;
@@ -20,7 +21,9 @@ interface SubscriptionTier {
     custom_training: boolean;
     custom_models?: boolean;
   };
-}
+};
+
+type DbSubscriptionTier = Database['public']['Tables']['subscription_tiers']['Row'];
 
 export function SubscriptionTiers() {
   const { toast } = useToast();
@@ -34,7 +37,12 @@ export function SubscriptionTiers() {
         .order('price');
       
       if (error) throw error;
-      return data as SubscriptionTier[];
+      
+      // Transform the data to ensure proper typing
+      return (data as DbSubscriptionTier[]).map(tier => ({
+        ...tier,
+        features: tier.features as SubscriptionTier['features']
+      })) as SubscriptionTier[];
     }
   });
 
