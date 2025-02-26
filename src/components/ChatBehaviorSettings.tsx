@@ -154,7 +154,7 @@ export const ChatBehaviorSettings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <ChatLimitsSection
           maxMessagesPerChat={settings.maxMessagesPerChat}
           responseDelay={settings.responseDelay}
@@ -170,13 +170,13 @@ export const ChatBehaviorSettings = () => {
           emotionalIntelligence={settings.emotionalIntelligence}
           onSettingChange={handleSettingChange}
         />
-      </div>
 
-      <MultimodalSection
-        multimodalSupport={settings.multimodalSupport}
-        voiceSettings={settings.voiceSettings}
-        onSettingChange={handleSettingChange}
-      />
+        <MultimodalSection
+          multimodalSupport={settings.multimodalSupport}
+          voiceSettings={settings.voiceSettings}
+          onSettingChange={handleSettingChange}
+        />
+      </div>
 
       <div className="flex justify-end">
         <Button 
