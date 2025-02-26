@@ -106,79 +106,79 @@ export const PlatformOverview = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Platform Overview</h2>
+        <h2 className="text-2xl font-bold text-white">Platform Overview</h2>
         <p className="text-muted-foreground">Real-time metrics and system status</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Users & Growth */}
-        <Card>
+        <Card className="bg-[#1A1F2C] border-[#30363D] hover:bg-[#222939] transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-300">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-[#8B5CF6]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{userMetrics?.total || 0}</div>
-            <div className="flex items-center text-sm">
-              <TrendingUp className="h-4 w-4 mr-1 text-green-500" />
-              <span className="text-green-500">{userMetrics?.growth}% growth</span>
+            <div className="text-2xl font-bold text-white">{userMetrics?.total || 0}</div>
+            <div className="flex items-center text-xs">
+              <TrendingUp className="h-4 w-4 mr-1 text-[#10B981]" />
+              <span className="text-[#10B981]">{userMetrics?.growth}% growth</span>
             </div>
           </CardContent>
         </Card>
 
         {/* Revenue Metrics */}
-        <Card>
+        <Card className="bg-[#1A1F2C] border-[#30363D] hover:bg-[#222939] transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-300">Monthly Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-[#EC4899]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-white">
               ${revenueMetrics?.monthlyRevenue || 0}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-400">
               {revenueMetrics?.activeSubscriptions || 0} active subscriptions
             </p>
           </CardContent>
         </Card>
 
         {/* System Health */}
-        <Card>
+        <Card className="bg-[#1A1F2C] border-[#30363D] hover:bg-[#222939] transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">System Health</CardTitle>
-            <Server className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-300">System Health</CardTitle>
+            <Server className="h-4 w-4 text-[#3B82F6]" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
-              <Shield className="h-4 w-4 text-green-500" />
-              <span className="text-green-500">{systemHealth?.systemStatus}</span>
+              <Shield className="h-4 w-4 text-[#10B981]" />
+              <span className="text-[#10B981]">{systemHealth?.systemStatus}</span>
             </div>
             <div className="grid grid-cols-2 gap-1 mt-2">
               <div className="text-xs">
-                <span className="text-muted-foreground">Response:</span>
+                <span className="text-gray-400">Response:</span>
                 <br />
-                {systemHealth?.avgResponseTime}s
+                <span className="text-white">{systemHealth?.avgResponseTime}s</span>
               </div>
               <div className="text-xs">
-                <span className="text-muted-foreground">Uptime:</span>
+                <span className="text-gray-400">Uptime:</span>
                 <br />
-                {systemHealth?.uptime}
+                <span className="text-white">{systemHealth?.uptime}</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Active Chat Agents */}
-        <Card>
+        <Card className="bg-[#1A1F2C] border-[#30363D] hover:bg-[#222939] transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
-            <HeadsetIcon className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-300">Active Agents</CardTitle>
+            <HeadsetIcon className="h-4 w-4 text-[#8B5CF6]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{chatAgents?.totalActive || 0}</div>
+            <div className="text-2xl font-bold text-white">{chatAgents?.totalActive || 0}</div>
             <div className="flex items-center">
-              <Activity className="h-4 w-4 mr-1 text-blue-500" />
-              <span className="text-xs text-muted-foreground">
+              <Activity className="h-4 w-4 mr-1 text-[#3B82F6]" />
+              <span className="text-xs text-gray-400">
                 All systems operational
               </span>
             </div>
