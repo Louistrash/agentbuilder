@@ -2,7 +2,6 @@
 import { Bot, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { AgentTemplates } from "./AgentTemplates";
 
 export function Header() {
   const navigate = useNavigate();
@@ -26,12 +25,6 @@ export function Header() {
           <Sparkles className="w-4 h-4" />
           Upgrade to Pro
         </Button>
-      </div>
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 via-transparent to-pink-500/5"></div>
-        <div className="relative">
-          <AgentTemplates />
-        </div>
       </div>
     </div>
   );
