@@ -3,9 +3,14 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Select } from "@/components/ui/select";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 interface WidgetCodeProps {
   agentId?: string;
@@ -41,28 +46,30 @@ export function WidgetCode({ agentId = '' }: WidgetCodeProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="position">Widget Position</Label>
-          <Select
-            value={position}
-            onValueChange={setPosition}
-            options={[
-              { value: 'bottom-right', label: 'Bottom Right' },
-              { value: 'bottom-left', label: 'Bottom Left' },
-              { value: 'top-right', label: 'Top Right' },
-              { value: 'top-left', label: 'Top Left' },
-            ]}
-          />
+          <Select value={position} onValueChange={setPosition}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select position" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              <SelectItem value="bottom-left">Bottom Left</SelectItem>
+              <SelectItem value="top-right">Top Right</SelectItem>
+              <SelectItem value="top-left">Top Left</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-2">
           <Label htmlFor="theme">Widget Theme</Label>
-          <Select
-            value={theme}
-            onValueChange={setTheme}
-            options={[
-              { value: 'light', label: 'Light' },
-              { value: 'dark', label: 'Dark' },
-              { value: 'system', label: 'System' },
-            ]}
-          />
+          <Select value={theme} onValueChange={setTheme}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select theme" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">Light</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+              <SelectItem value="system">System</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
