@@ -37,8 +37,15 @@ export default function AgentBuilder() {
         <div className="space-y-8">
           <Header />
           
-          {/* Tokens Card */}
-          <TokensCard />
+          {/* Agent Templates - Moved up */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
+              <h2 className="text-lg font-semibold text-white">Agent Templates</h2>
+            </div>
+            <div className="p-6">
+              <AgentTemplates onCreateAgent={handleCreateAgent} />
+            </div>
+          </div>
 
           {/* Agents List */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
@@ -50,15 +57,8 @@ export default function AgentBuilder() {
             </div>
           </div>
 
-          {/* Templates */}
-          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-              <h2 className="text-lg font-semibold text-white">Agent Templates</h2>
-            </div>
-            <div className="p-6">
-              <AgentTemplates onCreateAgent={handleCreateAgent} />
-            </div>
-          </div>
+          {/* Tokens Card */}
+          <TokensCard />
 
           <ProFeatures />
 
