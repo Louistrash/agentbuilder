@@ -154,7 +154,7 @@ export default function AgentConfig() {
             <TabsContent value="embed">
               <Card className="bg-[#161B22] border-[#30363D]">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-zinc-200">
                     <Code className="w-5 h-5 text-purple-500" />
                     Embed on Your Website
                   </CardTitle>
