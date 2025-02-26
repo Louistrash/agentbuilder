@@ -697,6 +697,42 @@ export type Database = {
           },
         ]
       }
+      subscription_tiers: {
+        Row: {
+          created_at: string
+          features: Json
+          id: string
+          name: Database["public"]["Enums"]["tier_type"]
+          pages_limit: number
+          price: number
+          storage_days: number
+          updated_at: string
+          words_limit: number
+        }
+        Insert: {
+          created_at?: string
+          features?: Json
+          id?: string
+          name: Database["public"]["Enums"]["tier_type"]
+          pages_limit: number
+          price: number
+          storage_days: number
+          updated_at?: string
+          words_limit: number
+        }
+        Update: {
+          created_at?: string
+          features?: Json
+          id?: string
+          name?: Database["public"]["Enums"]["tier_type"]
+          pages_limit?: number
+          price?: number
+          storage_days?: number
+          updated_at?: string
+          words_limit?: number
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           created_at: string | null
@@ -709,7 +745,9 @@ export type Database = {
           messages_used: number | null
           openai_api_key: string | null
           profile_id: string | null
+          storage_expires_at: string | null
           stripe_subscription_id: string | null
+          tier_id: string | null
           updated_at: string | null
         }
         Insert: {
@@ -723,7 +761,9 @@ export type Database = {
           messages_used?: number | null
           openai_api_key?: string | null
           profile_id?: string | null
+          storage_expires_at?: string | null
           stripe_subscription_id?: string | null
+          tier_id?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -737,7 +777,9 @@ export type Database = {
           messages_used?: number | null
           openai_api_key?: string | null
           profile_id?: string | null
+          storage_expires_at?: string | null
           stripe_subscription_id?: string | null
+          tier_id?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -746,6 +788,13 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_tier_id_fkey"
+            columns: ["tier_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_tiers"
             referencedColumns: ["id"]
           },
         ]
@@ -860,7 +909,9 @@ export type Database = {
           id: string
           processed: boolean | null
           profile_id: string | null
+          retention_expires_at: string | null
           status: string | null
+          storage_size: number | null
           updated_at: string
           url: string
           word_count: number | null
@@ -871,7 +922,9 @@ export type Database = {
           id?: string
           processed?: boolean | null
           profile_id?: string | null
+          retention_expires_at?: string | null
           status?: string | null
+          storage_size?: number | null
           updated_at?: string
           url: string
           word_count?: number | null
@@ -882,7 +935,9 @@ export type Database = {
           id?: string
           processed?: boolean | null
           profile_id?: string | null
+          retention_expires_at?: string | null
           status?: string | null
+          storage_size?: number | null
           updated_at?: string
           url?: string
           word_count?: number | null
@@ -907,6 +962,10 @@ export type Database = {
           user_id: string
           amount: number
         }
+        Returns: undefined
+      }
+      handle_data_retention: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       has_role: {
@@ -946,6 +1005,7 @@ export type Database = {
     Enums: {
       role_type: "admin" | "moderator" | "user"
       subscription_level: "basic" | "enhanced"
+      tier_type: "free" | "pro" | "enterprise"
     }
     CompositeTypes: {
       [_ in never]: never
