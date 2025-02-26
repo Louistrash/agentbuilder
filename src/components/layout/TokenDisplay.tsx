@@ -37,15 +37,13 @@ export const TokenDisplay = () => {
   return (
     <Popover>
       <PopoverTrigger>
-        <Badge variant="outline" className="bg-[#1A1F2C]/50 backdrop-blur-sm border-[#1EAEDB]/20 text-white px-3 py-1 flex items-center gap-1.5 cursor-pointer hover:bg-[#1A1F2C]/70 transition-colors">
+        <Badge variant="outline" className="bg-[#1A1F2C]/50 backdrop-blur-sm border-[#1EAEDB]/20 text-white px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-[#1A1F2C]/70 transition-colors">
           <Coins className="h-4 w-4 text-[#1EAEDB]" />
           <span>{tokens} tokens</span>
         </Badge>
       </PopoverTrigger>
-      <PopoverContent className="w-[280px] p-0">
-        <div className="scale-[0.7] origin-top">
-          <TokensCard isPopup={true} />
-        </div>
+      <PopoverContent className="w-[280px] p-0 bg-[#0D1117] border-[#1A1F2C]">
+        <TokensCard isPopup={true} />
       </PopoverContent>
     </Popover>
   );
