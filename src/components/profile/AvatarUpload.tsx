@@ -55,10 +55,16 @@ export function AvatarUpload({ currentAvatarUrl, onAvatarUpdate }: {
         .getPublicUrl(fileName);
 
       // Update profile with new avatar URL
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user found');
+
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', (await supabase.auth.getUser()).data.user?.id);
+        .update({ 
+          updated_at: new Date().toISOString(),
+          avatar_url: publicUrl 
+        })
+        .eq('id', user.id);
 
       if (updateError) throw updateError;
 

@@ -43,17 +43,26 @@ export default function AgentBuilder() {
   }, []);
 
   const fetchUserAvatar = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('avatar_url')
-        .eq('id', user.id)
-        .single();
-      
-      if (profile?.avatar_url) {
-        setAvatarUrl(profile.avatar_url);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('avatar_url, updated_at')
+          .eq('id', user.id)
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error fetching profile:', error);
+          return;
+        }
+
+        if (profile?.avatar_url) {
+          setAvatarUrl(profile.avatar_url);
+        }
       }
+    } catch (error) {
+      console.error('Error fetching user avatar:', error);
     }
   };
 
