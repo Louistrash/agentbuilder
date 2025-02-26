@@ -11,6 +11,7 @@ import { ProFeatures } from "@/components/agent/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
 import { TokensCard } from "@/components/tokens/TokensCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Users } from "lucide-react";
 
 interface Agent {
   id: number;
@@ -22,6 +23,7 @@ interface Agent {
 export default function AgentBuilder() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
 
   const handleCreateAgent = (template: { name: string; description: string; }) => {
     const newAgent: Agent = {
@@ -31,6 +33,7 @@ export default function AgentBuilder() {
       type: template.name.toLowerCase().replace(' ', '_')
     };
     setAgents(prev => [...prev, newAgent]);
+    setSelectedAgent(newAgent);
   };
 
   return (
@@ -41,14 +44,8 @@ export default function AgentBuilder() {
           
           {/* Agent Templates */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-            <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex justify-between items-center">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
               <h2 className="text-lg font-semibold text-white">Agent Templates</h2>
-              <button 
-                onClick={() => setIsDialogOpen(true)}
-                className="text-[#FEC6A1] hover:text-[#FEC6A1]/80 transition-colors cursor-pointer"
-              >
-                {agents.length} Agents
-              </button>
             </div>
             <div className="p-6">
               <AgentTemplates onCreateAgent={handleCreateAgent} />
@@ -57,13 +54,55 @@ export default function AgentBuilder() {
 
           {/* Agents List */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-              <h2 className="text-lg font-semibold text-white">Your Agents</h2>
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-semibold text-white">Your Agents</h2>
+                <button 
+                  onClick={() => setIsDialogOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEC6A1]/10 text-[#FEC6A1] hover:bg-[#FEC6A1]/20 transition-colors"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>{agents.length}</span>
+                </button>
+              </div>
             </div>
             <div className="p-6">
               <AgentsList agents={agents} />
             </div>
           </div>
+
+          {/* Chat Demo */}
+          {selectedAgent && (
+            <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+              <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
+                <h2 className="text-lg font-semibold text-white">Chat Demo: {selectedAgent.name}</h2>
+              </div>
+              <div className="p-6">
+                <div className="bg-[#1C2128] rounded-lg p-4 space-y-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#FEC6A1]/20 flex items-center justify-center">
+                        <Users className="w-4 h-4 text-[#FEC6A1]" />
+                      </div>
+                      <div className="flex-1 bg-[#30363D] rounded-lg p-3">
+                        <p className="text-sm text-gray-300">Hi! I'm {selectedAgent.name}. How can I help you today?</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Type your message..."
+                      className="flex-1 bg-[#30363D] border border-[#454D58] rounded-lg px-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#FEC6A1]/50"
+                    />
+                    <button className="px-4 py-2 bg-[#FEC6A1]/20 text-[#FEC6A1] rounded-lg hover:bg-[#FEC6A1]/30 transition-colors">
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <ProFeatures />
 
