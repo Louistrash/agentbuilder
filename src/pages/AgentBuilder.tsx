@@ -10,11 +10,10 @@ import { ProFeatures } from "@/components/agent/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
 import { TokensCard } from "@/components/tokens/TokensCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Users, SendHorizontal, Lock } from "lucide-react";
+import { Users, SendHorizontal, Lock, Bot } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
-import { Agent } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Agent {
@@ -286,12 +285,12 @@ export default function AgentBuilder() {
                       <Avatar className="w-8 h-8">
                         <AvatarImage src={avatarUrl} />
                         <AvatarFallback>
-                          <Agent className="w-4 h-4 text-[#9B87F5]" />
+                          <Bot className="w-4 h-4 text-[#9B87F5]" />
                         </AvatarFallback>
                       </Avatar>
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-[#9B87F5]/20 flex items-center justify-center">
-                        <Agent className="w-4 h-4 text-[#9B87F5]" />
+                        <Bot className="w-4 h-4 text-[#9B87F5]" />
                       </div>
                     )}
                     <h2 className="text-lg font-semibold text-white">Test Interface</h2>
