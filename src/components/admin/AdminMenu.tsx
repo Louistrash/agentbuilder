@@ -21,7 +21,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
   <Card 
-    className="border-[#30363D] p-4 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer w-[88%]"
+    className="border-[#30363D] p-4 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer w-[95%]"
     onClick={() => {
       const element = document.getElementById(href);
       if (element) {
@@ -99,7 +99,7 @@ export function AdminMenu() {
   return (
     <div className="bg-[#0D1117] border-b border-[#30363D] px-4 py-3">
       <div className="max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           {menuItems.map((item) => (
             <MenuItem
               key={item.href}
