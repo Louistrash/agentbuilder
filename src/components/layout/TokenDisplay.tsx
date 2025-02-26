@@ -38,4 +38,4 @@ export const TokenDisplay = () => {
       <span>{tokens} tokens</span>
     </Badge>
   );
-};
+}
