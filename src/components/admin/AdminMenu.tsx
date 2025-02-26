@@ -97,7 +97,7 @@ export function AdminMenu() {
   ];
 
   return (
-    <div className="bg-[#0D1117] border-b border-[#30363D] px-4 py-6 lg:ml-64">
+    <div className="bg-[#0D1117] border-b border-[#30363D] px-4 py-6">
       <div className="max-w-[1600px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {menuItems.map((item) => (
