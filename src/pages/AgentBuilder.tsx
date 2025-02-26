@@ -11,7 +11,9 @@ import { ProFeatures } from "@/components/agent/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
 import { TokensCard } from "@/components/tokens/TokensCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Users } from "lucide-react";
+import { Users, SendHorizontal } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Agent {
   id: number;
@@ -20,10 +22,19 @@ interface Agent {
   type: string;
 }
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export default function AgentBuilder() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleCreateAgent = (template: { name: string; description: string; }) => {
     const newAgent: Agent = {
@@ -34,6 +45,54 @@ export default function AgentBuilder() {
     };
     setAgents(prev => [...prev, newAgent]);
     setSelectedAgent(newAgent);
+    setMessages([]);
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim() || isLoading) return;
+
+    const userMessage: ChatMessage = {
+      role: 'user',
+      content: inputMessage
+    };
+
+    setIsLoading(true);
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
+
+    try {
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
+          messages: [...messages, userMessage],
+          systemPrompt: `You are ${selectedAgent?.name}, ${selectedAgent?.description}. Be helpful and concise in your responses.`
+        }
+      });
+
+      if (error) throw error;
+
+      const assistantMessage: ChatMessage = {
+        role: 'assistant',
+        content: data.choices[0].message.content
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to get response from the agent. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
   };
 
   return (
@@ -60,7 +119,7 @@ export default function AgentBuilder() {
               </div>
               <div className="p-6">
                 <div className="bg-[#1C2128] rounded-lg p-4 space-y-4">
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#FEC6A1]/20 flex items-center justify-center">
                         <Users className="w-4 h-4 text-[#FEC6A1]" />
@@ -69,14 +128,44 @@ export default function AgentBuilder() {
                         <p className="text-sm text-gray-300">Hi! I'm {selectedAgent.name}. How can I help you today?</p>
                       </div>
                     </div>
+                    {messages.map((message, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-full ${
+                          message.role === 'user' ? 'bg-blue-500/20' : 'bg-[#FEC6A1]/20'
+                        } flex items-center justify-center`}>
+                          <Users className={`w-4 h-4 ${
+                            message.role === 'user' ? 'text-blue-500' : 'text-[#FEC6A1]'
+                          }`} />
+                        </div>
+                        <div className="flex-1 bg-[#30363D] rounded-lg p-3">
+                          <p className="text-sm text-gray-300">{message.content}</p>
+                        </div>
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <div className="animate-pulse">●</div>
+                        <div className="animate-pulse animation-delay-200">●</div>
+                        <div className="animate-pulse animation-delay-400">●</div>
+                      </div>
+                    )}
                   </div>
                   <div className="flex gap-2">
                     <input
                       type="text"
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      onKeyPress={handleKeyPress}
                       placeholder="Type your message..."
-                      className="flex-1 bg-[#30363D] border border-[#454D58] rounded-lg px-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#FEC6A1]/50"
+                      disabled={isLoading}
+                      className="flex-1 bg-[#30363D] border border-[#454D58] rounded-lg px-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#FEC6A1]/50 disabled:opacity-50"
                     />
-                    <button className="px-4 py-2 bg-[#FEC6A1]/20 text-[#FEC6A1] rounded-lg hover:bg-[#FEC6A1]/30 transition-colors">
+                    <button 
+                      onClick={handleSendMessage}
+                      disabled={isLoading || !inputMessage.trim()}
+                      className="px-4 py-2 bg-[#FEC6A1]/20 text-[#FEC6A1] rounded-lg hover:bg-[#FEC6A1]/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      <SendHorizontal className="w-4 h-4" />
                       Send
                     </button>
                   </div>
