@@ -1,16 +1,36 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header } from "@/components/layout/Header";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Bot, Sparkles, BrainCircuit, Code } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function AgentBuilderPro() {
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchLogo();
+  }, []);
+
+  const fetchLogo = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('bot_settings')
+        .select('logo_url')
+        .single();
+      if (error) throw error;
+      setLogoUrl(data?.logo_url);
+    } catch (error) {
+      console.error('Error fetching logo:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0D1117] text-white">
-      <Header />
+      <Header logoUrl={logoUrl} />
       
       <main className="container mx-auto py-8 px-4">
         <div className="max-w-5xl mx-auto space-y-8">
