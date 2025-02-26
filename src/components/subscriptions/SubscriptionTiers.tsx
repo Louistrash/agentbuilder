@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
 import type { Database } from "@/integrations/supabase/types";
 
 type SubscriptionTier = {
@@ -26,6 +27,7 @@ type SubscriptionTier = {
 type DbSubscriptionTier = Database['public']['Tables']['subscription_tiers']['Row'];
 
 export function SubscriptionTiers() {
+  const { user } = useAuth();
   const { toast } = useToast();
 
   const { data: tiers, isLoading } = useQuery({
@@ -38,7 +40,6 @@ export function SubscriptionTiers() {
       
       if (error) throw error;
       
-      // Transform the data to ensure proper typing
       return (data as DbSubscriptionTier[]).map(tier => ({
         ...tier,
         features: tier.features as SubscriptionTier['features']
@@ -47,17 +48,24 @@ export function SubscriptionTiers() {
   });
 
   const handleUpgrade = async (tierId: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to upgrade your subscription.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ tierId }),
+      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+        body: { tierId, userId: user.id }
       });
 
-      const { url } = await response.json();
-      window.location.href = url;
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      }
     } catch (error) {
       console.error('Error creating checkout session:', error);
       toast({
