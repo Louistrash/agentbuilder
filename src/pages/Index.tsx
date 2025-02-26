@@ -40,9 +40,9 @@ const Index = () => {
     }
   };
 
-  const handleCreateAgentClick = () => {
-    console.log("Navigating to agent builder");
-    navigate('/agent-builder');
+  const handleCreateAgentClick = (type: 'free' | 'pro') => {
+    console.log(`Navigating to ${type} agent builder`);
+    navigate(`/agent-builder/${type}`);
   };
 
   const handleFeatureClick = (feature: string) => {
@@ -102,7 +102,7 @@ const Index = () => {
             <div className="flex flex-col gap-3 max-w-md mx-auto">
               <Button
                 size="default"
-                onClick={handleCreateAgentClick}
+                onClick={() => handleCreateAgentClick('free')}
                 className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
@@ -111,11 +111,11 @@ const Index = () => {
               <Button
                 size="default"
                 variant="outline"
-                onClick={handleCreateAgentClick}
+                onClick={() => handleCreateAgentClick('pro')}
                 className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
               >
                 <Rocket className="h-5 w-5 mr-2" />
-                Get Started
+                Access Pro Features
               </Button>
             </div>
           </div>
