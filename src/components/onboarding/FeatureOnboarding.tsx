@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -14,6 +15,7 @@ import { Bot, MessageSquare, Settings2 } from "lucide-react";
 export function FeatureOnboarding() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
 
   const steps = [
     {
@@ -75,12 +77,14 @@ export function FeatureOnboarding() {
     } else {
       setIsOpen(false);
       setCurrentStep(0);
+      navigate('/agent-builder/free');
     }
   };
 
   const handleSkip = () => {
     setIsOpen(false);
     setCurrentStep(0);
+    navigate('/agent-builder/free');
   };
 
   return (
