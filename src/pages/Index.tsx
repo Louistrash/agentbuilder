@@ -93,10 +93,10 @@ const Index = () => {
       <main className="relative">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
           <div className="text-center mb-8 sm:mb-12 animate-fade-up">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-gradient text-balance">
               Create Intelligent Chat Agents
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
+            <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-6 leading-relaxed text-balance">
               Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
             </p>
             <div className="flex flex-col gap-3 max-w-md mx-auto">
