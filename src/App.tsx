@@ -6,7 +6,8 @@ import Auth from '@/pages/Auth';
 import { Toaster } from '@/components/ui/toaster';
 import Home from '@/pages/Home';
 import Index from '@/pages/Index';
-import { AuthProvider } from './components/AuthProvider';
+import AgentBuilderFree from '@/pages/AgentBuilderFree';
+import AgentBuilderPro from '@/pages/AgentBuilderPro';
 import { supabase } from './integrations/supabase/client';
 import { AuthContext } from './lib/auth';
 
@@ -54,20 +55,8 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/agent-builder/free" element={<Navigate to="/agent-builder" />} />
-              <Route path="/agent-builder" element={
-                <div className="max-w-7xl mx-auto px-4 py-12">
-                  <h1 className="text-3xl font-bold mb-8">Agent Builder</h1>
-                  <p className="text-lg mb-4">This is the free version of our agent builder.</p>
-                  <p>Create your own AI chat agents with our intuitive interface.</p>
-                </div>
-              } />
-              <Route path="/agent-builder/pro" element={
-                <div className="max-w-7xl mx-auto px-4 py-12">
-                  <h1 className="text-3xl font-bold mb-8">Professional Agent Builder</h1>
-                  <p className="text-lg mb-4">Welcome to the pro version of our agent builder.</p>
-                  <p>Access advanced features and capabilities to create sophisticated AI agents.</p>
-                </div>
-              } />
+              <Route path="/agent-builder" element={<AgentBuilderFree />} />
+              <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />
               <Route path="/agents" element={
                 isAuthenticated ? (
                   <div className="max-w-7xl mx-auto px-4 py-12">
