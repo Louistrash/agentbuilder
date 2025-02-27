@@ -141,13 +141,13 @@ export function LearnMoreDialog({
             <Button
               variant="outline"
               onClick={handleSkip}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
+              className="border border-white text-white bg-transparent hover:bg-white/10"
             >
               Skip
             </Button>
             <Button
               onClick={handleNext}
-              className="bg-gray-800 hover:bg-gray-700 text-white px-6"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6"
             >
               {currentStep === totalSteps ? "Finish" : "Next"}
             </Button>
@@ -155,8 +155,8 @@ export function LearnMoreDialog({
         </div>
 
         <DialogClose asChild className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-400 hover:text-white">
-            <X className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="h-6 w-6 text-white hover:text-white">
+            <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
           </Button>
         </DialogClose>
