@@ -36,11 +36,11 @@ export function Header({
   // Check if we're on a page that should have a transparent header with no logo
   const isTransparentHeader = location.pathname === "/agent-builder/pro" || location.pathname === "/auth";
 
-  // Check if user is CEO based on email
+  // Check if user is CEO based on email - ONLY patricknieborg@me.com is CEO
   useEffect(() => {
     if (user?.email) {
       const email = user.email.toLowerCase();
-      setIsCEO(email.includes("ceo") || email.includes("founder") || email === "patricknieborg@me.com");
+      setIsCEO(email === "patricknieborg@me.com");
     } else {
       setIsCEO(false);
     }
@@ -68,13 +68,13 @@ export function Header({
   const getUserRoleDisplay = () => {
     if (!isAuthenticated) return "Guest";
     
-    if (userRole === "admin") return "Admin";
-    if (userRole === "moderator") return "Moderator";
-    
-    // For custom super admin role (CEO)
+    // CEO takes precedence - only for patricknieborg@me.com
     if (isCEO) {
       return "CEO";
     }
+    
+    if (userRole === "admin") return "Admin";
+    if (userRole === "moderator") return "Moderator";
     
     return "User";
   };
