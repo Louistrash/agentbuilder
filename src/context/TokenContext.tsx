@@ -34,11 +34,61 @@ export const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         .eq('id', user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        // For new users, initialize tokens if profile fetch fails
+        if (error.code === 'PGRST116') {
+          await initializeUserTokens();
+          return;
+        }
+        throw error;
+      }
+      
+      // If tokens are null or undefined, initialize them
+      if (data && (data.tokens === null || data.tokens === undefined)) {
+        await initializeUserTokens();
+        return;
+      }
       
       setTokens(data?.tokens || 0);
     } catch (error) {
       console.error('Error fetching tokens:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const initializeUserTokens = async () => {
+    if (!user) return;
+    
+    try {
+      const initialTokens = 50; // Default initial tokens for new users
+      
+      // Update the profile with initial tokens
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({ tokens: initialTokens })
+        .eq('id', user.id)
+        .select();
+
+      if (error) throw error;
+
+      // Record initial token transaction
+      await supabase.from('token_transactions').insert({
+        profile_id: user.id,
+        amount: initialTokens,
+        description: 'Initial token allocation',
+        transaction_type: 'credit'
+      });
+
+      setTokens(initialTokens);
+      
+      toast({
+        title: 'Welcome!',
+        description: `You've received ${initialTokens} tokens to get started.`,
+        variant: 'default'
+      });
+    } catch (error) {
+      console.error('Error initializing user tokens:', error);
     } finally {
       setIsLoading(false);
     }
