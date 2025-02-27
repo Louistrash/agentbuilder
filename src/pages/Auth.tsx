@@ -1,6 +1,5 @@
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +18,33 @@ const Auth = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  
+  const searchParams = new URLSearchParams(location.search);
+  const redirectTo = searchParams.get('redirectTo') || '/';
+  const agentData = searchParams.get('agentData') 
+    ? JSON.parse(decodeURIComponent(searchParams.get('agentData') || '{}')) 
+    : null;
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        handleRedirectWithData();
+      }
+    };
+    
+    checkSession();
+  }, []);
+
+  const handleRedirectWithData = () => {
+    if (agentData) {
+      navigate(`${redirectTo}?saveAgent=true&agentData=${encodeURIComponent(JSON.stringify(agentData))}`);
+    } else {
+      navigate(redirectTo);
+    }
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +63,7 @@ const Auth = () => {
           description: "We've sent you a confirmation link.",
         });
       } else {
-        navigate('/');
+        handleRedirectWithData();
       }
     } catch (error: any) {
       toast({
@@ -54,10 +79,16 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     try {
+      const redirectURL = new URL(`${window.location.origin}/`);
+      if (agentData) {
+        redirectURL.searchParams.set('saveAgent', 'true');
+        redirectURL.searchParams.set('agentData', encodeURIComponent(JSON.stringify(agentData)));
+      }
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: redirectURL.toString()
         }
       });
 
@@ -136,6 +167,12 @@ const Auth = () => {
                 ? 'Join us to start building intelligent chat agents'
                 : 'Sign in to access your chat agents'}
             </p>
+            
+            {agentData && (
+              <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
+                <p className="text-white">Sign in to save your chat agent</p>
+              </div>
+            )}
           </div>
 
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl">
