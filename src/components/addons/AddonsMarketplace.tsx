@@ -231,7 +231,7 @@ export function AddonsMarketplace() {
             variant={selectedCategory === null ? "default" : "outline"}
             size="sm"
             onClick={() => setSelectedCategory(null)}
-            className={`min-w-[70px] rounded-md ${selectedCategory === null ? 'bg-[#00b8d9] hover:bg-[#00a3c4]' : ''}`}
+            className={`min-w-[70px] rounded-md ${selectedCategory === null ? 'bg-[#222222] hover:bg-[#333333] text-white' : 'text-white hover:bg-[#222222] hover:text-white'}`}
           >
             All
           </Button>
@@ -241,7 +241,7 @@ export function AddonsMarketplace() {
               variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className={`min-w-[100px] rounded-md ${selectedCategory === category ? 'bg-[#00b8d9] hover:bg-[#00a3c4]' : ''}`}
+              className={`min-w-[100px] rounded-md ${selectedCategory === category ? 'bg-[#222222] hover:bg-[#333333] text-white' : 'text-white hover:bg-[#222222] hover:text-white'}`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </Button>
@@ -295,7 +295,7 @@ export function AddonsMarketplace() {
                       <div className={`p-3 rounded-lg ${categoryColors[addon.category]} w-fit`}>
                         {iconMap[addon.icon_name]}
                       </div>
-                      <Badge variant={isPurchased(addon.id) ? "success" : "outline"} className="ml-auto">
+                      <Badge variant={isPurchased(addon.id) ? "success" : "outline"} className={`ml-auto ${!isPurchased(addon.id) ? "bg-[#1A1F2C] border-[#1EAEDB]/20 text-[#1EAEDB] font-medium" : ""}`}>
                         {isPurchased(addon.id) ? 'Purchased' : `${addon.price} tokens`}
                       </Badge>
                     </div>
@@ -310,7 +310,7 @@ export function AddonsMarketplace() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleOpenPreview(addon)}
-                        className="text-white border-[#30363D] hover:bg-[#30363D] rounded-md"
+                        className="text-white border-[#30363D] bg-[#222222] hover:bg-[#333333] rounded-md"
                       >
                         Details
                       </Button>
@@ -378,7 +378,7 @@ export function AddonsMarketplace() {
                   <h3 className="text-xl font-medium text-gray-200">No purchased add-ons</h3>
                   <p className="text-gray-400 mt-2">Browse the marketplace to enhance your agents</p>
                   <Button 
-                    className="mt-4 bg-[#00b8d9] hover:bg-[#00a3c4] text-white rounded-md"
+                    className="mt-4 bg-[#222222] hover:bg-[#333333] text-white rounded-md"
                     onClick={() => setActiveTab('all')}
                   >
                     Explore Add-ons

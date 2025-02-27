@@ -79,7 +79,7 @@ export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchas
           </div>
           
           {!isPurchased && (
-            <div className={`p-4 rounded-lg border ${hasEnoughTokens ? 'border-[#30363D] bg-[#1C2128]' : 'border-yellow-600/30 bg-yellow-900/20'}`}>
+            <div className={`p-4 rounded-lg border ${hasEnoughTokens ? 'border-[#30363D] bg-[#1A1F2C]' : 'border-yellow-600/30 bg-yellow-900/20'}`}>
               <div className="flex items-center gap-3">
                 {hasEnoughTokens ? (
                   <Coins className="h-5 w-5 text-[#1EAEDB]" />
@@ -105,7 +105,7 @@ export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchas
           <Button
             variant="outline"
             onClick={onClose}
-            className="border-[#30363D] text-white hover:bg-[#30363D] rounded-md"
+            className="border-[#30363D] text-white bg-[#222222] hover:bg-[#333333] rounded-md"
           >
             {isPurchased ? 'Close' : 'Cancel'}
           </Button>
