@@ -11,6 +11,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LogIn, UserPlus, ChevronLeft } from "lucide-react";
 
+const CEO_EMAIL = "patricknieborg@me.com";
+
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +25,8 @@ const Auth = () => {
   useEffect(() => {
     if (user) {
       // If it's the CEO, redirect to admin dashboard
-      if (user.email === "patricknieborg@me.com") {
+      if (user.email === CEO_EMAIL) {
+        console.log("CEO user detected in useEffect, redirecting to admin");
         navigate("/admin");
       } else {
         navigate("/");
@@ -58,15 +61,14 @@ const Auth = () => {
         description: "You've successfully logged in.",
       });
       
+      // Ensure CEO has admin role and redirect appropriately
       if (data?.user) {
-        // Check if the user is CEO
-        if (data.user.email === "patricknieborg@me.com") {
-          // Ensure CEO has admin role in the database
+        if (data.user.email === CEO_EMAIL) {
+          console.log("CEO user detected, ensuring admin role");
           await ensureCEOAdminRole(data.user.id);
-          // Navigate to admin dashboard
+          console.log("Redirecting CEO to admin dashboard");
           navigate("/admin");
         } else {
-          // Navigate to home page for regular users
           navigate("/");
         }
       }
@@ -84,25 +86,42 @@ const Auth = () => {
 
   const ensureCEOAdminRole = async (userId: string) => {
     try {
+      console.log("Ensuring CEO admin role for user ID:", userId);
+      
+      // First update the profiles table to set is_admin to true
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ is_admin: true })
+        .eq('id', userId);
+      
+      if (profileError) {
+        console.error('Error updating profiles:', profileError);
+      }
+      
       // Check if user already has admin role
-      const { data: existingRole } = await supabase
+      const { data: existingRole, error: roleCheckError } = await supabase
         .from('user_roles')
         .select('*')
         .eq('user_id', userId)
         .eq('role', 'admin')
         .maybeSingle();
       
+      if (roleCheckError) {
+        console.error('Error checking existing role:', roleCheckError);
+      }
+      
       // If not, add admin role
       if (!existingRole) {
-        await supabase
+        console.log("No existing admin role found, adding role");
+        const { error: insertError } = await supabase
           .from('user_roles')
-          .upsert({ user_id: userId, role: 'admin' });
+          .insert({ user_id: userId, role: 'admin' });
         
-        // Ensure CEO has admin flag in profiles
-        await supabase
-          .from('profiles')
-          .update({ is_admin: true })
-          .eq('id', userId);
+        if (insertError) {
+          console.error('Error inserting admin role:', insertError);
+        }
+      } else {
+        console.log("Existing admin role found:", existingRole);
       }
     } catch (error) {
       console.error('Error ensuring CEO admin role:', error);

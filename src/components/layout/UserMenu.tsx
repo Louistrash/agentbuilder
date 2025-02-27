@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User, UserCog, Shield } from "lucide-react";
 
+const CEO_EMAIL = "patricknieborg@me.com";
+
 export const UserMenu = () => {
   const { user } = useAuth();
   const { isAdmin, isCEO } = useAdmin();
@@ -59,7 +61,7 @@ export const UserMenu = () => {
     return user.email.charAt(0).toUpperCase();
   };
 
-  const isCEOUser = user.email === "patricknieborg@me.com" || isCEO;
+  const isCEOUser = user.email === CEO_EMAIL || isCEO;
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>

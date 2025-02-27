@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+const CEO_EMAIL = "patricknieborg@me.com";
+
 export const useAdmin = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -19,9 +21,14 @@ export const useAdmin = () => {
           setIsAdmin(false);
           setIsSuperAdmin(false);
           setIsCEO(false);
+          setIsLoading(false);
           return;
         }
 
+        // Special check for CEO email
+        const isCEOEmail = user.email === CEO_EMAIL;
+        setIsCEO(isCEOEmail);
+        
         // First check if user has admin flag in profiles
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
@@ -36,6 +43,7 @@ export const useAdmin = () => {
             description: "Could not verify admin access",
             variant: "destructive",
           });
+          setIsLoading(false);
           return;
         }
         
@@ -47,6 +55,7 @@ export const useAdmin = () => {
           
         if (rolesError) {
           console.error('Error checking user roles:', rolesError);
+          setIsLoading(false);
           return;
         }
         
@@ -55,33 +64,33 @@ export const useAdmin = () => {
         // Set admin status based on profile flag or admin role
         const hasAdminRole = roles.includes('admin');
         
-        // Special check for CEO email (patricknieborg@me.com)
-        const isCEOEmail = user.email === 'patricknieborg@me.com';
-        
         setIsAdmin(!!profile?.is_admin || hasAdminRole || isCEOEmail);
         setIsSuperAdmin(isCEOEmail); // CEO is also a super admin
-        setIsCEO(isCEOEmail);
         
         // If user is CEO but doesn't have admin role yet, add it
         if (isCEOEmail && !hasAdminRole) {
+          console.log("CEO user detected but no admin role found, adding admin role");
+          
           await supabase
             .from('user_roles')
             .upsert({ user_id: user.id, role: 'admin' });
             
           // Also ensure CEO has admin flag in profiles
           if (!profile?.is_admin) {
+            console.log("Updating CEO admin flag in profiles");
             await supabase
               .from('profiles')
               .update({ is_admin: true })
               .eq('id', user.id);
           }
         }
+        
+        setIsLoading(false);
       } catch (error) {
         console.error('Error in admin check:', error);
         setIsAdmin(false);
         setIsSuperAdmin(false);
         setIsCEO(false);
-      } finally {
         setIsLoading(false);
       }
     };
