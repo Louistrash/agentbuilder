@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Settings, ArrowRight, Menu, LogOut, User, LogIn } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
 import { TokenDisplay } from "./TokenDisplay";
@@ -25,16 +25,11 @@ export function Header({
   logoUrl
 }: HeaderProps) {
   const navigate = useNavigate();
-  const location = useLocation();
   const { isAdmin, userRole } = useAdmin();
   const { user, isAuthenticated } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { toast } = useToast();
-
-  // Check if we're on a page that should have a transparent header with no logo
-  // This includes the Pro Builder page and Auth page
-  const isTransparentHeader = location.pathname === "/agent-builder/pro" || location.pathname === "/auth";
 
   const handleLogout = async () => {
     try {
@@ -88,42 +83,40 @@ export function Header({
   };
 
   return (
-    <header className={`${isTransparentHeader ? 'bg-transparent' : 'bg-black/20 backdrop-blur-md border-b border-white/10'} sticky top-0 z-50`}>
+    <header className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16 sm:h-20">
-          {!isTransparentHeader && (
-            <div className="flex items-center gap-3">
-              <div 
-                onClick={() => navigate('/')}
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden cursor-pointer"
-              >
-                {logoUrl && !imageError ? (
-                  <img 
-                    src={logoUrl} 
-                    alt="Chat Agent Builder Logo" 
-                    className="w-full h-full object-contain p-1" 
-                    onError={() => setImageError(true)}
-                  />
-                ) : (
-                  <div className="text-[#1EAEDB] font-bold text-lg">L</div>
-                )}
-              </div>
-              <div 
-                onClick={() => navigate('/')}
-                className="flex flex-col cursor-pointer"
-              >
-                <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-                  Chat Agent Builder
-                </h1>
-                <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
-                  Build. Deploy. Engage.
-                </p>
-              </div>
+          <div className="flex items-center gap-3">
+            <div 
+              onClick={() => navigate('/')}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden cursor-pointer"
+            >
+              {logoUrl && !imageError ? (
+                <img 
+                  src={logoUrl} 
+                  alt="Chat Agent Builder Logo" 
+                  className="w-full h-full object-contain p-1" 
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="text-[#1EAEDB] font-bold text-lg">L</div>
+              )}
             </div>
-          )}
+            <div 
+              onClick={() => navigate('/')}
+              className="flex flex-col cursor-pointer"
+            >
+              <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Chat Agent Builder
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
+                Build. Deploy. Engage.
+              </p>
+            </div>
+          </div>
 
           {/* Desktop Navigation */}
-          <div className={`${isTransparentHeader ? 'ml-auto' : ''} hidden sm:flex items-center gap-4`}>
+          <div className="hidden sm:flex items-center gap-4">
             {isAuthenticated && <TokenDisplay />}
             
             {isAuthenticated ? (
