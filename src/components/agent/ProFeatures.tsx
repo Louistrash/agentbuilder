@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, Lock, MessageSquare, BarChart3, Code, Wifi, ArrowUpRight, Users } from "lucide-react";
+import { MessageSquare, BarChart3, Code, Wifi, ArrowUpRight, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -11,7 +11,10 @@ export function ProFeatures() {
         {/* Header */}
         <div className="flex flex-col items-center space-y-2 text-center">
           <div className="inline-flex items-center gap-2 bg-[#0D6E57]/20 px-3 py-1.5 rounded-full">
-            <Lock className="w-4 h-4 text-[#0DF5A3]" />
+            <svg className="w-4 h-4 text-[#0DF5A3]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 11H5C3.89543 11 3 11.8954 3 13V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V13C21 11.8954 20.1046 11 19 11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M7 11V7C7 5.93913 7.42143 4.92172 8.17157 4.17157C8.92172 3.42143 9.93913 3 11 3C12.0609 3 13.0783 3.42143 13.8284 4.17157C14.5786 4.92172 15 5.93913 15 7V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <span className="text-xs font-medium text-[#0DF5A3]">Pro Features</span>
           </div>
           
@@ -114,7 +117,7 @@ export function ProFeatures() {
                     
                     {/* Chart Line */}
                     <path 
-                      d="M0,100 C20,90 40,85 60,80 C90,70 120,60 150,50 C180,45 210,50 240,48 C270,45 300,40 330,20 C340,15 350,15 360,10" 
+                      d="M0,80 C20,75 40,70 60,65 C90,60 120,55 150,50 C180,45 210,50 240,48 C270,45 300,40 330,20 C340,15 350,15 360,10" 
                       stroke="#4880EC" 
                       strokeWidth="2" 
                       fill="none" 
@@ -122,7 +125,7 @@ export function ProFeatures() {
                     
                     {/* Area Under Chart */}
                     <path 
-                      d="M0,100 C20,90 40,85 60,80 C90,70 120,60 150,50 C180,45 210,50 240,48 C270,45 300,40 330,20 C340,15 350,15 360,10 V120 H0 Z" 
+                      d="M0,80 C20,75 40,70 60,65 C90,60 120,55 150,50 C180,45 210,50 240,48 C270,45 300,40 330,20 C340,15 350,15 360,10 V120 H0 Z" 
                       fill="url(#gradient)" 
                       opacity="0.2" 
                     />
