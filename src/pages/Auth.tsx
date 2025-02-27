@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Loader2, LogIn } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +17,6 @@ const Auth = () => {
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [isResetting, setIsResetting] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -65,25 +64,49 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
-      const { error } = isSignUp 
-        ? await supabase.auth.signUp({ email, password })
-        : await supabase.auth.signInWithPassword({ email, password });
-
-      if (error) throw error;
-
       if (isSignUp) {
+        // Sign up flow
+        const { error } = await supabase.auth.signUp({ 
+          email, 
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/`
+          }
+        });
+
+        if (error) throw error;
+
         toast({
           title: "Check your email",
           description: "We've sent you a confirmation link.",
         });
       } else {
-        handleRedirectWithData();
+        // Sign in flow
+        const { data, error } = await supabase.auth.signInWithPassword({ 
+          email, 
+          password 
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
+          toast({
+            title: "Login successful",
+            description: "Welcome back!",
+          });
+          
+          // Small delay to allow the toast to be seen
+          setTimeout(() => {
+            handleRedirectWithData();
+          }, 1000);
+        }
       }
     } catch (error: any) {
+      console.error("Auth error:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error.message || "Authentication failed",
       });
     } finally {
       setIsLoading(false);
@@ -111,7 +134,7 @@ const Auth = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error.message || "Google authentication failed",
       });
       setIsGoogleLoading(false);
     }
@@ -135,7 +158,7 @@ const Auth = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to send reset email",
       });
     } finally {
       setIsResetting(false);
