@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -248,6 +249,7 @@ type FeatureType = keyof typeof featureContent;
 
 export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardingProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
   
   // Early return if feature is not valid
   if (!feature || !(feature in featureContent)) {
@@ -260,8 +262,11 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
     if (currentStep < content.steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
+      // When reaching the last step and clicking "Get Started", 
+      // navigate to the free agent builder page
       setCurrentStep(0); // Reset for next time
       onClose();
+      navigate('/agent-builder/free');
     }
   };
 
