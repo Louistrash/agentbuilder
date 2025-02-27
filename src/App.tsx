@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import AgentBuilder from "@/pages/AgentBuilder";
 import AgentBuilderPro from "@/pages/AgentBuilderPro";
 import AgentConfig from "@/pages/AgentConfig";
+import AgentManager from "@/pages/AgentManager";
 import Admin from "@/pages/Admin";
 import Auth from "@/pages/Auth";
 import Index from "@/pages/Index";
@@ -25,6 +26,7 @@ function App() {
               <Route path="/agent-builder/free" element={<AgentBuilder />} />
               <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />
               <Route path="/agents/:id/configure" element={<AgentConfig />} />
+              <Route path="/agent-manager" element={<AgentManager />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

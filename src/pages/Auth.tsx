@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogIn, UserPlus, ChevronLeft, Lock, Shield } from "lucide-react";
+import { LogIn, UserPlus, ChevronLeft, Shield } from "lucide-react";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -22,6 +22,7 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
+      // If user is logged in, redirect to home
       navigate("/");
     }
   }, [user, navigate]);
@@ -41,7 +42,7 @@ const Auth = () => {
     try {
       setIsLoading(true);
       
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -53,7 +54,16 @@ const Auth = () => {
         description: "You've successfully logged in.",
       });
       
-      // Redirect will happen automatically based on the auth state change
+      if (data?.user) {
+        // Check if the user is CEO
+        if (data.user.email === "patricknieborg@me.com") {
+          // Ensure CEO has admin role in the database
+          await ensureCEOAdminRole(data.user.id);
+        }
+      }
+      
+      // Navigate to home page
+      navigate("/");
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
@@ -63,6 +73,33 @@ const Auth = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const ensureCEOAdminRole = async (userId: string) => {
+    try {
+      // Check if user already has admin role
+      const { data: existingRole } = await supabase
+        .from('user_roles')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
+      
+      // If not, add admin role
+      if (!existingRole) {
+        await supabase
+          .from('user_roles')
+          .upsert({ user_id: userId, role: 'admin' });
+        
+        // Ensure CEO has admin flag in profiles
+        await supabase
+          .from('profiles')
+          .update({ is_admin: true })
+          .eq('id', userId);
+      }
+    } catch (error) {
+      console.error('Error ensuring CEO admin role:', error);
     }
   };
 
@@ -114,49 +151,54 @@ const Auth = () => {
     try {
       setIsLoading(true);
       
-      // You can add logic here to check if the CEO account exists first
-      
-      const { error } = await supabase.auth.signInWithPassword({
+      // Try to login as CEO
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: ceoEmail,
         password: tempPassword,
       });
       
-      if (error) throw error;
-      
-      toast({
-        title: "CEO Access Granted",
-        description: "Welcome back, Patrick. You now have full admin access.",
-      });
-      
-    } catch (error: any) {
-      console.error("CEO login error:", error);
-      
-      // If login fails, try to create the CEO account
-      if (error.message.includes("Invalid login credentials")) {
-        try {
-          await supabase.auth.signUp({
+      if (error) {
+        // If login fails because account doesn't exist, create it
+        if (error.message.includes("Invalid login credentials")) {
+          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
             email: ceoEmail,
             password: tempPassword,
           });
           
-          toast({
-            title: "CEO Account Created",
-            description: "A new CEO account has been created. Please check email for verification.",
-          });
-        } catch (signupError: any) {
-          toast({
-            title: "CEO Setup Failed",
-            description: signupError.message || "There was a problem setting up the CEO account.",
-            variant: "destructive",
-          });
+          if (signUpError) throw signUpError;
+          
+          if (signUpData?.user) {
+            await ensureCEOAdminRole(signUpData.user.id);
+            
+            toast({
+              title: "CEO Account Created",
+              description: "A new CEO account has been created. Please check email for verification.",
+            });
+            return;
+          }
         }
-      } else {
-        toast({
-          title: "CEO Login Failed",
-          description: error.message || "There was a problem with the CEO login.",
-          variant: "destructive",
-        });
+        throw error;
       }
+      
+      if (data?.user) {
+        // Ensure CEO has admin role
+        await ensureCEOAdminRole(data.user.id);
+        
+        toast({
+          title: "CEO Access Granted",
+          description: "Welcome back, Patrick. You now have full admin access.",
+        });
+        
+        // Navigate to home page
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.error("CEO login error:", error);
+      toast({
+        title: "CEO Login Failed",
+        description: error.message || "There was a problem with the CEO login.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
