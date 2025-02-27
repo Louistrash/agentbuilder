@@ -285,6 +285,7 @@ export default function AgentBuilder() {
                 </div>
               </div>
 
+              {/* Pro Features Section - Added right after "Your Agents" section */}
               <ProFeatures />
 
               {/* Main Content */}
