@@ -1,11 +1,79 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Target, Zap, BarChart3 } from 'lucide-react';
+import { ArrowRight, Target, Zap, BarChart3, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { LearnMoreDialog } from '@/components/home/LearnMoreDialog';
+
+// Define content for the learn more dialogs
+const learnMoreContent = {
+  build: {
+    title: "Easy to Build Chat Agents",
+    description: "Create custom agents without coding",
+    content: (
+      <div className="space-y-4">
+        <p>Our intuitive builder interface makes it easy to create custom chat agents without any coding knowledge.</p>
+        <p>You can:</p>
+        <ul className="list-disc list-inside space-y-2 text-gray-300">
+          <li>Choose from pre-built templates</li>
+          <li>Customize agent personality and responses</li>
+          <li>Add knowledge sources for your agent</li>
+          <li>Test your agent in real-time</li>
+          <li>Deploy with a single click</li>
+        </ul>
+        <p>Start with our free builder and upgrade to pro when you need advanced features.</p>
+      </div>
+    )
+  },
+  responses: {
+    title: "Smart AI Responses",
+    description: "How our AI technology works",
+    content: (
+      <div className="space-y-4">
+        <p>Our chat agents use advanced AI technology to provide intelligent and contextual responses to user queries.</p>
+        <p>Key features include:</p>
+        <ul className="list-disc list-inside space-y-2 text-gray-300">
+          <li>Natural language understanding</li>
+          <li>Context awareness across conversations</li>
+          <li>Customizable response styles</li>
+          <li>Multi-turn conversation handling</li>
+          <li>Integration with your knowledge base</li>
+        </ul>
+        <p>Our AI is built on the latest language models and optimized for responsiveness and accuracy.</p>
+      </div>
+    )
+  },
+  analytics: {
+    title: "Analytics & Insights",
+    description: "Track and improve your chat agents",
+    content: (
+      <div className="space-y-4">
+        <p>Gain valuable insights into how users interact with your chat agents and use that data to continuously improve.</p>
+        <p>Our analytics platform provides:</p>
+        <ul className="list-disc list-inside space-y-2 text-gray-300">
+          <li>User engagement metrics</li>
+          <li>Conversation flow analysis</li>
+          <li>Common questions and topics</li>
+          <li>Satisfaction scores</li>
+          <li>Performance benchmarks</li>
+        </ul>
+        <p>Use these insights to optimize your agents, improve user satisfaction, and achieve your goals.</p>
+      </div>
+    )
+  }
+};
 
 const Index = () => {
   const navigate = useNavigate();
+  const [dialogContent, setDialogContent] = useState<keyof typeof learnMoreContent | null>(null);
+
+  const openDialog = (contentKey: keyof typeof learnMoreContent) => {
+    setDialogContent(contentKey);
+  };
+
+  const closeDialog = () => {
+    setDialogContent(null);
+  };
 
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col">
@@ -45,9 +113,9 @@ const Index = () => {
             <Button 
               variant="ghost" 
               className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-900/30 border border-indigo-900/50 mt-auto flex items-center gap-2"
-              onClick={() => navigate('/learn/build')}
+              onClick={() => openDialog('build')}
             >
-              Learn More <ArrowRight className="h-4 w-4" />
+              Learn More <Info className="h-4 w-4" />
             </Button>
           </div>
           
@@ -66,9 +134,9 @@ const Index = () => {
             <Button 
               variant="ghost" 
               className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 border border-blue-900/50 mt-auto flex items-center gap-2"
-              onClick={() => navigate('/learn/responses')}
+              onClick={() => openDialog('responses')}
             >
-              Learn More <ArrowRight className="h-4 w-4" />
+              Learn More <Info className="h-4 w-4" />
             </Button>
           </div>
           
@@ -87,13 +155,24 @@ const Index = () => {
             <Button 
               variant="ghost" 
               className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/30 border border-cyan-900/50 mt-auto flex items-center gap-2"
-              onClick={() => navigate('/learn/analytics')}
+              onClick={() => openDialog('analytics')}
             >
-              Learn More <ArrowRight className="h-4 w-4" />
+              Learn More <Info className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
+
+      {/* Dialog for Learn More content */}
+      {dialogContent && (
+        <LearnMoreDialog
+          isOpen={!!dialogContent}
+          onClose={closeDialog}
+          title={learnMoreContent[dialogContent].title}
+          description={learnMoreContent[dialogContent].description}
+          content={learnMoreContent[dialogContent].content}
+        />
+      )}
     </div>
   );
 };
