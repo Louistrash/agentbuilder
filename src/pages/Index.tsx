@@ -232,15 +232,15 @@ const Index = () => {
                 Create Intelligent Chat Agents
               </h2>
               <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
-                Sign in to create and manage your AI chat agents. Free users can create up to 2 projects!
+                Try out our free agent builder. Create and test AI agents without signing in. You'll only need to sign in when you want to save your work!
               </p>
               <Button
                 size="default"
-                onClick={() => navigate('/auth')}
+                onClick={() => navigate('/agent-builder/free')}
                 className="w-full max-w-md mx-auto bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
-                Sign In to Get Started
+                Build your First Agent (Free)
               </Button>
             </div>
           )}
