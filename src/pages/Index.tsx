@@ -200,24 +200,6 @@ const Index = () => {
 
       {/* Token animation overlay */}
       <TokenAnimationOverlay />
-
-      {/* Add the animation styles */}
-      <style jsx>{`
-        @keyframes progress {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-progress {
-          animation: progress 1.2s ease-in-out forwards;
-        }
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 };
