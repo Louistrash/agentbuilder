@@ -5,6 +5,7 @@ import { TokenProvider } from "@/context/TokenContext";
 
 import Admin from "./pages/Admin";
 import ProAdminDashboard from "./pages/ProAdminDashboard";
+import UserDashboard from "./pages/UserDashboard";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
@@ -27,6 +28,7 @@ function App() {
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/pro-admin" element={<ProAdminDashboard />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/agent-manager" element={<AgentManager />} />
               <Route path="/agent-builder/free" element={<AgentBuilderFree />} />
               <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />

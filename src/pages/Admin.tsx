@@ -7,6 +7,7 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
 import { DashboardOverview } from "@/components/admin/dashboard/DashboardOverview";
 import { AdminSections } from "@/components/admin/sections/AdminSections";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -15,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AgentsList } from "@/components/admin/appointments/AgentsList";
+import { Crown, Shield } from "lucide-react";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -78,9 +80,25 @@ const Admin = () => {
     <AdminLayout>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
-            {isCEO ? "CEO Dashboard" : (isSuperAdmin ? "Super Admin Dashboard" : "Admin Dashboard")}
-          </h1>
+          {isCEO ? (
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-white">CEO Dashboard</h1>
+              <Badge className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0">
+                <Crown className="w-3 h-3 mr-1" />
+                CEO
+              </Badge>
+            </div>
+          ) : isSuperAdmin ? (
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-white">Super Admin Dashboard</h1>
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
+                <Shield className="w-3 h-3 mr-1" />
+                SUPER
+              </Badge>
+            </div>
+          ) : (
+            <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+          )}
           <p className="text-gray-400">
             {isCEO ? "Complete platform management and controls" : 
              (isSuperAdmin ? "Advanced system management" : "Platform management")}
@@ -95,7 +113,7 @@ const Admin = () => {
                 <SelectValue placeholder="Select view" />
               </SelectTrigger>
               <SelectContent className="bg-[#1A1F2C] border-[#30363D]">
-                <SelectItem value="dashboard">Admin Dashboard</SelectItem>
+                <SelectItem value="dashboard">CEO Dashboard</SelectItem>
                 <SelectItem value="agents">My Agents</SelectItem>
               </SelectContent>
             </Select>
