@@ -1,73 +1,155 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bot, MessageSquare, Brain, ShoppingCart } from "lucide-react";
-import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useTokens } from "@/context/TokenContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { TokenPurchaseDialog } from "@/components/tokens/TokenPurchaseDialog";
+import { Bot, MessageSquare, ShoppingCart, Headphones, BrainCircuit, Lock } from "lucide-react";
 
-const templates = [{
-  id: 1,
-  name: 'Customer Support',
-  description: 'Handle customer inquiries and support tickets',
-  icon: MessageSquare,
-  color: 'text-[#1EAEDB]',
-  buttonColor: 'bg-[#1EAEDB]/10 hover:bg-[#1EAEDB]/20 text-[#1EAEDB] hover:text-[#1EAEDB]/90 border border-[#1EAEDB]/20'
-}, {
-  id: 2,
-  name: 'Sales Assistant',
-  description: 'Convert leads and handle sales conversations',
-  icon: ShoppingCart,
-  color: 'text-[#D946EF]',
-  buttonColor: 'bg-[#D946EF]/10 hover:bg-[#D946EF]/20 text-[#D946EF] hover:text-[#D946EF]/90 border border-[#D946EF]/20'
-}, {
-  id: 3,
-  name: 'Knowledge Base',
-  description: 'Answer questions from your documentation',
-  icon: Brain,
-  color: 'text-[#8B5CF6]',
-  buttonColor: 'bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20 text-[#8B5CF6] hover:text-[#8B5CF6]/90 border border-[#8B5CF6]/20'
-}];
+const AGENT_COST = 25; // Cost per agent in tokens
+
+interface AgentTemplate {
+  name: string;
+  description: string;
+  icon: React.ReactNode;
+  color: string;
+}
 
 interface AgentTemplatesProps {
-  onCreateAgent: (template: { name: string; description: string; }) => void;
+  onCreateAgent: (template: { name: string; description: string }) => void;
 }
 
 export function AgentTemplates({ onCreateAgent }: AgentTemplatesProps) {
-  const handleUseTemplate = (template: typeof templates[0]) => {
-    onCreateAgent({
-      name: template.name,
-      description: template.description,
-    });
-    toast.success(`Created ${template.name} agent`);
+  const { tokens, useTokens: spendTokens } = useTokens();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isPurchaseDialogOpen, setIsPurchaseDialogOpen] = useState(false);
+  const [purchaseMessage, setPurchaseMessage] = useState("");
+
+  const templates: AgentTemplate[] = [
+    {
+      name: "Customer Service",
+      description: "Help users with common questions and issues",
+      icon: <Headphones className="h-10 w-10" />,
+      color: "text-blue-400 bg-blue-400/10"
+    },
+    {
+      name: "Sales Assistant",
+      description: "Guide customers through purchasing decisions",
+      icon: <ShoppingCart className="h-10 w-10" />,
+      color: "text-green-400 bg-green-400/10"
+    },
+    {
+      name: "Technical Support",
+      description: "Provide technical assistance and troubleshooting",
+      icon: <BrainCircuit className="h-10 w-10" />,
+      color: "text-purple-400 bg-purple-400/10"
+    },
+    {
+      name: "Knowledge Base",
+      description: "Answer questions based on your company's information",
+      icon: <MessageSquare className="h-10 w-10" />,
+      color: "text-orange-400 bg-orange-400/10"
+    }
+  ];
+
+  const handleTemplateClick = async (template: AgentTemplate) => {
+    // Check if user has already created 2 agents by counting existing token transactions
+    try {
+      const { data: existingAgents, error } = await supabase
+        .from('token_transactions')
+        .select('*')
+        .eq('feature_used', 'agent_creation')
+        .eq('transaction_type', 'debit');
+
+      if (error) throw error;
+
+      // If user has already created 2 agents, show purchase dialog
+      if (existingAgents && existingAgents.length >= 2) {
+        setPurchaseMessage("Free accounts are limited to 2 agents. Upgrade to Pro or purchase more tokens to create additional agents.");
+        setIsPurchaseDialogOpen(true);
+        return;
+      }
+
+      // Check if user has enough tokens
+      if (tokens < AGENT_COST) {
+        setPurchaseMessage(`You need ${AGENT_COST} tokens to create an agent, but you only have ${tokens} tokens left.`);
+        setIsPurchaseDialogOpen(true);
+        return;
+      }
+
+      // Spend tokens
+      const success = await spendTokens(AGENT_COST, 'agent_creation');
+      if (!success) {
+        toast({
+          title: "Token Error",
+          description: "There was an issue with your tokens. Please try again.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Create the agent
+      onCreateAgent({
+        name: template.name,
+        description: template.description
+      });
+
+      toast({
+        title: "Agent Created",
+        description: `${template.name} agent created successfully! ${AGENT_COST} tokens used.`,
+      });
+    } catch (error) {
+      console.error("Error creating agent:", error);
+      toast({
+        title: "Error Creating Agent",
+        description: "There was an error creating your agent. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {templates.map(template => {
-        const Icon = template.icon;
-        return (
-          <Card key={template.id} className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors">
-            <CardContent className="p-4">
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {templates.map((template, index) => (
+          <Card
+            key={index}
+            className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors cursor-pointer"
+            onClick={() => handleTemplateClick(template)}
+          >
+            <CardContent className="p-6">
               <div className="space-y-4">
-                <div className={`p-2 w-fit rounded-lg ${template.color.replace('text-', 'bg-')}/10`}>
-                  <Icon className={`w-5 h-5 ${template.color}`} />
+                <div className={`p-3 rounded-lg ${template.color} w-fit`}>
+                  {template.icon}
                 </div>
                 <div>
                   <h3 className="font-medium text-white">{template.name}</h3>
                   <p className="text-sm text-gray-400 mt-1">{template.description}</p>
                 </div>
-                <Button 
-                  variant="secondary"
-                  className={`w-full ${template.buttonColor} transition-all duration-200 shadow-lg hover:shadow-[#1EAEDB]/20`}
-                  onClick={() => handleUseTemplate(template)}
-                >
-                  Use Template
-                </Button>
+                <div className="flex justify-between items-center">
+                  <div className="text-sm text-[#1EAEDB] flex items-center">
+                    <Coins className="h-3.5 w-3.5 mr-1" />
+                    {AGENT_COST} tokens
+                  </div>
+                  <Button variant="ghost" size="sm" className="text-white bg-[#30363D] hover:bg-[#3E4956]">
+                    Select
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
-        );
-      })}
-    </div>
+        ))}
+      </div>
+
+      <TokenPurchaseDialog 
+        open={isPurchaseDialogOpen} 
+        onClose={() => setIsPurchaseDialogOpen(false)} 
+        message={purchaseMessage}
+      />
+    </>
   );
 }

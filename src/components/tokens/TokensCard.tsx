@@ -1,114 +1,80 @@
 
-import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Coins } from "lucide-react";
-import { useAuth } from "@/lib/auth";
-import { supabase } from "@/integrations/supabase/client";
-import { TokenTransaction } from "@/components/admin/sections/tokens/types";
+import { useTokens } from "@/context/TokenContext";
+import { Coins, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface TokensCardProps {
   isPopup?: boolean;
 }
 
 export function TokensCard({ isPopup = false }: TokensCardProps) {
-  const { user } = useAuth();
-  const [tokens, setTokens] = useState<number>(0);
-  const [transactions, setTransactions] = useState<TokenTransaction[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (user) {
-      fetchTokens();
-      fetchTransactions();
-    }
-  }, [user]);
-
-  const fetchTokens = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('tokens')
-        .eq('id', user?.id)
-        .single();
-
-      if (error) throw error;
-      setTokens(data?.tokens || 0);
-    } catch (error) {
-      console.error('Error fetching tokens:', error);
-    }
-  };
-
-  const fetchTransactions = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('token_transactions')
-        .select('*')
-        .eq('profile_id', user?.id)
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      if (error) throw error;
-      
-      const typedTransactions: TokenTransaction[] = (data || []).map(transaction => ({
-        ...transaction,
-        transaction_type: transaction.transaction_type as 'credit' | 'debit'
-      }));
-      
-      setTransactions(typedTransactions);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!user) return null;
+  const { tokens, isLoading } = useTokens();
+  const navigate = useNavigate();
 
   return (
-    <div className="bg-[#0D1117] p-6 rounded-lg space-y-6">
-      <div className="flex items-center gap-2">
-        <Coins className="w-5 h-5 text-[#1EAEDB]" />
-        <h2 className="text-lg font-semibold text-white">Your Tokens</h2>
+    <div className="p-4 bg-[#0D1117] rounded-lg border border-[#1A1F2C]">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-md font-semibold text-white flex items-center gap-2">
+          <Coins className="h-4 w-4 text-[#1EAEDB]" />
+          Your Tokens
+        </h2>
+        {!isPopup && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs border-[#30363D] hover:bg-[#1A1F2C]"
+            onClick={() => navigate('/auth?plan=pro')}
+          >
+            <Sparkles className="h-3 w-3 mr-1" /> Upgrade
+          </Button>
+        )}
       </div>
 
-      <div className="space-y-1">
-        <p className="text-sm text-gray-400">Available Balance</p>
-        <p className="text-2xl font-bold text-white">{tokens} tokens</p>
-      </div>
-
-      <Button
-        onClick={() => window.location.href = '/admin?tab=marketplace'}
-        className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white"
-      >
-        Buy More
-      </Button>
-
-      <div className="space-y-2">
-        <h3 className="text-sm text-gray-400">Recent Transactions</h3>
-        <div className="space-y-1">
-          {loading ? (
-            <p className="text-sm text-gray-500">Loading transactions...</p>
-          ) : transactions.length === 0 ? (
-            <p className="text-sm text-gray-500">No transactions yet</p>
-          ) : (
-            transactions.map(transaction => (
-              <div 
-                key={transaction.id} 
-                className="flex items-center justify-between py-1"
-              >
-                <p className="text-sm text-gray-300">{transaction.description}</p>
-                <p className={`text-sm font-medium ${
-                  transaction.transaction_type === 'credit' 
-                    ? 'text-green-500' 
-                    : 'text-red-500'
-                }`}>
-                  {transaction.transaction_type === 'credit' ? '+' : '-'}
-                  {transaction.amount}
-                </p>
-              </div>
-            ))
-          )}
+      <div className="bg-[#161B22] p-3 rounded-lg mb-3">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-400 text-sm">Available Tokens</span>
+          <span className="text-white font-medium">
+            {isLoading ? "..." : tokens}
+          </span>
         </div>
+      </div>
+
+      <div className="space-y-2 mb-4">
+        <div className="flex justify-between text-xs">
+          <span className="text-gray-400">Agent Creation</span>
+          <span className="text-white">25 tokens</span>
+        </div>
+        <div className="flex justify-between text-xs">
+          <span className="text-gray-400">Custom Training</span>
+          <span className="text-white">10 tokens</span>
+        </div>
+        <div className="flex justify-between text-xs">
+          <span className="text-gray-400">Advanced Features</span>
+          <span className="text-white">15 tokens</span>
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        <Button
+          size="sm"
+          variant="outline"
+          className="w-full border-[#1EAEDB]/30 text-[#1EAEDB] hover:bg-[#1EAEDB]/10"
+          onClick={() => navigate('/auth?purchase=tokens')}
+        >
+          <Coins className="h-3.5 w-3.5 mr-1.5" />
+          Buy Tokens
+        </Button>
+        {isPopup && (
+          <Button
+            size="sm"
+            className="w-full bg-purple-500 hover:bg-purple-600"
+            onClick={() => navigate('/auth?plan=pro')}
+          >
+            <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+            Upgrade
+          </Button>
+        )}
       </div>
     </div>
   );
