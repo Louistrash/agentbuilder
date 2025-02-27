@@ -29,6 +29,9 @@ export const Header = ({
             {isAdmin && <Link to="/admin" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm">
                 Admin Dashboard
               </Link>}
+            {isAdmin && <Link to="/pro-admin" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm bg-gradient-to-r from-purple-500/10 to-indigo-500/10 hover:from-purple-500/20 hover:to-indigo-500/20 rounded-md">
+                PRO Admin
+              </Link>}
           </nav>
         </div>
         <div className="flex items-center gap-4">
