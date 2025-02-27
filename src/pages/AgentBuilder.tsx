@@ -286,7 +286,9 @@ export default function AgentBuilder() {
               </div>
 
               {/* Pro Features Section - Added right after "Your Agents" section */}
-              <ProFeatures />
+              <div className="mt-8">
+                <ProFeatures />
+              </div>
 
               {/* Main Content */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
