@@ -9,16 +9,22 @@ import {
   DialogFooter
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Coins, Sparkles } from "lucide-react";
+import { Coins, Sparkles, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface TokenPurchaseDialogProps {
   open: boolean;
   onClose: () => void;
   message?: string;
+  showAddons?: boolean;
 }
 
-export function TokenPurchaseDialog({ open, onClose, message }: TokenPurchaseDialogProps) {
+export function TokenPurchaseDialog({ 
+  open, 
+  onClose, 
+  message, 
+  showAddons = false 
+}: TokenPurchaseDialogProps) {
   const navigate = useNavigate();
 
   const handleUpgradeClick = () => {
@@ -30,6 +36,11 @@ export function TokenPurchaseDialog({ open, onClose, message }: TokenPurchaseDia
     onClose();
     // In a real app, this could navigate to a token purchase page
     navigate('/auth?purchase=tokens');
+  };
+
+  const handleAddonsClick = () => {
+    onClose();
+    navigate('/addons');
   };
 
   return (
@@ -99,6 +110,26 @@ export function TokenPurchaseDialog({ open, onClose, message }: TokenPurchaseDia
               </div>
             </div>
           </div>
+          
+          {showAddons && (
+            <div className="bg-[#262E3D] rounded-lg p-2 sm:p-3 border border-[#30363D] border-dashed">
+              <h3 className="font-medium text-white mb-1 sm:mb-1.5 flex items-center gap-2 text-sm sm:text-base">
+                <ShoppingBag className="h-4 w-4 text-green-400" />
+                Browse Addons Marketplace
+              </h3>
+              <p className="text-xs text-gray-400 mb-1.5 sm:mb-2">
+                Enhance your agents with powerful addons and features.
+              </p>
+              <Button 
+                onClick={handleAddonsClick}
+                className="w-full mt-1 bg-gradient-to-r from-green-500/80 to-green-600/80 hover:from-green-500 hover:to-green-600 text-white"
+                size="sm"
+              >
+                <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
+                Explore Addons
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Improvement 4: Larger touch targets for mobile and better landscape orientation support */}

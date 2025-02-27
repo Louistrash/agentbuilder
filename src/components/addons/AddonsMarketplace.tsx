@@ -80,8 +80,9 @@ export function AddonsMarketplace() {
   const [isTokenDialogOpen, setIsTokenDialogOpen] = useState(false);
   const [purchaseMessage, setPurchaseMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [showAddonHighlight, setShowAddonHighlight] = useState(false);
 
-  const { tokens, useTokens: spendTokens, refreshTokens } = useTokens();
+  const { tokens, useTokens: spendTokens, refreshTokens, displayTokens } = useTokens();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -89,6 +90,15 @@ export function AddonsMarketplace() {
     fetchAddons();
     fetchPurchasedAddons();
   }, []);
+  
+  // Add an effect to highlight addons when tokens change
+  useEffect(() => {
+    if (displayTokens > 0 && !isLoading) {
+      setShowAddonHighlight(true);
+      const timer = setTimeout(() => setShowAddonHighlight(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [displayTokens, isLoading]);
 
   const fetchAddons = async () => {
     try {
@@ -189,6 +199,9 @@ export function AddonsMarketplace() {
         title: 'Add-on Purchased',
         description: `${addon.name} has been added to your account!`,
       });
+      
+      // Close the dialog
+      setIsPreviewOpen(false);
     } catch (error) {
       console.error('Error purchasing addon:', error);
       toast({
@@ -302,9 +315,10 @@ export function AddonsMarketplace() {
             {filteredAddons.map((addon) => (
               <Card
                 key={addon.id}
-                className={`bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors ${
-                  isPurchased(addon.id) ? 'ring-1 ring-green-500' : ''
-                }`}
+                className={`bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors 
+                  ${isPurchased(addon.id) ? 'ring-1 ring-green-500' : ''}
+                  ${showAddonHighlight && !isPurchased(addon.id) && tokens >= addon.price ? 
+                    'ring-2 ring-[#1EAEDB] animate-pulse' : ''}`}
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
@@ -334,8 +348,9 @@ export function AddonsMarketplace() {
                       <Button
                         size="sm"
                         disabled={isPurchased(addon.id)}
-                        onClick={() => !isPurchased(addon.id) && handlePurchaseAddon(addon)}
-                        className={`rounded-md ${isPurchased(addon.id) ? 'bg-green-600 hover:bg-green-600' : 'bg-[#00b8d9] hover:bg-[#00a3c4] text-white'}`}
+                        onClick={() => !isPurchased(addon.id) && handleOpenPreview(addon)}
+                        className={`rounded-md ${isPurchased(addon.id) ? 'bg-green-600 hover:bg-green-600' : 'bg-[#00b8d9] hover:bg-[#00a3c4] text-white'} 
+                          ${showAddonHighlight && !isPurchased(addon.id) && tokens >= addon.price ? 'animate-pulse' : ''}`}
                       >
                         {isPurchased(addon.id) ? 'Owned' : 'Purchase'}
                       </Button>
@@ -422,6 +437,7 @@ export function AddonsMarketplace() {
         open={isTokenDialogOpen}
         onClose={() => setIsTokenDialogOpen(false)}
         message={purchaseMessage}
+        showAddons={true}
       />
     </div>
   );

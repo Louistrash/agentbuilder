@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +41,19 @@ interface AddonPreviewDialogProps {
 }
 
 export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchased, userTokens }: AddonPreviewDialogProps) {
-  const hasEnoughTokens = userTokens >= addon.price;
+  const [canAfford, setCanAfford] = useState(false);
+  const [showButtonPulse, setShowButtonPulse] = useState(false);
+  
+  // Check if user has enough tokens, and show pulsing effect when tokens change
+  useEffect(() => {
+    const hasEnoughTokens = userTokens >= addon.price;
+    if (hasEnoughTokens && !canAfford) {
+      setShowButtonPulse(true);
+      const timer = setTimeout(() => setShowButtonPulse(false), 3000);
+      return () => clearTimeout(timer);
+    }
+    setCanAfford(hasEnoughTokens);
+  }, [userTokens, addon.price, canAfford]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -79,19 +91,19 @@ export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchas
           </div>
           
           {!isPurchased && (
-            <div className={`p-4 rounded-lg border ${hasEnoughTokens ? 'border-[#30363D] bg-[#1A1F2C]' : 'border-yellow-600/30 bg-yellow-900/20'}`}>
+            <div className={`p-4 rounded-lg border ${canAfford ? 'border-[#30363D] bg-[#1A1F2C]' : 'border-yellow-600/30 bg-yellow-900/20'}`}>
               <div className="flex items-center gap-3">
-                {hasEnoughTokens ? (
+                {canAfford ? (
                   <Coins className="h-5 w-5 text-[#1EAEDB]" />
                 ) : (
                   <AlertTriangle className="h-5 w-5 text-yellow-500" />
                 )}
                 <div>
                   <h4 className="font-medium text-white">
-                    {hasEnoughTokens ? 'Ready to Purchase' : 'Not Enough Tokens'}
+                    {canAfford ? 'Ready to Purchase' : 'Not Enough Tokens'}
                   </h4>
                   <p className="text-sm text-gray-400 mt-1">
-                    {hasEnoughTokens
+                    {canAfford
                       ? `You have ${userTokens} tokens available. This add-on costs ${addon.price} tokens.`
                       : `This add-on requires ${addon.price} tokens, but you only have ${userTokens} tokens.`}
                   </p>
@@ -112,8 +124,9 @@ export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchas
           {!isPurchased && (
             <Button
               onClick={() => onPurchase(addon)}
-              disabled={!hasEnoughTokens}
-              className="bg-[#00b8d9] hover:bg-[#00a3c4] text-white rounded-md"
+              disabled={!canAfford}
+              className={`bg-[#00b8d9] hover:bg-[#00a3c4] text-white rounded-md 
+                ${showButtonPulse ? 'animate-pulse ring-2 ring-[#00b8d9]/50' : ''}`}
             >
               <Coins className="mr-2 h-4 w-4" />
               Purchase for {addon.price} Tokens
