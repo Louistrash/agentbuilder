@@ -157,7 +157,7 @@ export function ProFeatures() {
                     <Users className="h-4 w-4 text-pink-500" />
                     <span className="text-xs text-gray-400">Active Users</span>
                   </div>
-                  <h3 className="text-2xl font-semibold text-white">217</h3>
+                  <h3 className="text-2xl font-semibold text-white">177</h3>
                   <span className="text-xs text-pink-500">+12.5% this week</span>
                 </motion.div>
 
@@ -171,7 +171,7 @@ export function ProFeatures() {
                     <MessageCircle className="h-4 w-4 text-green-500" />
                     <span className="text-xs text-gray-400">Messages/Day</span>
                   </div>
-                  <h3 className="text-2xl font-semibold text-white">458</h3>
+                  <h3 className="text-2xl font-semibold text-white">595</h3>
                   <span className="text-xs text-green-500">+8.3% this week</span>
                 </motion.div>
               </div>

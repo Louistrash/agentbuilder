@@ -19,14 +19,6 @@ const templates = [
     popular: true
   },
   {
-    id: 'personal-assistant',
-    name: 'Personal Assistant',
-    description: 'A helpful assistant for scheduling and daily tasks.',
-    icon: <Briefcase className="h-5 w-5 text-green-400" />,
-    category: 'productivity',
-    popular: false
-  },
-  {
     id: 'coding-assistant',
     name: 'Coding Assistant',
     description: 'Helps with programming questions and code snippets.',
@@ -40,22 +32,6 @@ const templates = [
     description: "Answers questions based on your organization's information.",
     icon: <Brain className="h-5 w-5 text-orange-400" />,
     category: 'knowledge',
-    popular: false
-  },
-  {
-    id: 'marketing-bot',
-    name: 'Marketing Bot',
-    description: 'Engages with potential customers and generates leads.',
-    icon: <MessageSquare className="h-5 w-5 text-pink-400" />,
-    category: 'marketing',
-    popular: false
-  },
-  {
-    id: 'custom-bot',
-    name: 'Custom Bot',
-    description: 'Create a bot with custom instructions and capabilities.',
-    icon: <Bot className="h-5 w-5 text-gray-400" />,
-    category: 'custom',
     popular: false
   }
 ];

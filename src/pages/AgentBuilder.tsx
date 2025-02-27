@@ -8,7 +8,7 @@ import { WidgetCode } from "@/components/agent/WidgetCode";
 import { FeatureOnboarding } from "@/components/onboarding/FeatureOnboarding";
 import { TutorialOverlay } from "@/components/onboarding/TutorialOverlay";
 import { Header } from "@/components/agent/Header";
-import { ProFeatures } from "@/components/agent/ProFeatures";
+import { ProFeatures } from "@/components/home/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
 import { AddonsMarketplace } from "@/components/addons/AddonsMarketplace";
 import { TokensCard } from "@/components/tokens/TokensCard";
@@ -285,8 +285,8 @@ export default function AgentBuilder() {
                 </div>
               </div>
 
-              {/* Pro Features Section - Added right after "Your Agents" section */}
-              <div className="mt-8">
+              {/* Pro Features Section - Dynamic version using ProFeatures from home */}
+              <div className="mt-4">
                 <ProFeatures />
               </div>
 
