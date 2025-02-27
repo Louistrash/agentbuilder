@@ -8,58 +8,19 @@ import { LearnMoreDialog } from '@/components/home/LearnMoreDialog';
 // Define content for the learn more dialogs
 const learnMoreContent = {
   build: {
-    title: "Easy to Build Chat Agents",
-    description: "Create custom agents without coding",
-    content: (
-      <div className="space-y-4">
-        <p>Our intuitive builder interface makes it easy to create custom chat agents without any coding knowledge.</p>
-        <p>You can:</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-300">
-          <li>Choose from pre-built templates</li>
-          <li>Customize agent personality and responses</li>
-          <li>Add knowledge sources for your agent</li>
-          <li>Test your agent in real-time</li>
-          <li>Deploy with a single click</li>
-        </ul>
-        <p>Start with our free builder and upgrade to pro when you need advanced features.</p>
-      </div>
-    )
+    title: "Build Your First Agent",
+    description: "Learn how to create your own AI chat agent",
+    content: null
   },
   responses: {
     title: "Smart AI Responses",
     description: "How our AI technology works",
-    content: (
-      <div className="space-y-4">
-        <p>Our chat agents use advanced AI technology to provide intelligent and contextual responses to user queries.</p>
-        <p>Key features include:</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-300">
-          <li>Natural language understanding</li>
-          <li>Context awareness across conversations</li>
-          <li>Customizable response styles</li>
-          <li>Multi-turn conversation handling</li>
-          <li>Integration with your knowledge base</li>
-        </ul>
-        <p>Our AI is built on the latest language models and optimized for responsiveness and accuracy.</p>
-      </div>
-    )
+    content: null
   },
   analytics: {
     title: "Analytics & Insights",
     description: "Track and improve your chat agents",
-    content: (
-      <div className="space-y-4">
-        <p>Gain valuable insights into how users interact with your chat agents and use that data to continuously improve.</p>
-        <p>Our analytics platform provides:</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-300">
-          <li>User engagement metrics</li>
-          <li>Conversation flow analysis</li>
-          <li>Common questions and topics</li>
-          <li>Satisfaction scores</li>
-          <li>Performance benchmarks</li>
-        </ul>
-        <p>Use these insights to optimize your agents, improve user satisfaction, and achieve your goals.</p>
-      </div>
-    )
+    content: null
   }
 };
 
