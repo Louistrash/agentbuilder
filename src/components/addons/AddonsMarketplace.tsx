@@ -231,7 +231,7 @@ export function AddonsMarketplace() {
             variant={selectedCategory === null ? "default" : "outline"}
             size="sm"
             onClick={() => setSelectedCategory(null)}
-            className="min-w-[70px]"
+            className={`min-w-[70px] rounded-md ${selectedCategory === null ? 'bg-[#00b8d9] hover:bg-[#00a3c4]' : ''}`}
           >
             All
           </Button>
@@ -241,7 +241,7 @@ export function AddonsMarketplace() {
               variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className="min-w-[100px]"
+              className={`min-w-[100px] rounded-md ${selectedCategory === category ? 'bg-[#00b8d9] hover:bg-[#00a3c4]' : ''}`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </Button>
@@ -249,41 +249,95 @@ export function AddonsMarketplace() {
         </div>
       </div>
 
-      <Tabs 
-        defaultValue="all" 
-        value={activeTab} 
-        onValueChange={setActiveTab}
-        className="w-full"
-      >
-        <TabsList className="bg-[#1C2128] border border-[#30363D] w-full sm:w-auto">
-          <TabsTrigger value="all" className="text-white">All Add-ons</TabsTrigger>
-          <TabsTrigger value="purchased" className="text-white">Purchased</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="all" className="mt-6">
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <Card key={i} className="bg-[#1C2128] border-[#30363D] h-[220px] animate-pulse">
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="h-12 w-12 rounded-lg bg-gray-700"></div>
-                      <div className="h-5 w-3/4 bg-gray-700 rounded"></div>
-                      <div className="h-4 w-full bg-gray-700 rounded"></div>
-                      <div className="h-4 w-2/3 bg-gray-700 rounded"></div>
+      <div className="bg-[#161B22] border border-[#30363D] rounded-md p-1 inline-flex">
+        <button
+          className={`px-4 py-2 text-sm font-medium rounded-md ${activeTab === 'all' ? 'bg-[#1C2128] text-white' : 'text-gray-400 hover:text-white'}`}
+          onClick={() => setActiveTab('all')}
+        >
+          All Add-ons
+        </button>
+        <button
+          className={`px-4 py-2 text-sm font-medium rounded-md ${activeTab === 'purchased' ? 'bg-[#1C2128] text-white' : 'text-gray-400 hover:text-white'}`}
+          onClick={() => setActiveTab('purchased')}
+        >
+          Purchased
+        </button>
+      </div>
+      
+      <div className="mt-6">
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <Card key={i} className="bg-[#1C2128] border-[#30363D] h-[220px] animate-pulse">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div className="h-12 w-12 rounded-lg bg-gray-700"></div>
+                    <div className="h-5 w-3/4 bg-gray-700 rounded"></div>
+                    <div className="h-4 w-full bg-gray-700 rounded"></div>
+                    <div className="h-4 w-2/3 bg-gray-700 rounded"></div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : activeTab === 'all' && filteredAddons.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredAddons.map((addon) => (
+              <Card
+                key={addon.id}
+                className={`bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors ${
+                  isPurchased(addon.id) ? 'ring-1 ring-green-500' : ''
+                }`}
+              >
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div className={`p-3 rounded-lg ${categoryColors[addon.category]} w-fit`}>
+                        {iconMap[addon.icon_name]}
+                      </div>
+                      <Badge variant={isPurchased(addon.id) ? "success" : "outline"} className="ml-auto">
+                        {isPurchased(addon.id) ? 'Purchased' : `${addon.price} tokens`}
+                      </Badge>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : filteredAddons.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredAddons.map((addon) => (
+                    
+                    <div>
+                      <h3 className="font-medium text-white text-lg">{addon.name}</h3>
+                      <p className="text-sm text-gray-400 mt-1 line-clamp-2">{addon.description}</p>
+                    </div>
+                    
+                    <div className="flex justify-between items-center pt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleOpenPreview(addon)}
+                        className="text-white border-[#30363D] hover:bg-[#30363D] rounded-md"
+                      >
+                        Details
+                      </Button>
+                      <Button
+                        size="sm"
+                        disabled={isPurchased(addon.id)}
+                        onClick={() => !isPurchased(addon.id) && handlePurchaseAddon(addon)}
+                        className={`rounded-md ${isPurchased(addon.id) ? 'bg-green-600 hover:bg-green-600' : 'bg-[#00b8d9] hover:bg-[#00a3c4] text-white'}`}
+                      >
+                        {isPurchased(addon.id) ? 'Owned' : 'Purchase'}
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : activeTab === 'purchased' && purchasedAddons.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {purchasedAddons.map((purchased) => {
+              const addon = addons.find(a => a.id === purchased.addon_id);
+              if (!addon) return null;
+              
+              return (
                 <Card
-                  key={addon.id}
-                  className={`bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors cursor-pointer ${
-                    isPurchased(addon.id) ? 'ring-1 ring-green-500' : ''
-                  }`}
+                  key={purchased.id}
+                  className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors cursor-pointer ring-1 ring-green-500"
                   onClick={() => handleOpenPreview(addon)}
                 >
                   <CardContent className="p-6">
@@ -292,9 +346,7 @@ export function AddonsMarketplace() {
                         <div className={`p-3 rounded-lg ${categoryColors[addon.category]} w-fit`}>
                           {iconMap[addon.icon_name]}
                         </div>
-                        <Badge variant={isPurchased(addon.id) ? "success" : "outline"} className="ml-auto">
-                          {isPurchased(addon.id) ? 'Purchased' : `${addon.price} tokens`}
-                        </Badge>
+                        <Badge variant="success" className="ml-auto">Active</Badge>
                       </div>
                       
                       <div>
@@ -302,101 +354,41 @@ export function AddonsMarketplace() {
                         <p className="text-sm text-gray-400 mt-1 line-clamp-2">{addon.description}</p>
                       </div>
                       
-                      <div className="flex justify-between items-center pt-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-white border-[#30363D] hover:bg-[#30363D]"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenPreview(addon);
-                          }}
-                        >
-                          Details
-                        </Button>
-                        <Button
-                          size="sm"
-                          disabled={isPurchased(addon.id)}
-                          className={`${isPurchased(addon.id) ? 'bg-green-600 hover:bg-green-600' : 'bg-[#1EAEDB] hover:bg-[#1EAEDB]/80'}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (!isPurchased(addon.id)) {
-                              handlePurchaseAddon(addon);
-                            }
-                          }}
-                        >
-                          {isPurchased(addon.id) ? 'Owned' : 'Purchase'}
-                        </Button>
+                      <div className="pt-2">
+                        <p className="text-xs text-gray-500">Purchased on {new Date(purchased.purchased_at).toLocaleDateString()}</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="bg-[#1C2128] border border-[#30363D] rounded-xl p-8 inline-block">
-                <Search className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-200">No add-ons found</h3>
-                <p className="text-gray-400 mt-2">Try adjusting your search or filter criteria</p>
-              </div>
-            </div>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="purchased" className="mt-6">
-          {purchasedAddons.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {purchasedAddons.map((purchased) => {
-                const addon = addons.find(a => a.id === purchased.addon_id);
-                if (!addon) return null;
-                
-                return (
-                  <Card
-                    key={purchased.id}
-                    className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-colors cursor-pointer ring-1 ring-green-500"
-                    onClick={() => handleOpenPreview(addon)}
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <div className="bg-[#1C2128] border border-[#30363D] rounded-xl p-8 inline-block">
+              {activeTab === 'all' ? (
+                <>
+                  <Search className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-medium text-gray-200">No add-ons found</h3>
+                  <p className="text-gray-400 mt-2">Try adjusting your search or filter criteria</p>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-medium text-gray-200">No purchased add-ons</h3>
+                  <p className="text-gray-400 mt-2">Browse the marketplace to enhance your agents</p>
+                  <Button 
+                    className="mt-4 bg-[#00b8d9] hover:bg-[#00a3c4] text-white rounded-md"
+                    onClick={() => setActiveTab('all')}
                   >
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-start">
-                          <div className={`p-3 rounded-lg ${categoryColors[addon.category]} w-fit`}>
-                            {iconMap[addon.icon_name]}
-                          </div>
-                          <Badge variant="success" className="ml-auto">Active</Badge>
-                        </div>
-                        
-                        <div>
-                          <h3 className="font-medium text-white text-lg">{addon.name}</h3>
-                          <p className="text-sm text-gray-400 mt-1 line-clamp-2">{addon.description}</p>
-                        </div>
-                        
-                        <div className="pt-2">
-                          <p className="text-xs text-gray-500">Purchased on {new Date(purchased.purchased_at).toLocaleDateString()}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                    Explore Add-ons
+                  </Button>
+                </>
+              )}
             </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="bg-[#1C2128] border border-[#30363D] rounded-xl p-8 inline-block">
-                <ShoppingBag className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-200">No purchased add-ons</h3>
-                <p className="text-gray-400 mt-2">Browse the marketplace to enhance your agents</p>
-                <Button 
-                  className="mt-4 bg-[#1EAEDB] hover:bg-[#1EAEDB]/80"
-                  onClick={() => setActiveTab('all')}
-                >
-                  Explore Add-ons
-                </Button>
-              </div>
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+          </div>
+        )}
+      </div>
 
       {selectedAddon && (
         <AddonPreviewDialog

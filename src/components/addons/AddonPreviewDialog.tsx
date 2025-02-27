@@ -105,7 +105,7 @@ export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchas
           <Button
             variant="outline"
             onClick={onClose}
-            className="border-[#30363D] text-white hover:bg-[#30363D]"
+            className="border-[#30363D] text-white hover:bg-[#30363D] rounded-md"
           >
             {isPurchased ? 'Close' : 'Cancel'}
           </Button>
@@ -113,7 +113,7 @@ export function AddonPreviewDialog({ addon, open, onClose, onPurchase, isPurchas
             <Button
               onClick={() => onPurchase(addon)}
               disabled={!hasEnoughTokens}
-              className="bg-[#1EAEDB] hover:bg-[#1EAEDB]/80 text-white"
+              className="bg-[#00b8d9] hover:bg-[#00a3c4] text-white rounded-md"
             >
               <Coins className="mr-2 h-4 w-4" />
               Purchase for {addon.price} Tokens
