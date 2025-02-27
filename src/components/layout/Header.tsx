@@ -165,10 +165,10 @@ export function Header({
               </DropdownMenu>
             ) : (
               <Button
-                variant="outline"
+                variant="default"
                 size="sm"
                 onClick={handleLogin}
-                className="text-gray-300 hover:text-white hover:bg-white/10 flex items-center gap-2 border-white/20"
+                className="bg-white hover:bg-gray-100 text-gray-800 rounded-full px-4 py-2 flex items-center gap-2"
               >
                 <LogIn className="h-4 w-4" />
                 Login / Sign Up
