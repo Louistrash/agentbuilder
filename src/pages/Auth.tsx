@@ -30,9 +30,13 @@ const Auth = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        handleRedirectWithData();
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+          handleRedirectWithData();
+        }
+      } catch (error) {
+        console.error("Session check error:", error);
       }
     };
     
@@ -40,10 +44,19 @@ const Auth = () => {
   }, []);
 
   const handleRedirectWithData = () => {
-    if (agentData) {
-      navigate(`${redirectTo}?saveAgent=true&agentData=${encodeURIComponent(JSON.stringify(agentData))}`);
-    } else {
-      navigate(redirectTo);
+    try {
+      if (agentData) {
+        navigate(`${redirectTo}?saveAgent=true&agentData=${encodeURIComponent(JSON.stringify(agentData))}`);
+      } else {
+        navigate(redirectTo);
+      }
+    } catch (error) {
+      console.error("Redirect error:", error);
+      toast({
+        variant: "destructive",
+        title: "Navigation Error",
+        description: "There was a problem navigating after login",
+      });
     }
   };
 
@@ -214,7 +227,7 @@ const Auth = () => {
                 <div className="w-full border-t border-white/10"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-[#131313] text-gray-400">
+                <span className="px-2 bg-transparent text-gray-400">
                   Or continue with email
                 </span>
               </div>
@@ -268,7 +281,7 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
               >
                 {isSignUp
                   ? 'Already have an account? Sign in'

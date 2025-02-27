@@ -69,8 +69,17 @@ export function Header({
   const hasAdminAccess = isAdmin || roleDisplay === "CEO";
 
   const handleLogin = () => {
-    console.log("Navigating to /auth");
-    navigate('/auth');
+    try {
+      console.log("Navigating to /auth");
+      navigate('/auth');
+    } catch (error) {
+      console.error("Navigation error:", error);
+      toast({
+        title: "Navigation Error",
+        description: "There was a problem navigating to the login page",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -156,10 +165,10 @@ export function Header({
               </DropdownMenu>
             ) : (
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 onClick={handleLogin}
-                className="text-gray-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+                className="text-gray-300 hover:text-white hover:bg-white/10 flex items-center gap-2 border-white/20"
               >
                 <LogIn className="h-4 w-4" />
                 Login / Sign Up
@@ -227,7 +236,7 @@ export function Header({
               ) : (
                 <button
                   onClick={() => {
-                    navigate('/auth');
+                    handleLogin();
                     setShowMobileMenu(false);
                   }}
                   className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
