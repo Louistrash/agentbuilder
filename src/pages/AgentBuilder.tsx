@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { AgentsList } from "@/components/agent/AgentsList";
 import { AdvancedConfig } from "@/components/agent/AdvancedConfig";
 import { TestInterface } from "@/components/agent/TestInterface";
@@ -19,7 +18,6 @@ import { useToast } from "@/hooks/use-toast";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTheme } from "next-themes";
 
 interface Agent {
   id: number;
@@ -43,15 +41,10 @@ export default function AgentBuilder() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('agents');
   const { toast } = useToast();
-  const location = useLocation();
-  const { setTheme } = useTheme();
 
   useEffect(() => {
-    // Force dark theme
-    setTheme('dark');
     fetchUserAvatar();
-    console.log("Current route:", location.pathname);
-  }, [location, setTheme]);
+  }, []);
 
   const fetchUserAvatar = async () => {
     try {
@@ -137,7 +130,7 @@ export default function AgentBuilder() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-white agent-builder-page">
+    <div className="min-h-screen bg-[#0D1117] text-white">
       <div className="container mx-auto py-8 px-4 lg:px-8">
         <div className="space-y-8">
           <Header />

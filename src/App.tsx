@@ -11,11 +11,10 @@ import NotFound from "@/pages/NotFound";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/components/AuthProvider";
 import { TokenProvider } from "@/context/TokenContext";
-import "./App.css";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AuthProvider>
         <TokenProvider>
           <Router>
@@ -29,8 +28,8 @@ function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <Toaster />
           </Router>
+          <Toaster />
         </TokenProvider>
       </AuthProvider>
     </ThemeProvider>
