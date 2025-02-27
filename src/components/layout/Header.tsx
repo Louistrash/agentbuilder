@@ -1,18 +1,17 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, User, Settings, LogOut, ChevronDown, Bot, Shield, Home, Sun, Moon, LayoutDashboard } from 'lucide-react';
+import { Menu, X, User, Settings, LogOut, ChevronDown, Bot, Shield, Home, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/lib/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { supabase } from '@/integrations/supabase/client';
 import { TokenDisplay } from '@/components/layout/TokenDisplay';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const isAdmin = true; // TODO: Replace with actual admin check
@@ -22,7 +21,7 @@ export function Header() {
   };
 
   const handleSignOut = async () => {
-    await signOut();
+    await supabase.auth.signOut();
     navigate('/');
   };
 
@@ -67,20 +66,15 @@ export function Header() {
           <div className="hidden md:flex items-center space-x-4">
             {/* Token Display */}
             <TokenDisplay />
-            
-            {/* Theme Toggle */}
-            <div className="hidden md:block">
-              <ThemeToggle />
-            </div>
 
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-9 w-9 border border-[#30363D]">
-                      <AvatarImage src={user.avatar_url || ''} alt={user.full_name || 'User'} />
+                      <AvatarImage src={user.email || ''} alt={user.email || 'User'} />
                       <AvatarFallback className="bg-[#161B22] text-[#FEC6A1]">
-                        {(user.full_name || 'User').substring(0, 2).toUpperCase()}
+                        {(user.email || 'User').substring(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -88,7 +82,7 @@ export function Header() {
                 <DropdownMenuContent className="w-56 bg-[#161B22] border border-[#30363D] text-white" align="end">
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user.full_name || 'User'}</p>
+                      <p className="font-medium">User</p>
                       <p className="text-sm text-gray-400 truncate">{user.email}</p>
                     </div>
                   </div>

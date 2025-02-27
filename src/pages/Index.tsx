@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FeatureCard } from '@/components/home/FeatureCard';
 import { ProFeatures } from '@/components/home/ProFeatures';
 import { useTokens } from '@/context/TokenContext';
-import { ArrowRightIcon, Bot, BrainCircuit, GemIcon, Key, LucideIcon, MessageSquareText, Sparkles, Users } from 'lucide-react';
+import { ArrowRightIcon, Bot, BrainCircuit, GemIcon, Key, MessageSquareText, Sparkles, Users } from 'lucide-react';
 
 export default function Index() {
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ export default function Index() {
                 key={index}
                 title={feature.title}
                 description={feature.description}
-                icon={feature.icon as LucideIcon}
+                icon={feature.icon}
                 color={feature.color}
               />
             ))}

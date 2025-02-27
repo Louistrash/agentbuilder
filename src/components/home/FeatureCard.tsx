@@ -1,79 +1,25 @@
 
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { LucideIcon } from 'lucide-react';
 
 interface FeatureCardProps {
-  feature: string;
   title: string;
   description: string;
-  demoContent: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-  isHovered: boolean;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-  isClicked: boolean;
-  gradientClasses: string;
-  bgColor: string;
+  icon: React.ComponentType<any>;
+  color: string;
 }
 
-export function FeatureCard({
-  feature,
-  title,
-  description,
-  demoContent,
-  icon,
-  onClick,
-  isHovered,
-  onMouseEnter,
-  onMouseLeave,
-  isClicked,
-  gradientClasses,
-  bgColor
-}: FeatureCardProps) {
+export function FeatureCard({ title, description, icon: Icon, color }: FeatureCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="scale-[1.14]"
-    >
-      <Card
-        className={`${bgColor} rounded-xl border border-[#1EAEDB]/10 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#1EAEDB]/5 backdrop-blur-sm`}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#1EAEDB]/5 to-transparent pointer-events-none" />
-          
-          <div className={`p-6 flex items-center justify-center relative z-10`}>
-            <div className="h-12 w-12 rounded-lg bg-[#1EAEDB]/10 flex items-center justify-center text-white">
-              {icon}
-            </div>
-          </div>
+    <Card className="bg-[#1A1F2C] border-[#30363D] overflow-hidden transition-colors hover:border-opacity-80 hover:border-gray-600">
+      <CardContent className="p-6 flex flex-col h-full">
+        <div className="p-3 rounded-lg mb-4 w-fit" style={{ backgroundColor: `${color}20` }}>
+          <Icon className="h-5 w-5" style={{ color: color }} />
         </div>
-        
-        <div className="p-6 space-y-4 relative z-10">
-          <h3 className="text-lg font-medium text-white">
-            {title}
-          </h3>
-          <p className="text-gray-300 text-sm leading-relaxed">
-            {description}
-          </p>
-          <p className="text-gray-500 text-xs leading-relaxed">
-            {demoContent}
-          </p>
-          <Button
-            variant="outline"
-            className="w-full mt-2 bg-black/20 border border-[#1EAEDB]/20 text-gray-300 hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 hover:text-white transition-all duration-300 transform hover:scale-[1.02]"
-            onClick={onClick}
-          >
-            <Play className="h-4 w-4 mr-2" />
-            Learn More
-          </Button>
-        </div>
-      </Card>
-    </motion.div>
+        <h3 className="text-lg font-medium text-white mb-2">{title}</h3>
+        <p className="text-gray-400 text-sm">{description}</p>
+      </CardContent>
+    </Card>
   );
 }
