@@ -291,7 +291,7 @@ export default function AgentBuilder() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Left Column - Advanced Configuration */}
                 <div className="lg:col-span-8 space-y-8">
-                  <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden w-[60%]">
+                  <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
                     <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
                       <div className="flex items-center justify-between">
                         <h2 className="text-lg font-semibold text-white">Advanced Configuration</h2>
@@ -301,7 +301,7 @@ export default function AgentBuilder() {
                         </div>
                       </div>
                     </div>
-                    <div className="p-6 bg-gradient-card">
+                    <div className="p-6">
                       <div className="filter blur-[2px] pointer-events-none">
                         <AdvancedConfig />
                       </div>
