@@ -68,8 +68,8 @@ export function ProFeatures() {
   ];
 
   return (
-    <section className="py-16 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto bg-[#0F1117] border border-gray-800 rounded-xl overflow-hidden shadow-2xl">
+    <section className="py-6 px-0">
+      <div className="max-w-full mx-auto bg-[#0F1117] border border-gray-800 rounded-xl overflow-hidden shadow-2xl">
         <div className="p-6 sm:p-10">
           <div className="flex justify-center mb-4">
             <div className="inline-flex items-center px-4 py-1 bg-[rgba(16,185,129,0.1)] rounded-full text-sm font-medium text-emerald-400">

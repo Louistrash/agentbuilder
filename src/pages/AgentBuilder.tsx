@@ -286,9 +286,7 @@ export default function AgentBuilder() {
               </div>
 
               {/* Pro Features Section - Dynamic version using ProFeatures from home */}
-              <div className="mt-4">
-                <ProFeatures />
-              </div>
+              <ProFeatures />
 
               {/* Main Content */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
