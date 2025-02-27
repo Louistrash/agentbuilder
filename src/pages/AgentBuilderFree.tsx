@@ -168,7 +168,7 @@ const AgentBuilderFree = () => {
           </div>
           <Button 
             onClick={handleUpgradeToPro}
-            className="bg-purple-900 hover:bg-purple-800 text-white"
+            className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white"
           >
             <Sparkles className="mr-2 h-4 w-4" />
             Upgrade to Pro
@@ -253,7 +253,7 @@ const AgentBuilderFree = () => {
                 <div className="flex justify-center">
                   <Button 
                     onClick={handleUpgradeToPro}
-                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-2"
+                    className="bg-gradient-to-r from-[#D946EF] to-[#8B5CF6] hover:from-[#C026D3] hover:to-[#7C3AED] text-white px-8 py-2"
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
                     Upgrade to Pro
@@ -281,7 +281,7 @@ const AgentBuilderFree = () => {
                   </p>
                   <Button 
                     onClick={handleUpgradeToPro}
-                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white"
+                    className="bg-gradient-to-r from-[#D946EF] to-[#8B5CF6] hover:from-[#C026D3] hover:to-[#7C3AED] text-white"
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
                     Upgrade to Pro
@@ -373,7 +373,7 @@ const AgentBuilderFree = () => {
                 <Button 
                   onClick={handleCreateAgent}
                   disabled={creatingAgent || !agentName.trim()}
-                  className="w-full bg-blue-600 hover:bg-blue-700 mt-4"
+                  className="w-full bg-[#1EAEDB] hover:bg-[#0EA5E9] text-white mt-4"
                 >
                   {creatingAgent ? "Creating..." : "Create Agent"}
                 </Button>
@@ -400,7 +400,7 @@ const AgentBuilderFree = () => {
                   />
                   <Button 
                     onClick={handleTestAgent}
-                    className="bg-gray-700 hover:bg-gray-600"
+                    className="bg-[#1a2030] hover:bg-[#2a3040] border border-gray-700 text-white"
                   >
                     Send
                   </Button>
