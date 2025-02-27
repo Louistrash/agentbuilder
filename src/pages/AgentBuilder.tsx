@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AgentsList } from "@/components/agent/AgentsList";
 import { AdvancedConfig } from "@/components/agent/AdvancedConfig";
 import { TestInterface } from "@/components/agent/TestInterface";
@@ -41,10 +42,12 @@ export default function AgentBuilder() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('agents');
   const { toast } = useToast();
+  const location = useLocation();
 
   useEffect(() => {
     fetchUserAvatar();
-  }, []);
+    console.log("Current route:", location.pathname);
+  }, [location]);
 
   const fetchUserAvatar = async () => {
     try {
