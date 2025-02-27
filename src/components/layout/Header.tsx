@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight, Menu, LogOut, User } from "lucide-react";
+import { Settings, ArrowRight, Menu, LogOut, User, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
@@ -73,7 +73,10 @@ export function Header({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
+            <div 
+              onClick={() => navigate('/')}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden cursor-pointer"
+            >
               {logoUrl && !imageError ? (
                 <img 
                   src={logoUrl} 
@@ -85,7 +88,10 @@ export function Header({
                 <div className="text-[#1EAEDB] font-bold text-lg">L</div>
               )}
             </div>
-            <div className="flex flex-col">
+            <div 
+              onClick={() => navigate('/')}
+              className="flex flex-col cursor-pointer"
+            >
               <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                 Chat Agent Builder
               </h1>
@@ -148,9 +154,10 @@ export function Header({
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="text-gray-300 hover:text-white hover:bg-white/10"
+                className="text-gray-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
               >
-                Get Started <ArrowRight className="h-4 w-4 ml-2" />
+                <LogIn className="h-4 w-4" />
+                Login / Sign Up
               </Button>
             )}
           </div>
@@ -220,8 +227,8 @@ export function Header({
                   }}
                   className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
                 >
-                  Get Started
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Login / Sign Up
                 </button>
               )}
             </div>
