@@ -15,7 +15,8 @@ import { TokenPurchaseDialog } from "@/components/tokens/TokenPurchaseDialog";
 import { fetchAddons, fetchPurchasedAddons, purchaseAddon } from "./addonService";
 import { Addon, PurchasedAddon } from './types';
 
-export { Addon } from './types';
+// Change from 'export { Addon }' to 'export type { Addon }'
+export type { Addon } from './types';
 
 export function AddonsMarketplace() {
   const [addons, setAddons] = useState<Addon[]>([]);
