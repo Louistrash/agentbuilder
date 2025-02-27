@@ -149,28 +149,7 @@ const Auth = () => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 rounded-2xl shadow-xl bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
-              {!imageError ? (
-                <img
-                  src="https://mkjrtfoxnysmjdtikwqo.supabase.co/storage/v1/object/public/logos/logo.png"
-                  alt="Chat Agent Builder Logo"
-                  className="w-full h-full object-contain p-1"
-                  onError={() => setImageError(true)}
-                />
-              ) : (
-                <div className="text-[#1EAEDB] font-bold text-xl">L</div>
-              )}
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-xl font-semibold text-white">Chat Agent Builder</h1>
-              <p className="text-sm text-gray-400">Build. Deploy. Engage.</p>
-            </div>
-          </div>
-        </div>
-
+      <div className="relative z-10 pt-20">
         <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
