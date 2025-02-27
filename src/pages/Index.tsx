@@ -37,14 +37,6 @@ const Index = () => {
             >
               <span className="text-xl">+</span> Build your First Agent (Free)
             </Button>
-            
-            <Button 
-              variant="outline"
-              onClick={() => navigate('/auth')}
-              className="text-lg px-8 py-6 h-auto bg-white/5 text-white border-white/10 hover:bg-white/10"
-            >
-              Sign In
-            </Button>
           </div>
         </div>
         
