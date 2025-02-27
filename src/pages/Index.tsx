@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Plus, Brain, Zap, BarChart3, Folder } from "lucide-react";
+import { Plus, Brain, Zap, BarChart3, Folder, Pencil, Trash2, Check, X, SortAsc } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { ProFeatures } from "@/components/home/ProFeatures";
@@ -17,6 +16,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Project {
   id: string;
@@ -38,6 +43,10 @@ const Index = () => {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingProject, setEditingProject] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
     fetchLogo();
@@ -65,7 +74,7 @@ const Index = () => {
       const { data, error } = await supabase
         .from('projects')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: sortOrder === 'asc' });
       
       if (error) throw error;
       setProjects(data || []);
@@ -131,6 +140,87 @@ const Index = () => {
     }
   };
 
+  const handleDeleteProject = async (projectId: string) => {
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .delete()
+        .eq('id', projectId);
+
+      if (error) throw error;
+
+      setProjects(projects.filter(p => p.id !== projectId));
+      toast({
+        title: "Success",
+        description: "Project deleted successfully",
+      });
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditProject = async (projectId: string) => {
+    if (!editName.trim()) return;
+
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({
+          name: editName,
+          description: editDescription,
+        })
+        .eq('id', projectId);
+
+      if (error) throw error;
+
+      setProjects(projects.map(p => 
+        p.id === projectId 
+          ? { ...p, name: editName, description: editDescription }
+          : p
+      ));
+      
+      setEditingProject(null);
+      toast({
+        title: "Success",
+        description: "Project updated successfully",
+      });
+    } catch (error) {
+      console.error('Error updating project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update project",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const startEditing = (project: Project) => {
+    setEditingProject(project.id);
+    setEditName(project.name);
+    setEditDescription(project.description || '');
+  };
+
+  const cancelEditing = () => {
+    setEditingProject(null);
+    setEditName('');
+    setEditDescription('');
+  };
+
+  const toggleSortOrder = () => {
+    const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortOrder(newOrder);
+    setProjects([...projects].sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return newOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    }));
+  };
+
   const handleFeatureClick = (feature: string) => {
     setClickedCard(feature);
     setSelectedFeature(feature);
@@ -182,7 +272,17 @@ const Index = () => {
             <>
               <div className="mb-8">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold">Your Projects</h2>
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-2xl font-bold">Your Projects</h2>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={toggleSortOrder}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <SortAsc className="h-5 w-5" />
+                    </Button>
+                  </div>
                   <Button
                     onClick={handleCreateProject}
                     className="bg-[#1EAEDB] hover:bg-[#1EAEDB]/90"
@@ -199,17 +299,88 @@ const Index = () => {
                     {projects.map((project) => (
                       <Card 
                         key={project.id}
-                        className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-all cursor-pointer"
-                        onClick={() => navigate(`/agent-builder/free?project=${project.id}`)}
+                        className="bg-[#1C2128] border-[#30363D] hover:border-[#1EAEDB]/50 transition-all"
                       >
-                        <CardHeader>
-                          <CardTitle className="flex items-center gap-2">
-                            <Folder className="h-5 w-5 text-[#1EAEDB]" />
-                            {project.name}
-                          </CardTitle>
-                          <CardDescription className="text-gray-400">
-                            {project.description}
-                          </CardDescription>
+                        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+                          {editingProject === project.id ? (
+                            <div className="space-y-2 w-full">
+                              <input
+                                type="text"
+                                value={editName}
+                                onChange={(e) => setEditName(e.target.value)}
+                                className="w-full px-2 py-1 bg-[#1A1F2C] border border-[#30363D] rounded text-white"
+                                placeholder="Project name"
+                              />
+                              <textarea
+                                value={editDescription}
+                                onChange={(e) => setEditDescription(e.target.value)}
+                                className="w-full px-2 py-1 bg-[#1A1F2C] border border-[#30363D] rounded text-white"
+                                placeholder="Project description"
+                                rows={2}
+                              />
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleEditProject(project.id)}
+                                  className="bg-green-600 hover:bg-green-700"
+                                >
+                                  <Check className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={cancelEditing}
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex-1" onClick={() => navigate(`/agent-builder/free?project=${project.id}`)}>
+                                <CardTitle className="flex items-center gap-2 cursor-pointer">
+                                  <Folder className="h-5 w-5 text-[#1EAEDB]" />
+                                  {project.name}
+                                </CardTitle>
+                                <CardDescription className="text-gray-400">
+                                  {project.description}
+                                </CardDescription>
+                              </div>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                    <svg
+                                      width="15"
+                                      height="15"
+                                      viewBox="0 0 15 15"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-4 w-4 text-gray-400"
+                                    >
+                                      <path
+                                        d="M2 5h11M2 10h11"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                      />
+                                    </svg>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-36">
+                                  <DropdownMenuItem onClick={() => startEditing(project)}>
+                                    <Pencil className="mr-2 h-4 w-4" />
+                                    Edit
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem 
+                                    onClick={() => handleDeleteProject(project.id)}
+                                    className="text-red-500 focus:text-red-500"
+                                  >
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </>
+                          )}
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-gray-400">
@@ -310,4 +481,3 @@ const Index = () => {
 };
 
 export default Index;
-
