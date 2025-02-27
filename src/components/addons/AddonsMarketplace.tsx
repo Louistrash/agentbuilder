@@ -243,7 +243,7 @@ export function AddonsMarketplace() {
             className={`min-w-[70px] rounded-md ${
               selectedCategory === null 
                 ? 'bg-[#222222] hover:bg-[#333333] text-[#1EAEDB] font-medium' 
-                : 'text-gray-300 hover:bg-[#222222] hover:text-[#1EAEDB] border-[#30363D]'
+                : 'bg-transparent text-gray-300 hover:bg-[#222222] hover:text-[#1EAEDB] border-[#30363D]'
             }`}
           >
             All
@@ -257,7 +257,7 @@ export function AddonsMarketplace() {
               className={`min-w-[100px] rounded-md ${
                 selectedCategory === category 
                   ? `bg-[#222222] hover:bg-[#333333] ${categoryTextColors[category]} font-medium` 
-                  : `text-gray-300 hover:bg-[#222222] hover:${categoryTextColors[category]} border-[#30363D]`
+                  : `bg-transparent text-gray-300 hover:bg-[#222222] hover:${categoryTextColors[category]} border-[#30363D]`
               }`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
