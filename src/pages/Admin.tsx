@@ -7,12 +7,21 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
 import { DashboardOverview } from "@/components/admin/dashboard/DashboardOverview";
 import { AdminSections } from "@/components/admin/sections/AdminSections";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AgentsList } from "@/components/admin/appointments/AgentsList";
 
 const Admin = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isAdmin, isLoading: isAdminLoading } = useAdmin();
+  const { isAdmin, isSuperAdmin, isCEO, isLoading: isAdminLoading } = useAdmin();
   const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
+  const [showAgents, setShowAgents] = useState(false);
   const { toast } = useToast();
   const [analytics, setAnalytics] = useState({
     totalUsers: 2048,
@@ -53,6 +62,10 @@ const Admin = () => {
     setIsCheckingAdmin(false);
   }, [user, isAdmin, isAdminLoading, navigate, toast]);
 
+  const handleViewChange = (value: string) => {
+    setShowAgents(value === 'agents');
+  };
+
   if (isAdminLoading || isCheckingAdmin) {
     return (
       <div className="min-h-screen bg-[#0D1117] flex items-center justify-center">
@@ -63,8 +76,44 @@ const Admin = () => {
 
   return (
     <AdminLayout>
-      <DashboardOverview analytics={analytics} chartData={chartData} />
-      <AdminSections />
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">
+            {isCEO ? "CEO Dashboard" : (isSuperAdmin ? "Super Admin Dashboard" : "Admin Dashboard")}
+          </h1>
+          <p className="text-gray-400">
+            {isCEO ? "Complete platform management and controls" : 
+             (isSuperAdmin ? "Advanced system management" : "Platform management")}
+          </p>
+        </div>
+        
+        {isCEO && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400">View:</span>
+            <Select onValueChange={handleViewChange} defaultValue="dashboard">
+              <SelectTrigger className="w-[180px] bg-[#161B22] border-[#30363D]">
+                <SelectValue placeholder="Select view" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1A1F2C] border-[#30363D]">
+                <SelectItem value="dashboard">Admin Dashboard</SelectItem>
+                <SelectItem value="agents">My Agents</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+      </div>
+
+      {showAgents ? (
+        <div className="bg-[#161B22] rounded-xl border border-[#30363D] p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">My Agents</h2>
+          <AgentsList />
+        </div>
+      ) : (
+        <>
+          <DashboardOverview analytics={analytics} chartData={chartData} />
+          <AdminSections />
+        </>
+      )}
     </AdminLayout>
   );
 };
