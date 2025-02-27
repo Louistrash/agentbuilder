@@ -101,11 +101,11 @@ export const UserMenu = () => {
               className="cursor-pointer text-white hover:bg-[#161B22] focus:bg-[#161B22]"
               onClick={() => {
                 setIsOpen(false);
-                navigate("/agent-manager");
+                navigate("/pro-admin");
               }}
             >
               <UserCog className="mr-2 h-4 w-4" />
-              <span>Agent Manager</span>
+              <span>PRO Admin</span>
             </DropdownMenuItem>
             
             <DropdownMenuSeparator className="bg-[#30363D]" />

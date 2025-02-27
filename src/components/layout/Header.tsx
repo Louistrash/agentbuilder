@@ -25,9 +25,6 @@ export const Header = ({
             <span className="text-2xl font-bold text-[#1EAEDB]">AI Agent</span>
           </Link>
           <nav className="ml-8 hidden md:flex space-x-4">
-            {user && <Link to="/agent-manager" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm">
-                My Agents
-              </Link>}
             {user && !isAdmin && <Link to="/dashboard" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm">
                 User Dashboard
               </Link>}

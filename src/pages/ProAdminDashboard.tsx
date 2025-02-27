@@ -9,6 +9,7 @@ import { DashboardOverview } from "@/components/admin/dashboard/DashboardOvervie
 import { AdminSections } from "@/components/admin/sections/AdminSections";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AgentsList } from "@/components/admin/appointments/AgentsList";
 import { 
   Sparkles, 
   Users, 
@@ -16,7 +17,8 @@ import {
   CalendarDays, 
   ShoppingBag,
   Settings,
-  Key
+  Key,
+  UserCog
 } from "lucide-react";
 
 const ProAdminDashboard = () => {
@@ -114,6 +116,10 @@ const ProAdminDashboard = () => {
             <Users className="w-4 h-4 mr-2" />
             Users
           </TabsTrigger>
+          <TabsTrigger value="agents" className="data-[state=active]:bg-[#0D1117] data-[state=active]:text-white">
+            <UserCog className="w-4 h-4 mr-2" />
+            Agents
+          </TabsTrigger>
           <TabsTrigger value="appointments" className="data-[state=active]:bg-[#0D1117] data-[state=active]:text-white">
             <CalendarDays className="w-4 h-4 mr-2" />
             Appointments
@@ -137,6 +143,13 @@ const ProAdminDashboard = () => {
             <div className="bg-[#0D1117] border border-[#30363D] rounded-lg p-4">
               <p className="text-center text-gray-400">PRO User Management Component</p>
             </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="agents">
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] p-6">
+            <h2 className="text-xl font-semibold text-white mb-4">Agent Manager</h2>
+            <AgentsList />
           </div>
         </TabsContent>
 

@@ -123,7 +123,7 @@ const Admin = () => {
 
       {showAgents ? (
         <div className="bg-[#161B22] rounded-xl border border-[#30363D] p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">My Agents</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Agent Manager</h2>
           <AgentsList />
         </div>
       ) : (
