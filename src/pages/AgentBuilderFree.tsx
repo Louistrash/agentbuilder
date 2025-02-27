@@ -1,14 +1,15 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
-import { MessageSquare, ShoppingCart, Database, Code, Sparkles, BarChart3, Wifi, BrainCircuit, Lock } from "lucide-react";
+import { MessageSquare, ShoppingCart, Database, Code, Sparkles, BarChart3, Wifi, BrainCircuit, Lock, Users, Bot } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Template data
 const agentTemplates = [
@@ -67,6 +68,17 @@ const proFeatures = [
   }
 ];
 
+// Sample chart data
+const chartData = [
+  { name: 'Jan', conversations: 400, users: 240 },
+  { name: 'Feb', conversations: 300, users: 180 },
+  { name: 'Mar', conversations: 500, users: 250 },
+  { name: 'Apr', conversations: 780, users: 390 },
+  { name: 'May', conversations: 890, users: 480 },
+  { name: 'Jun', conversations: 1390, users: 700 },
+  { name: 'Jul', conversations: 1490, users: 740 },
+];
+
 const AgentBuilderFree = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
@@ -80,6 +92,41 @@ const AgentBuilderFree = () => {
   const [testMessage, setTestMessage] = useState('');
   const [testResponse, setTestResponse] = useState<string | null>(null);
   const [creatingAgent, setCreatingAgent] = useState(false);
+  
+  // Counter states
+  const [userCount, setUserCount] = useState(0);
+  const [conversationCount, setConversationCount] = useState(0);
+  const [agentCount, setAgentCount] = useState(0);
+
+  // Animation for counters
+  useEffect(() => {
+    const targetUsers = 15749;
+    const targetConversations = 89432;
+    const targetAgents = 347;
+    const duration = 2000; // 2 seconds
+    const framesPerSecond = 60;
+    const totalFrames = duration / 1000 * framesPerSecond;
+    
+    let frame = 0;
+    
+    const timer = setInterval(() => {
+      frame++;
+      const progress = frame / totalFrames;
+      
+      if (progress >= 1) {
+        setUserCount(targetUsers);
+        setConversationCount(targetConversations);
+        setAgentCount(targetAgents);
+        clearInterval(timer);
+      } else {
+        setUserCount(Math.floor(targetUsers * progress));
+        setConversationCount(Math.floor(targetConversations * progress));
+        setAgentCount(Math.floor(targetAgents * progress));
+      }
+    }, 1000 / framesPerSecond);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
@@ -209,19 +256,96 @@ const AgentBuilderFree = () => {
               </div>
             </div>
 
-            {/* Your Agents Section */}
-            <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
-              <div className="p-6 border-b border-gray-800">
-                <h2 className="text-xl font-semibold">Your Agents</h2>
+            {/* Your Agents & Advanced Config Side by Side */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Your Agents Section - Smaller */}
+              <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
+                <div className="p-4 border-b border-gray-800">
+                  <h2 className="text-xl font-semibold">Your Agents</h2>
+                </div>
+                <div className="p-6 flex items-center justify-center">
+                  <p className="text-gray-400">No agents created yet</p>
+                </div>
               </div>
-              <div className="p-12 flex items-center justify-center">
-                <p className="text-gray-400">No agents created yet</p>
+
+              {/* Advanced Configuration - Now 60% smaller with blur and lock */}
+              <div id="agent-config" className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden relative">
+                <div className="p-4 border-b border-gray-800 flex justify-between items-center">
+                  <h2 className="text-xl font-semibold">Advanced Configuration</h2>
+                  <div className="text-purple-400 flex items-center">
+                    <Lock className="h-4 w-4 mr-1" />
+                    <span className="text-sm">Pro Feature</span>
+                  </div>
+                </div>
+                <div className="p-4 space-y-3 relative">
+                  {/* Blur overlay with upgrade button */}
+                  <div className="absolute inset-0 backdrop-blur-sm bg-black/30 z-10 flex flex-col items-center justify-center">
+                    <Lock className="h-10 w-10 text-purple-400 mb-2" />
+                    <h3 className="text-lg font-bold mb-1 text-white">Pro Feature</h3>
+                    <p className="text-gray-300 mb-3 text-center text-sm max-w-md px-4">
+                      Unlock advanced configuration
+                    </p>
+                    <Button 
+                      onClick={handleUpgradeToPro}
+                      className="bg-gradient-to-r from-[#D946EF] to-[#8B5CF6] hover:from-[#C026D3] hover:to-[#7C3AED] text-white text-sm py-1"
+                    >
+                      <Sparkles className="mr-1 h-3 w-3" />
+                      Upgrade
+                    </Button>
+                  </div>
+
+                  <div>
+                    <label htmlFor="temperature" className="block mb-1 text-sm font-medium">
+                      Temperature
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Slider
+                        value={[temperature]} 
+                        min={0} 
+                        max={1} 
+                        step={0.1}
+                        onValueChange={(value) => setTemperature(value[0])}
+                        className="flex-grow"
+                        disabled
+                      />
+                      <span className="w-8 text-right text-sm">{temperature}</span>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="max-tokens" className="block mb-1 text-sm font-medium">
+                      Max Tokens
+                    </label>
+                    <Input
+                      type="number"
+                      id="max-tokens"
+                      value={maxTokens}
+                      onChange={(e) => setMaxTokens(Number(e.target.value))}
+                      className="bg-[#1a2030] border-gray-700 text-white text-sm h-8"
+                      disabled
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="system-prompt" className="block mb-1 text-sm font-medium">
+                      System Prompt
+                    </label>
+                    <Textarea
+                      id="system-prompt"
+                      placeholder="Enter system prompt..."
+                      value={systemPrompt}
+                      onChange={(e) => setSystemPrompt(e.target.value)}
+                      className="bg-[#1a2030] border-gray-700 text-white h-24 resize-y text-sm"
+                      disabled
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Pro Features Section - Moved from bottom to here */}
+            {/* Pro Features Section - Full width with charts */}
             <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
-              <div className="p-6 flex justify-between items-center border-b border-gray-800">
+              <div className="p-6 border-b border-gray-800 flex justify-between items-center">
                 <div className="flex items-center">
                   <Sparkles className="h-5 w-5 text-green-400 mr-2" />
                   <h2 className="text-xl font-semibold">Pro Features</h2>
@@ -231,11 +355,74 @@ const AgentBuilderFree = () => {
                 <h2 className="text-2xl font-bold mb-2 text-center bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
                   Unlock Advanced Capabilities
                 </h2>
-                <p className="text-gray-400 text-center mb-8">
+                <p className="text-gray-400 text-center mb-4">
                   Take your agents to the next level with our professional features
                 </p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                {/* Stats counters */}
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div className="bg-[#1a2030] rounded-lg p-4 border border-gray-800 text-center">
+                    <div className="flex justify-center mb-2 text-blue-500">
+                      <Users className="h-6 w-6" />
+                    </div>
+                    <div className="text-2xl font-bold text-white">{userCount.toLocaleString()}</div>
+                    <div className="text-sm text-gray-400">Active Users</div>
+                  </div>
+                  <div className="bg-[#1a2030] rounded-lg p-4 border border-gray-800 text-center">
+                    <div className="flex justify-center mb-2 text-purple-500">
+                      <MessageSquare className="h-6 w-6" />
+                    </div>
+                    <div className="text-2xl font-bold text-white">{conversationCount.toLocaleString()}</div>
+                    <div className="text-sm text-gray-400">Conversations</div>
+                  </div>
+                  <div className="bg-[#1a2030] rounded-lg p-4 border border-gray-800 text-center">
+                    <div className="flex justify-center mb-2 text-green-500">
+                      <Bot className="h-6 w-6" />
+                    </div>
+                    <div className="text-2xl font-bold text-white">{agentCount.toLocaleString()}</div>
+                    <div className="text-sm text-gray-400">Agents Created</div>
+                  </div>
+                </div>
+                
+                {/* Chart */}
+                <div className="bg-[#1a2030] rounded-lg border border-gray-800 p-4 mb-6">
+                  <h3 className="text-lg font-semibold mb-4">Growth Metrics</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={chartData}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                        <XAxis dataKey="name" stroke="#6B7280" />
+                        <YAxis stroke="#6B7280" />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: '#1F2937', 
+                            borderColor: '#374151',
+                            color: '#F3F4F6'
+                          }} 
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="conversations" 
+                          stroke="#8B5CF6" 
+                          fill="#8B5CF680" 
+                          activeDot={{ r: 8 }} 
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="users" 
+                          stroke="#EC4899" 
+                          fill="#EC489980" 
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+                
+                {/* Feature grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                   {proFeatures.map((feature) => (
                     <div 
                       key={feature.id}
@@ -258,80 +445,6 @@ const AgentBuilderFree = () => {
                     <Sparkles className="mr-2 h-4 w-4" />
                     Upgrade to Pro
                   </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Advanced Configuration - Now with blur and lock */}
-            <div id="agent-config" className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden relative">
-              <div className="p-6 border-b border-gray-800 flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Advanced Configuration</h2>
-                <div className="text-purple-400 flex items-center">
-                  <Lock className="h-4 w-4 mr-1" />
-                  <span className="text-sm">Pro Feature</span>
-                </div>
-              </div>
-              <div className="p-6 space-y-6 relative">
-                {/* Blur overlay with upgrade button */}
-                <div className="absolute inset-0 backdrop-blur-sm bg-black/30 z-10 flex flex-col items-center justify-center">
-                  <Lock className="h-12 w-12 text-purple-400 mb-4" />
-                  <h3 className="text-xl font-bold mb-2 text-white">Pro Feature</h3>
-                  <p className="text-gray-300 mb-4 text-center max-w-md px-4">
-                    Unlock advanced configuration options to fine-tune your agent's behavior
-                  </p>
-                  <Button 
-                    onClick={handleUpgradeToPro}
-                    className="bg-gradient-to-r from-[#D946EF] to-[#8B5CF6] hover:from-[#C026D3] hover:to-[#7C3AED] text-white"
-                  >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Upgrade to Pro
-                  </Button>
-                </div>
-
-                <div>
-                  <label htmlFor="temperature" className="block mb-2 font-medium">
-                    Temperature
-                  </label>
-                  <div className="flex items-center gap-4">
-                    <Slider
-                      value={[temperature]} 
-                      min={0} 
-                      max={1} 
-                      step={0.1}
-                      onValueChange={(value) => setTemperature(value[0])}
-                      className="flex-grow"
-                      disabled
-                    />
-                    <span className="w-12 text-right">{temperature}</span>
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="max-tokens" className="block mb-2 font-medium">
-                    Max Tokens
-                  </label>
-                  <Input
-                    type="number"
-                    id="max-tokens"
-                    value={maxTokens}
-                    onChange={(e) => setMaxTokens(Number(e.target.value))}
-                    className="bg-[#1a2030] border-gray-700 text-white"
-                    disabled
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="system-prompt" className="block mb-2 font-medium">
-                    System Prompt
-                  </label>
-                  <Textarea
-                    id="system-prompt"
-                    placeholder="Enter system prompt..."
-                    value={systemPrompt}
-                    onChange={(e) => setSystemPrompt(e.target.value)}
-                    className="bg-[#1a2030] border-gray-700 text-white h-40 resize-y"
-                    disabled
-                  />
                 </div>
               </div>
             </div>
