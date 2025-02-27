@@ -15,7 +15,7 @@ import { TokenPurchaseDialog } from "@/components/tokens/TokenPurchaseDialog";
 import { fetchAddons, fetchPurchasedAddons, purchaseAddon } from "./addonService";
 import { Addon, PurchasedAddon } from './types';
 
-// Change from 'export { Addon }' to 'export type { Addon }'
+// Export the Addon type for use in other components
 export type { Addon } from './types';
 
 export function AddonsMarketplace() {
