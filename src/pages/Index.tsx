@@ -23,6 +23,7 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<string>('');
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [showTokenAnimation, setShowTokenAnimation] = useState(false);
 
   useEffect(() => {
     fetchLogo();
@@ -47,11 +48,27 @@ const Index = () => {
     
     // If this is the free agent, trigger the token animation
     if (type === 'free' && user) {
+      // Show token animation
+      setShowTokenAnimation(true);
+      
       // Animate tokens from 0 to 50
       animateTokenChange(50);
+      
+      // Display toast message
+      toast({
+        title: "Tokens Added!",
+        description: "You've received 50 tokens to create your first agent.",
+        variant: "default",
+      });
+      
+      // Navigate after a brief delay to allow animation to be seen
+      setTimeout(() => {
+        navigate(`/agent-builder/${type}`);
+      }, 1500);
+    } else {
+      // Navigate immediately for pro or when not logged in
+      navigate(`/agent-builder/${type}`);
     }
-    
-    navigate(`/agent-builder/${type}`);
   };
 
   const handleFeatureClick = (feature: string) => {
@@ -94,6 +111,28 @@ const Index = () => {
       bgColor: 'bg-black/20'
     }
   ];
+
+  // Token animation overlay
+  const TokenAnimationOverlay = () => {
+    if (!showTokenAnimation) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fade-in">
+        <div className="bg-[#1A1F2C] p-8 rounded-xl shadow-2xl flex flex-col items-center max-w-sm mx-4 border border-[#1EAEDB]/30">
+          <div className="w-20 h-20 rounded-full bg-[#1EAEDB]/10 flex items-center justify-center mb-4">
+            <Zap className="h-10 w-10 text-[#1EAEDB] animate-pulse" />
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">50 Tokens Added!</h3>
+          <p className="text-gray-400 text-center mb-6">
+            You've received 50 tokens to create your first AI agent. Enjoy building!
+          </p>
+          <div className="w-full bg-[#30363D] h-2 rounded-full overflow-hidden">
+            <div className="bg-gradient-to-r from-[#1EAEDB] to-[#8B5CF6] h-full rounded-full animate-progress"></div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-[#1A1F2C] text-white overflow-x-hidden">
@@ -158,6 +197,27 @@ const Index = () => {
         isOpen={showOnboarding}
         onClose={handleOnboardingClose}
       />
+
+      {/* Token animation overlay */}
+      <TokenAnimationOverlay />
+
+      {/* Add the animation styles */}
+      <style jsx>{`
+        @keyframes progress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-progress {
+          animation: progress 1.2s ease-in-out forwards;
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
