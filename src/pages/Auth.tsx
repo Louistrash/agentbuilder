@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,7 +21,6 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
-      // If user is logged in, redirect to home
       navigate("/");
     }
   }, [user, navigate]);
@@ -55,14 +53,11 @@ const Auth = () => {
       });
       
       if (data?.user) {
-        // Check if the user is CEO
         if (data.user.email === "patricknieborg@me.com") {
-          // Ensure CEO has admin role in the database
           await ensureCEOAdminRole(data.user.id);
         }
       }
       
-      // Navigate to home page
       navigate("/");
     } catch (error: any) {
       console.error("Login error:", error);
@@ -78,7 +73,6 @@ const Auth = () => {
 
   const ensureCEOAdminRole = async (userId: string) => {
     try {
-      // Check if user already has admin role
       const { data: existingRole } = await supabase
         .from('user_roles')
         .select('*')
@@ -86,13 +80,11 @@ const Auth = () => {
         .eq('role', 'admin')
         .maybeSingle();
       
-      // If not, add admin role
       if (!existingRole) {
         await supabase
           .from('user_roles')
           .upsert({ user_id: userId, role: 'admin' });
         
-        // Ensure CEO has admin flag in profiles
         await supabase
           .from('profiles')
           .update({ is_admin: true })
@@ -130,7 +122,6 @@ const Auth = () => {
         description: "Your account has been created successfully. Please check your email for verification.",
       });
       
-      // Switch to login tab
       setActiveTab("login");
     } catch (error: any) {
       console.error("Signup error:", error);
@@ -151,14 +142,12 @@ const Auth = () => {
     try {
       setIsLoading(true);
       
-      // Try to login as CEO
       const { data, error } = await supabase.auth.signInWithPassword({
         email: ceoEmail,
         password: tempPassword,
       });
       
       if (error) {
-        // If login fails because account doesn't exist, create it
         if (error.message.includes("Invalid login credentials")) {
           const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
             email: ceoEmail,
@@ -181,7 +170,6 @@ const Auth = () => {
       }
       
       if (data?.user) {
-        // Ensure CEO has admin role
         await ensureCEOAdminRole(data.user.id);
         
         toast({
@@ -189,7 +177,6 @@ const Auth = () => {
           description: "Welcome back, Patrick. You now have full admin access.",
         });
         
-        // Navigate to home page
         navigate("/");
       }
     } catch (error: any) {
@@ -310,7 +297,7 @@ const Auth = () => {
                     disabled={isLoading}
                   >
                     <Shield className="mr-2 h-4 w-4" />
-                    CEO Access (Patrick)
+                    CEO Access
                   </Button>
                 </CardFooter>
               </form>
