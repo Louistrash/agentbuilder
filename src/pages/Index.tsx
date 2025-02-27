@@ -173,8 +173,8 @@ const Index = () => {
 
   const handleOnboardingClose = () => {
     setShowOnboarding(false);
-    // Instead of navigating to a non-existent route, we'll do nothing or navigate to a valid route if needed
-    // navigate('/agents', { state: { feature: selectedFeature } });
+    // After closing the onboarding dialog, navigate to the Agent Builder free page
+    navigate('/agent-builder/free');
   };
 
   const features = [
