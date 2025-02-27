@@ -271,10 +271,10 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
   };
 
   const handleSkip = () => {
-    // Just close the dialog without navigation
+    // Close the dialog and navigate to Agent Builder Free
     setCurrentStep(0);
     onClose();
-    navigate('/');  // Navigate to home page instead
+    navigate('/agent-builder/free');  // Navigate to Agent Builder Free
   };
 
   return (
