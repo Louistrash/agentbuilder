@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from '@/lib/auth';
 
 interface Agent {
-  id: number;
+  id: string | number; // Updated to accept both string and number types
   name: string;
   description: string;
   type: string;
@@ -152,7 +152,7 @@ export default function AgentBuilder() {
 
   const handleCreateAgent = (template: { name: string; description: string; }) => {
     const newAgent: Agent = {
-      id: Date.now(),
+      id: Date.now(), // This will be a number for client-side temporary agents
       name: template.name,
       description: template.description,
       type: template.name.toLowerCase().replace(' ', '_')
