@@ -32,8 +32,9 @@ export function Header({
   const [imageError, setImageError] = useState(false);
   const { toast } = useToast();
 
-  // Check if we're on the blue page (Pro builder)
-  const isProBuilderPage = location.pathname === "/agent-builder/pro";
+  // Check if we're on a page that should have a transparent header with no logo
+  // This includes the Pro Builder page and Auth page
+  const isTransparentHeader = location.pathname === "/agent-builder/pro" || location.pathname === "/auth";
 
   const handleLogout = async () => {
     try {
@@ -87,10 +88,10 @@ export function Header({
   };
 
   return (
-    <header className={`${isProBuilderPage ? 'bg-transparent' : 'bg-black/20 backdrop-blur-md border-b border-white/10'} sticky top-0 z-50`}>
+    <header className={`${isTransparentHeader ? 'bg-transparent' : 'bg-black/20 backdrop-blur-md border-b border-white/10'} sticky top-0 z-50`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16 sm:h-20">
-          {!isProBuilderPage && (
+          {!isTransparentHeader && (
             <div className="flex items-center gap-3">
               <div 
                 onClick={() => navigate('/')}
@@ -122,7 +123,7 @@ export function Header({
           )}
 
           {/* Desktop Navigation */}
-          <div className={`${isProBuilderPage ? 'ml-auto' : ''} hidden sm:flex items-center gap-4`}>
+          <div className={`${isTransparentHeader ? 'ml-auto' : ''} hidden sm:flex items-center gap-4`}>
             {isAuthenticated && <TokenDisplay />}
             
             {isAuthenticated ? (
