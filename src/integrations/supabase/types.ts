@@ -451,6 +451,48 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_addons: {
+        Row: {
+          category: Database["public"]["Enums"]["addon_category"]
+          created_at: string | null
+          description: string
+          features: Json
+          icon_name: string
+          id: string
+          is_premium: boolean | null
+          name: string
+          price: number
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["addon_category"]
+          created_at?: string | null
+          description: string
+          features?: Json
+          icon_name: string
+          id?: string
+          is_premium?: boolean | null
+          name: string
+          price: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["addon_category"]
+          created_at?: string | null
+          description?: string
+          features?: Json
+          icon_name?: string
+          id?: string
+          is_premium?: boolean | null
+          name?: string
+          price?: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       marketplace_features: {
         Row: {
           category: string
@@ -619,6 +661,64 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "projects_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      purchased_addons: {
+        Row: {
+          activated_at: string | null
+          addon_id: string | null
+          agent_id: string | null
+          expires_at: string | null
+          id: string
+          profile_id: string | null
+          purchased_at: string | null
+          settings: Json | null
+          status: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          addon_id?: string | null
+          agent_id?: string | null
+          expires_at?: string | null
+          id?: string
+          profile_id?: string | null
+          purchased_at?: string | null
+          settings?: Json | null
+          status?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          addon_id?: string | null
+          agent_id?: string | null
+          expires_at?: string | null
+          id?: string
+          profile_id?: string | null
+          purchased_at?: string | null
+          settings?: Json | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchased_addons_addon_id_fkey"
+            columns: ["addon_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_addons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchased_addons_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchased_addons_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -1044,6 +1144,12 @@ export type Database = {
       }
     }
     Enums: {
+      addon_category:
+        | "automation"
+        | "communication"
+        | "customization"
+        | "analytics"
+        | "integration"
       role_type: "admin" | "moderator" | "user"
       subscription_level: "basic" | "enhanced"
       tier_type: "free" | "pro" | "enterprise"
