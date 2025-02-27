@@ -27,15 +27,7 @@ export const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!user) {
-    return (
-      <Button 
-        variant="outline" 
-        onClick={() => navigate("/auth")}
-        className="bg-transparent border-[#30363D] text-white hover:bg-[#161B22] hover:text-[#1EAEDB]"
-      >
-        Sign In
-      </Button>
-    );
+    return null;
   }
 
   const handleSignOut = async () => {

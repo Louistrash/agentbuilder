@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth";
 import { TokenDisplay } from "./TokenDisplay";
 import { UserMenu } from "./UserMenu";
 import { useAdmin } from "@/hooks/useAdmin";
+import { LogIn } from "lucide-react";
 
 interface HeaderProps {
   logoUrl?: string | null;
@@ -20,7 +21,8 @@ export const Header = ({
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            {logoUrl ? <img src={logoUrl} alt="Logo" className="h-8 w-auto" /> : <span className="text-2xl font-bold text-[#1EAEDB]">AI Agent</span>}
+            <img src="/logo.png" alt="Platform Logo" className="h-8 w-auto mr-2" />
+            <span className="text-2xl font-bold text-[#1EAEDB]">AI Agent</span>
           </Link>
           <nav className="ml-8 hidden md:flex space-x-4">
             {user && <Link to="/agent-manager" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm">
@@ -42,6 +44,20 @@ export const Header = ({
         </div>
         <div className="flex items-center gap-4">
           {user && <TokenDisplay />}
+          {!user && (
+            <Link to="/auth" className="flex items-center">
+              <Button 
+                variant="outline" 
+                className="bg-transparent border-[#30363D] text-white hover:bg-[#161B22] hover:text-[#1EAEDB] mr-2"
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Sign In
+              </Button>
+              <Button className="bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white">
+                Sign Up
+              </Button>
+            </Link>
+          )}
           <UserMenu />
         </div>
       </div>
