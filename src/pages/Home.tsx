@@ -21,7 +21,7 @@ const Home = () => {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               onClick={() => navigate('/agent-builder/free')}
-              className="text-lg px-8 py-6 h-auto bg-blue-600 hover:bg-blue-700"
+              className="text-lg px-8 py-6 h-auto bg-blue-600 hover:bg-blue-700 flex items-center"
             >
               Get Started Free
               <ArrowRight className="ml-2" />
@@ -29,7 +29,7 @@ const Home = () => {
             <Button 
               onClick={() => navigate('/auth')}
               variant="outline" 
-              className="text-lg px-8 py-6 h-auto bg-white/5 text-white border-white/10 hover:bg-white/10"
+              className="text-lg px-8 py-6 h-auto bg-black/20 text-white border-white/10 hover:bg-white/10"
             >
               Sign In
             </Button>
@@ -38,7 +38,7 @@ const Home = () => {
         
         <div className="mt-20">
           <img 
-            src="/public/lovable-uploads/9ed71e91-82ac-473f-8da6-3ed7365b5bd0.png" 
+            src="/public/lovable-uploads/b3cdae9e-766a-4a2f-b1ca-faaf1c22d2a4.png" 
             alt="Chat Agent Builder Interface" 
             className="w-full max-w-5xl mx-auto rounded-lg shadow-2xl border border-white/10" 
           />
