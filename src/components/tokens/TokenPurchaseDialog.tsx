@@ -98,28 +98,36 @@ export function TokenPurchaseDialog({ open, onClose, message }: TokenPurchaseDia
           </div>
         </div>
 
-        <DialogFooter className="flex flex-col sm:flex-row gap-2">
+        <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-4">
           <Button
             variant="outline"
             onClick={onClose}
-            className="w-full sm:w-auto border-[#30363D] text-gray-400 hover:bg-[#30363D] hover:text-white"
+            className="w-full sm:w-auto bg-[#222222] border-[#30363D] text-gray-400 hover:bg-[#2A2A2A] hover:text-white"
           >
             Cancel
           </Button>
           <Button
             variant="outline"
             onClick={handleBuyTokensClick}
-            className="w-full sm:w-auto border-[#FEC6A1]/30 text-[#FEC6A1] hover:bg-[#FEC6A1]/10"
+            className="w-full sm:w-auto bg-[#222222] border-[#FEC6A1]/30 text-[#FEC6A1] hover:bg-[#2A2A2A]"
           >
             <Coins className="mr-2 h-4 w-4" />
             Buy Tokens
           </Button>
           <Button
             onClick={handleUpgradeClick}
-            className="w-full sm:w-auto bg-purple-500 hover:bg-purple-600 text-white"
+            className="w-full sm:w-auto relative overflow-hidden group"
+            style={{
+              background: 'linear-gradient(to right, #8E2DE2, #4A00E0)',
+              position: 'relative',
+              zIndex: 1,
+            }}
           >
-            <Sparkles className="mr-2 h-4 w-4" />
-            Upgrade to Pro
+            <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[-1]"></span>
+            <span className="relative flex items-center justify-center">
+              <Sparkles className="mr-2 h-4 w-4 animate-pulse" />
+              Upgrade to Pro
+            </span>
           </Button>
         </DialogFooter>
       </DialogContent>
