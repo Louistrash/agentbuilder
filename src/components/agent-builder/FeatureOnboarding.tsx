@@ -1,13 +1,14 @@
 
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { Rocket, MessageSquare, ChartBar, LineChart, UserCheck, BrainCircuit } from "lucide-react";
 
 interface FeatureOnboardingProps {
@@ -269,11 +270,14 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
       setCurrentStep(0); // Reset when dialog closes
       onClose();
     }}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="bg-[#1A1F2C] border-gray-700 text-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">
             {content.title}
           </DialogTitle>
+          <DialogDescription className="text-gray-400">
+            {content.steps[currentStep].description}
+          </DialogDescription>
         </DialogHeader>
         
         <div className="mt-4">
@@ -283,9 +287,6 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
               {content.steps[currentStep].title}
             </h3>
           </div>
-          <p className="text-gray-500 mb-4">
-            {content.steps[currentStep].description}
-          </p>
           
           <div className="my-6">
             {content.steps[currentStep].preview}
@@ -297,7 +298,7 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
               <div
                 key={index}
                 className={`h-1 flex-1 rounded-full transition-all ${
-                  index <= currentStep ? 'bg-primary' : 'bg-gray-200'
+                  index <= currentStep ? 'bg-[#1EAEDB]' : 'bg-gray-700'
                 }`}
               />
             ))}
@@ -309,10 +310,14 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
             <Button
               variant="ghost"
               onClick={onClose}
+              className="text-gray-400 hover:text-white hover:bg-gray-700"
             >
               Skip
             </Button>
-            <Button onClick={handleNext}>
+            <Button 
+              onClick={handleNext}
+              className="bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white"
+            >
               {currentStep < content.steps.length - 1 ? "Next" : "Get Started"}
             </Button>
           </div>
