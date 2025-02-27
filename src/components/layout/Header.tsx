@@ -1,9 +1,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Settings, ArrowRight, Menu, LogOut, User, LogIn } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TokenDisplay } from "./TokenDisplay";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -25,11 +25,26 @@ export function Header({
   logoUrl
 }: HeaderProps) {
   const navigate = useNavigate();
-  const { isAdmin, userRole } = useAdmin();
+  const location = useLocation();
+  const { isAdmin, userRole, isLoading: adminLoading } = useAdmin();
   const { user, isAuthenticated } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { toast } = useToast();
+  const [isCEO, setIsCEO] = useState(false);
+
+  // Check if we're on a page that should have a transparent header with no logo
+  const isTransparentHeader = location.pathname === "/agent-builder/pro" || location.pathname === "/auth";
+
+  // Check if user is CEO based on email
+  useEffect(() => {
+    if (user?.email) {
+      const email = user.email.toLowerCase();
+      setIsCEO(email.includes("ceo") || email.includes("founder") || email === "patricknieborg@me.com");
+    } else {
+      setIsCEO(false);
+    }
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -56,9 +71,8 @@ export function Header({
     if (userRole === "admin") return "Admin";
     if (userRole === "moderator") return "Moderator";
     
-    // For custom super admin role
-    const email = user?.email || "";
-    if (email.includes("ceo") || email.includes("founder")) {
+    // For custom super admin role (CEO)
+    if (isCEO) {
       return "CEO";
     }
     
@@ -66,7 +80,7 @@ export function Header({
   };
 
   const roleDisplay = getUserRoleDisplay();
-  const hasAdminAccess = isAdmin || roleDisplay === "CEO";
+  const hasAdminAccess = isAdmin || isCEO;
 
   const handleLogin = () => {
     // Navigate to auth page and prevent multiple triggers
@@ -83,40 +97,42 @@ export function Header({
   };
 
   return (
-    <header className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+    <header className={`${isTransparentHeader ? 'bg-transparent' : 'bg-black/20 backdrop-blur-md border-b border-white/10'} sticky top-0 z-50`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16 sm:h-20">
-          <div className="flex items-center gap-3">
-            <div 
-              onClick={() => navigate('/')}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden cursor-pointer"
-            >
-              {logoUrl && !imageError ? (
-                <img 
-                  src={logoUrl} 
-                  alt="Chat Agent Builder Logo" 
-                  className="w-full h-full object-contain p-1" 
-                  onError={() => setImageError(true)}
-                />
-              ) : (
-                <div className="text-[#1EAEDB] font-bold text-lg">L</div>
-              )}
+          {!isTransparentHeader && (
+            <div className="flex items-center gap-3">
+              <div 
+                onClick={() => navigate('/')}
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1A1F2C] flex items-center justify-center overflow-hidden cursor-pointer"
+              >
+                {logoUrl && !imageError ? (
+                  <img 
+                    src={logoUrl} 
+                    alt="Chat Agent Builder Logo" 
+                    className="w-full h-full object-contain p-1" 
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="text-[#1EAEDB] font-bold text-lg">L</div>
+                )}
+              </div>
+              <div 
+                onClick={() => navigate('/')}
+                className="flex flex-col cursor-pointer"
+              >
+                <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                  Chat Agent Builder
+                </h1>
+                <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
+                  Build. Deploy. Engage.
+                </p>
+              </div>
             </div>
-            <div 
-              onClick={() => navigate('/')}
-              className="flex flex-col cursor-pointer"
-            >
-              <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-                Chat Agent Builder
-              </h1>
-              <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
-                Build. Deploy. Engage.
-              </p>
-            </div>
-          </div>
+          )}
 
           {/* Desktop Navigation */}
-          <div className="hidden sm:flex items-center gap-4">
+          <div className={`${isTransparentHeader ? 'ml-auto' : ''} hidden sm:flex items-center gap-4`}>
             {isAuthenticated && <TokenDisplay />}
             
             {isAuthenticated ? (
