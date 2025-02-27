@@ -160,7 +160,7 @@ export function Header({
                 variant="outline"
                 size="sm"
                 onClick={handleLogin}
-                className="bg-white hover:bg-gray-100 border-none text-gray-800 rounded-full px-6 py-2 flex items-center gap-2 shadow-sm"
+                className="bg-[#1A1F2C] hover:bg-[#2A2F3C] border-none text-white rounded-full px-6 py-2 flex items-center gap-2 shadow-sm"
               >
                 <LogIn className="h-4 w-4" />
                 Login / Sign Up
