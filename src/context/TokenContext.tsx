@@ -7,8 +7,10 @@ import { useToast } from "@/hooks/use-toast";
 interface TokenContextType {
   tokens: number;
   isLoading: boolean;
+  displayTokens: number;
   useTokens: (amount: number, feature: string) => Promise<boolean>;
   refreshTokens: () => Promise<void>;
+  animateTokenChange: (targetAmount: number) => void;
 }
 
 const TokenContext = createContext<TokenContextType | undefined>(undefined);
@@ -16,8 +18,43 @@ const TokenContext = createContext<TokenContextType | undefined>(undefined);
 export const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAuth();
   const [tokens, setTokens] = useState<number>(0);
+  const [displayTokens, setDisplayTokens] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
+
+  // Update the display tokens whenever actual tokens change
+  useEffect(() => {
+    setDisplayTokens(tokens);
+  }, [tokens]);
+
+  const animateTokenChange = (targetAmount: number) => {
+    // Start from current display value
+    let start = displayTokens;
+    const end = targetAmount;
+    const duration = 1500; // Animation duration in ms
+    const startTime = performance.now();
+    
+    // Animation function
+    const animateToken = (currentTime: number) => {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      
+      // Calculate the current value
+      const currentValue = Math.floor(start + (end - start) * easeOutQuart);
+      setDisplayTokens(currentValue);
+      
+      // Continue animation if not complete
+      if (progress < 1) {
+        requestAnimationFrame(animateToken);
+      }
+    };
+    
+    // Start the animation
+    requestAnimationFrame(animateToken);
+  };
 
   const fetchTokens = async () => {
     if (!user) {
@@ -138,7 +175,14 @@ export const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [user]);
 
   return (
-    <TokenContext.Provider value={{ tokens, isLoading, useTokens, refreshTokens }}>
+    <TokenContext.Provider value={{ 
+      tokens, 
+      isLoading, 
+      displayTokens, 
+      useTokens, 
+      refreshTokens, 
+      animateTokenChange 
+    }}>
       {children}
     </TokenContext.Provider>
   );

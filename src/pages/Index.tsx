@@ -10,11 +10,13 @@ import { ProFeatures } from "@/components/home/ProFeatures";
 import { FeatureOnboarding } from "@/components/agent-builder/FeatureOnboarding";
 import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+import { useTokens } from "@/context/TokenContext";
 
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { animateTokenChange } = useTokens();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [clickedCard, setClickedCard] = useState<string | null>(null);
@@ -42,6 +44,13 @@ const Index = () => {
 
   const handleCreateAgentClick = (type: 'free' | 'pro') => {
     console.log(`Navigating to ${type} agent builder`);
+    
+    // If this is the free agent, trigger the token animation
+    if (type === 'free' && user) {
+      // Animate tokens from 0 to 50
+      animateTokenChange(50);
+    }
+    
     navigate(`/agent-builder/${type}`);
   };
 

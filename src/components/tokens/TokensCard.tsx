@@ -9,7 +9,7 @@ interface TokensCardProps {
 }
 
 export function TokensCard({ isPopup = false }: TokensCardProps) {
-  const { tokens, isLoading } = useTokens();
+  const { displayTokens, isLoading } = useTokens();
   const navigate = useNavigate();
 
   return (
@@ -35,7 +35,7 @@ export function TokensCard({ isPopup = false }: TokensCardProps) {
         <div className="flex justify-between items-center">
           <span className="text-gray-400 text-sm">Available Tokens</span>
           <span className="text-white font-medium">
-            {isLoading ? "..." : tokens}
+            {isLoading ? "..." : displayTokens}
           </span>
         </div>
       </div>

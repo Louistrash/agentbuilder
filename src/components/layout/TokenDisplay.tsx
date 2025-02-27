@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useTokens } from "@/context/TokenContext";
 
 export const TokenDisplay = () => {
-  const { tokens, isLoading } = useTokens();
+  const { displayTokens, isLoading } = useTokens();
 
   if (isLoading) {
     return (
@@ -23,7 +23,7 @@ export const TokenDisplay = () => {
       <PopoverTrigger>
         <Badge variant="outline" className="bg-[#1A1F2C]/50 backdrop-blur-sm border-[#1EAEDB]/20 text-white px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-[#1A1F2C]/70 transition-colors">
           <Coins className="h-4 w-4 text-[#1EAEDB]" />
-          <span>{tokens} tokens</span>
+          <span>{displayTokens} tokens</span>
         </Badge>
       </PopoverTrigger>
       <PopoverContent className="w-[280px] p-0 bg-[#0D1117] border-[#1A1F2C]">
