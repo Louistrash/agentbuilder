@@ -71,57 +71,57 @@ export function LearnMoreDialog({
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-6 mb-6">
+          <div className="bg-gray-800 rounded-lg p-4 mb-6">
             {currentStep === 1 && (
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-700/50 rounded-lg p-5 cursor-pointer hover:bg-gray-700 transition duration-200">
-                  <div className="text-blue-400 mb-3">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-700 transition duration-200">
+                  <div className="text-blue-400 mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <h4 className="text-lg font-semibold mb-1">Customer Service</h4>
-                  <p className="text-gray-400">Handle customer inquiries 24/7</p>
+                  <h4 className="text-base font-semibold mb-1">Customer Service</h4>
+                  <p className="text-gray-400 text-sm">Handle customer inquiries 24/7</p>
                 </div>
-                <div className="bg-gray-700/50 rounded-lg p-5 cursor-pointer hover:bg-gray-700 transition duration-200">
-                  <div className="text-green-400 mb-3">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div className="bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-700 transition duration-200">
+                  <div className="text-green-400 mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M4 7H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M4 17H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M4 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <h4 className="text-lg font-semibold mb-1">Sales Assistant</h4>
-                  <p className="text-gray-400">Convert leads automatically</p>
+                  <h4 className="text-base font-semibold mb-1">Sales Assistant</h4>
+                  <p className="text-gray-400 text-sm">Convert leads automatically</p>
                 </div>
               </div>
             )}
             
             {currentStep === 2 && (
-              <div className="space-y-4">
-                <div className="bg-gray-700/50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold mb-2">Personalize Your Agent</h4>
-                  <p className="text-gray-400">Add a name, profile picture, and description for your agent. Define its personality and tone.</p>
+              <div className="space-y-3">
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <h4 className="text-base font-semibold mb-1">Personalize Your Agent</h4>
+                  <p className="text-gray-400 text-sm">Add a name, profile picture, and description for your agent. Define its personality and tone.</p>
                 </div>
-                <div className="bg-gray-700/50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold mb-2">Add Knowledge</h4>
-                  <p className="text-gray-400">Upload documents, connect to your website, or add FAQs to give your agent the information it needs.</p>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <h4 className="text-base font-semibold mb-1">Add Knowledge</h4>
+                  <p className="text-gray-400 text-sm">Upload documents, connect to your website, or add FAQs to give your agent the information it needs.</p>
                 </div>
               </div>
             )}
             
             {currentStep === 3 && (
-              <div className="space-y-4">
-                <div className="bg-gray-700/50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold mb-2">Share with Others</h4>
-                  <p className="text-gray-400">Generate a shareable link to your agent that you can send to anyone.</p>
+              <div className="space-y-3">
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <h4 className="text-base font-semibold mb-1">Share with Others</h4>
+                  <p className="text-gray-400 text-sm">Generate a shareable link to your agent that you can send to anyone.</p>
                 </div>
-                <div className="bg-gray-700/50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold mb-2">Embed on Website</h4>
-                  <p className="text-gray-400">Add a simple code snippet to your website to integrate your chat agent.</p>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <h4 className="text-base font-semibold mb-1">Embed on Website</h4>
+                  <p className="text-gray-400 text-sm">Add a simple code snippet to your website to integrate your chat agent.</p>
                 </div>
               </div>
             )}
@@ -147,7 +147,7 @@ export function LearnMoreDialog({
             </Button>
             <Button
               onClick={handleNext}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+              className="bg-[#ea384c] hover:bg-[#d02e40] text-white px-6"
             >
               {currentStep === totalSteps ? "Finish" : "Next"}
             </Button>
