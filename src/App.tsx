@@ -15,24 +15,22 @@ import "./App.css";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" attribute="class" enableSystem={false} forcedTheme="dark">
+    <ThemeProvider defaultTheme="dark">
       <AuthProvider>
         <TokenProvider>
           <Router>
-            <div className="dark">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/agent-builder" element={<AgentBuilder />} />
-                <Route path="/agent-builder/free" element={<AgentBuilder />} />
-                <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />
-                <Route path="/agents/:id/configure" element={<AgentConfig />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </div>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/agent-builder" element={<AgentBuilder />} />
+              <Route path="/agent-builder/free" element={<AgentBuilder />} />
+              <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />
+              <Route path="/agents/:id/configure" element={<AgentConfig />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
           </Router>
-          <Toaster />
         </TokenProvider>
       </AuthProvider>
     </ThemeProvider>
