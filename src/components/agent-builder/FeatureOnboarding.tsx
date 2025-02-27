@@ -270,6 +270,12 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
     }
   };
 
+  const handleSkip = () => {
+    // Just close the dialog without navigation
+    setCurrentStep(0);
+    onClose();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={() => {
       setCurrentStep(0); // Reset when dialog closes
@@ -314,7 +320,7 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
           <div className="flex justify-between w-full">
             <Button
               variant="ghost"
-              onClick={onClose}
+              onClick={handleSkip}
               className="text-gray-400 hover:text-white hover:bg-gray-700"
             >
               Skip

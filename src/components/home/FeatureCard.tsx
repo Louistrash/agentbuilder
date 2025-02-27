@@ -66,7 +66,7 @@ export function FeatureCard({
           </p>
           <Button
             variant="outline"
-            className="w-full mt-2 bg-black/20 border border-[#1EAEDB]/20 text-gray-300 hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 transform hover:scale-[1.02]"
+            className="w-full mt-2 bg-black/20 border border-[#1EAEDB]/20 text-gray-300 hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 hover:text-white transition-all duration-300 transform hover:scale-[1.02]"
             onClick={onClick}
           >
             <Play className="h-4 w-4 mr-2" />
