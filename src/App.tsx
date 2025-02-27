@@ -14,7 +14,7 @@ import { TokenProvider } from "@/context/TokenContext";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" attribute="class" enableSystem={false} forcedTheme="dark">
       <AuthProvider>
         <TokenProvider>
           <Router>

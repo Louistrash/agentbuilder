@@ -1,3 +1,4 @@
+
 #root {
   max-width: 100%;
   margin: 0 auto;
@@ -46,4 +47,19 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Override any conflicting styles */
+.dark {
+  background-color: #0D1117;
+  color: white;
+}
+
+/* Add global dark styles to ensure consistency */
+.dark .bg-card {
+  background-color: #161B22;
+}
+
+.dark .border-card {
+  border-color: #30363D;
 }
