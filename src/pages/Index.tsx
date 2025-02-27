@@ -173,7 +173,8 @@ const Index = () => {
 
   const handleOnboardingClose = () => {
     setShowOnboarding(false);
-    navigate('/agents', { state: { feature: selectedFeature } });
+    // Instead of navigating to a non-existent route, we'll do nothing or navigate to a valid route if needed
+    // navigate('/agents', { state: { feature: selectedFeature } });
   };
 
   const features = [

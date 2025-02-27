@@ -264,11 +264,14 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
     }
   };
 
+  // Fixed onClose handler that resets the step before closing
+  const handleClose = () => {
+    setCurrentStep(0); // Reset when dialog closes
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={() => {
-      setCurrentStep(0); // Reset when dialog closes
-      onClose();
-    }}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-[#161B22] border border-[#30363D] text-white max-w-md md:max-w-lg backdrop-blur-lg shadow-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-white">
@@ -308,7 +311,7 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
           <div className="flex justify-between w-full">
             <Button
               variant="ghost"
-              onClick={onClose}
+              onClick={handleClose}
               className="text-gray-400 hover:text-white hover:bg-gray-800"
             >
               Skip
