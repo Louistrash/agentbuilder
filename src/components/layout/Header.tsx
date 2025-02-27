@@ -24,9 +24,6 @@ export const Header = ({ logoUrl }: HeaderProps) => {
             )}
           </Link>
           <nav className="ml-8 hidden md:flex space-x-4">
-            <Link to="/" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm">
-              Home
-            </Link>
             <Link to="/agent-builder" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm">
               Build Agents
             </Link>
