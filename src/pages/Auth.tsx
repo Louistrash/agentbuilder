@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogIn, UserPlus, ChevronLeft, Shield, Mail } from "lucide-react";
+import { LogIn, UserPlus, ChevronLeft } from "lucide-react";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +22,12 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      // If it's the CEO, redirect to admin dashboard
+      if (user.email === "patricknieborg@me.com") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     }
   }, [user, navigate]);
 
@@ -58,11 +63,13 @@ const Auth = () => {
         if (data.user.email === "patricknieborg@me.com") {
           // Ensure CEO has admin role in the database
           await ensureCEOAdminRole(data.user.id);
+          // Navigate to admin dashboard
+          navigate("/admin");
+        } else {
+          // Navigate to home page for regular users
+          navigate("/");
         }
       }
-      
-      // Navigate to home page
-      navigate("/");
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
