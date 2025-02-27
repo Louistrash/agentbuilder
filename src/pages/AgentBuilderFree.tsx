@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
-import { MessageSquare, ShoppingCart, Database, Code, Sparkles, BarChart3, Wifi, BrainCircuit } from "lucide-react";
+import { MessageSquare, ShoppingCart, Database, Code, Sparkles, BarChart3, Wifi, BrainCircuit, Lock } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
@@ -219,12 +219,75 @@ const AgentBuilderFree = () => {
               </div>
             </div>
 
-            {/* Advanced Configuration */}
-            <div id="agent-config" className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
-              <div className="p-6 border-b border-gray-800">
-                <h2 className="text-xl font-semibold">Advanced Configuration</h2>
+            {/* Pro Features Section - Moved from bottom to here */}
+            <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
+              <div className="p-6 flex justify-between items-center border-b border-gray-800">
+                <div className="flex items-center">
+                  <Sparkles className="h-5 w-5 text-green-400 mr-2" />
+                  <h2 className="text-xl font-semibold">Pro Features</h2>
+                </div>
               </div>
-              <div className="p-6 space-y-6">
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-2 text-center bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+                  Unlock Advanced Capabilities
+                </h2>
+                <p className="text-gray-400 text-center mb-8">
+                  Take your agents to the next level with our professional features
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                  {proFeatures.map((feature) => (
+                    <div 
+                      key={feature.id}
+                      className="bg-[#1a2030] rounded-lg p-5 border border-gray-800"
+                    >
+                      <div className={`text-${feature.color}-400 mb-3`}>
+                        {feature.icon}
+                      </div>
+                      <h3 className="font-semibold mb-2">{feature.name}</h3>
+                      <p className="text-gray-400 text-sm">{feature.description}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex justify-center">
+                  <Button 
+                    onClick={handleUpgradeToPro}
+                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-2"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Upgrade to Pro
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Advanced Configuration - Now with blur and lock */}
+            <div id="agent-config" className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden relative">
+              <div className="p-6 border-b border-gray-800 flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Advanced Configuration</h2>
+                <div className="text-purple-400 flex items-center">
+                  <Lock className="h-4 w-4 mr-1" />
+                  <span className="text-sm">Pro Feature</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-6 relative">
+                {/* Blur overlay with upgrade button */}
+                <div className="absolute inset-0 backdrop-blur-sm bg-black/30 z-10 flex flex-col items-center justify-center">
+                  <Lock className="h-12 w-12 text-purple-400 mb-4" />
+                  <h3 className="text-xl font-bold mb-2 text-white">Pro Feature</h3>
+                  <p className="text-gray-300 mb-4 text-center max-w-md px-4">
+                    Unlock advanced configuration options to fine-tune your agent's behavior
+                  </p>
+                  <Button 
+                    onClick={handleUpgradeToPro}
+                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Upgrade to Pro
+                  </Button>
+                </div>
+
                 <div>
                   <label htmlFor="temperature" className="block mb-2 font-medium">
                     Temperature
@@ -237,6 +300,7 @@ const AgentBuilderFree = () => {
                       step={0.1}
                       onValueChange={(value) => setTemperature(value[0])}
                       className="flex-grow"
+                      disabled
                     />
                     <span className="w-12 text-right">{temperature}</span>
                   </div>
@@ -252,6 +316,7 @@ const AgentBuilderFree = () => {
                     value={maxTokens}
                     onChange={(e) => setMaxTokens(Number(e.target.value))}
                     className="bg-[#1a2030] border-gray-700 text-white"
+                    disabled
                   />
                 </div>
 
@@ -265,6 +330,7 @@ const AgentBuilderFree = () => {
                     value={systemPrompt}
                     onChange={(e) => setSystemPrompt(e.target.value)}
                     className="bg-[#1a2030] border-gray-700 text-white h-40 resize-y"
+                    disabled
                   />
                 </div>
               </div>
@@ -377,49 +443,6 @@ const AgentBuilderFree = () => {
                   Add this code to your website to embed the agent widget.
                 </p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Pro Features */}
-        <div className="mt-8 bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
-          <div className="p-6 flex justify-between items-center border-b border-gray-800">
-            <div className="flex items-center">
-              <Sparkles className="h-5 w-5 text-green-400 mr-2" />
-              <h2 className="text-xl font-semibold">Pro Features</h2>
-            </div>
-          </div>
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-2 text-center bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-              Unlock Advanced Capabilities
-            </h2>
-            <p className="text-gray-400 text-center mb-8">
-              Take your agents to the next level with our professional features
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {proFeatures.map((feature) => (
-                <div 
-                  key={feature.id}
-                  className="bg-[#1a2030] rounded-lg p-5 border border-gray-800"
-                >
-                  <div className={`text-${feature.color}-400 mb-3`}>
-                    {feature.icon}
-                  </div>
-                  <h3 className="font-semibold mb-2">{feature.name}</h3>
-                  <p className="text-gray-400 text-sm">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex justify-center">
-              <Button 
-                onClick={handleUpgradeToPro}
-                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-2"
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Upgrade to Pro
-              </Button>
             </div>
           </div>
         </div>
