@@ -68,6 +68,11 @@ export function Header({
   const roleDisplay = getUserRoleDisplay();
   const hasAdminAccess = isAdmin || roleDisplay === "CEO";
 
+  const handleLogin = () => {
+    console.log("Navigating to /auth");
+    navigate('/auth');
+  };
+
   return (
     <header className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -153,7 +158,7 @@ export function Header({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/auth')}
+                onClick={handleLogin}
                 className="text-gray-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
               >
                 <LogIn className="h-4 w-4" />
