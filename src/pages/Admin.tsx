@@ -1,5 +1,5 @@
 
-import { useEffect, useState, ErrorBoundary } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
