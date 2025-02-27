@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight, Menu } from "lucide-react";
+import { Settings, LogIn, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
@@ -34,7 +34,12 @@ export function Header({
                   onError={() => setImageError(true)}
                 />
               ) : (
-                <div className="text-[#1EAEDB] font-bold text-lg">L</div>
+                // Changed icon to use a stylized chat bubble
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1EAEDB]">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" fill="#9B87F5" stroke="#9B87F5" strokeWidth="2" strokeLinejoin="round"/>
+                  <path d="M8 10.5H16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8 14.5H13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               )}
             </div>
             <div className="flex flex-col">
@@ -67,7 +72,13 @@ export function Header({
               onClick={() => navigate(user ? '/agents' : '/auth')}
               className="text-gray-300 hover:text-white hover:bg-white/10"
             >
-              {user ? 'Dashboard' : 'Get Started'} <ArrowRight className="h-4 w-4 ml-2" />
+              {/* Changed button text to "Login | Sign Up" and added LogIn icon */}
+              {user ? 'Dashboard' : (
+                <>
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Login | Sign Up
+                </>
+              )}
             </Button>
           </div>
 
@@ -106,8 +117,13 @@ export function Header({
                 }}
                 className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
               >
-                {user ? 'Dashboard' : 'Get Started'}
-                <ArrowRight className="h-4 w-4 ml-2" />
+                {/* Updated mobile menu text to match desktop */}
+                {user ? 'Dashboard' : (
+                  <>
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Login | Sign Up
+                  </>
+                )}
               </button>
             </div>
           )}
