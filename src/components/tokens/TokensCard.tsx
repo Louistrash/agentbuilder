@@ -58,8 +58,7 @@ export function TokensCard({ isPopup = false }: TokensCardProps) {
       <div className="flex gap-2">
         <Button
           size="sm"
-          variant="outline"
-          className="w-full border-[#1EAEDB]/30 text-[#1EAEDB] hover:bg-[#1EAEDB]/10"
+          className="w-full bg-[#1A1F2C] hover:bg-[#252D3B] text-[#1EAEDB] border border-[#1EAEDB]/30 hover:border-[#1EAEDB]/50"
           onClick={() => navigate('/auth?purchase=tokens')}
         >
           <Coins className="h-3.5 w-3.5 mr-1.5" />
