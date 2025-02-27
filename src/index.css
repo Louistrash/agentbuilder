@@ -57,12 +57,18 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#0D1117] text-foreground font-sans antialiased;
+    @apply bg-[#0D1117] text-white font-sans antialiased;
   }
   
-  /* Override the WhatsApp style background */
+  /* Override any theme background */
   .agent-builder-page {
     background-image: none !important;
     background-color: #0D1117 !important;
+  }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
   }
 }

@@ -27,6 +27,7 @@ const Index = () => {
   useEffect(() => {
     fetchLogo();
     setTimeout(() => setShowWelcome(true), 100);
+    console.log("Index page loaded");
   }, []);
 
   const fetchLogo = async () => {

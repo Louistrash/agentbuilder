@@ -11,6 +11,7 @@ import NotFound from "@/pages/NotFound";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/components/AuthProvider";
 import { TokenProvider } from "@/context/TokenContext";
+import "./App.css";
 
 function App() {
   return (
@@ -18,16 +19,18 @@ function App() {
       <AuthProvider>
         <TokenProvider>
           <Router>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/agent-builder" element={<AgentBuilder />} />
-              <Route path="/agent-builder/free" element={<AgentBuilder />} />
-              <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />
-              <Route path="/agents/:id/configure" element={<AgentConfig />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className="dark">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/agent-builder" element={<AgentBuilder />} />
+                <Route path="/agent-builder/free" element={<AgentBuilder />} />
+                <Route path="/agent-builder/pro" element={<AgentBuilderPro />} />
+                <Route path="/agents/:id/configure" element={<AgentConfig />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
           </Router>
           <Toaster />
         </TokenProvider>
