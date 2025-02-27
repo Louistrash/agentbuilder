@@ -168,7 +168,7 @@ export function Header({
                 variant="outline"
                 size="sm"
                 onClick={handleLogin}
-                className="bg-[#1A1F2C] hover:bg-[#2A2F3C] border-none text-white rounded-full px-6 py-2 flex items-center gap-2 shadow-sm"
+                className="bg-[#1A1F2C] hover:bg-[#2A2F3C] border-none text-white hover:text-white rounded-full px-6 py-2 flex items-center gap-2 shadow-sm transition-colors"
               >
                 <LogIn className="h-4 w-4" />
                 Login / Sign Up
@@ -239,7 +239,7 @@ export function Header({
                     window.location.href = '/auth'; // Use direct location change for mobile menu too
                     setShowMobileMenu(false);
                   }}
-                  className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
+                  className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 hover:text-white flex items-center"
                 >
                   <LogIn className="h-4 w-4 mr-2" />
                   Login / Sign Up
