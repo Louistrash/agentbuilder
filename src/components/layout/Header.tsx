@@ -69,9 +69,17 @@ export function Header({
   const hasAdminAccess = isAdmin || roleDisplay === "CEO";
 
   const handleLogin = () => {
-    // Direct navigation to auth page without try/catch to better expose any errors
-    console.log("Navigating to /auth");
-    navigate('/auth');
+    // Navigate to auth page and prevent multiple triggers
+    try {
+      window.location.href = '/auth'; // Use direct location change instead of navigate
+    } catch (error) {
+      console.error('Navigation error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to navigate to login page",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -228,7 +236,7 @@ export function Header({
               ) : (
                 <button
                   onClick={() => {
-                    handleLogin();
+                    window.location.href = '/auth'; // Use direct location change for mobile menu too
                     setShowMobileMenu(false);
                   }}
                   className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
