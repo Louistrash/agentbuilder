@@ -274,6 +274,7 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
     // Just close the dialog without navigation
     setCurrentStep(0);
     onClose();
+    navigate('/');  // Navigate to home page instead
   };
 
   return (
