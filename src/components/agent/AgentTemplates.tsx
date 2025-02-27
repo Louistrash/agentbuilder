@@ -37,7 +37,7 @@ const templates = [
   {
     id: 'knowledge-base',
     name: 'Knowledge Base',
-    description: 'Answers questions based on your organization's information.',
+    description: "Answers questions based on your organization's information.",
     icon: <Brain className="h-5 w-5 text-orange-400" />,
     category: 'knowledge',
     popular: false
