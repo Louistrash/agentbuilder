@@ -21,7 +21,7 @@ const learnMoreContent = {
           <li>Test your agent in real-time</li>
           <li>Deploy with a single click</li>
         </ul>
-        <p>Start with our free builder and upgrade to pro when you need advanced features.</p>
+        <p className="mt-4 text-indigo-400">Start with our free builder and upgrade to pro when you need advanced features.</p>
       </div>
     )
   },
@@ -39,7 +39,7 @@ const learnMoreContent = {
           <li>Multi-turn conversation handling</li>
           <li>Integration with your knowledge base</li>
         </ul>
-        <p>Our AI is built on the latest language models and optimized for responsiveness and accuracy.</p>
+        <p className="mt-4 text-blue-400">Our AI is built on the latest language models and optimized for responsiveness and accuracy.</p>
       </div>
     )
   },
@@ -57,7 +57,7 @@ const learnMoreContent = {
           <li>Satisfaction scores</li>
           <li>Performance benchmarks</li>
         </ul>
-        <p>Use these insights to optimize your agents, improve user satisfaction, and achieve your goals.</p>
+        <p className="mt-4 text-cyan-400">Use these insights to optimize your agents, improve user satisfaction, and achieve your goals.</p>
       </div>
     )
   }
@@ -115,7 +115,7 @@ const Index = () => {
               className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-900/30 border border-indigo-900/50 mt-auto flex items-center gap-2"
               onClick={() => openDialog('build')}
             >
-              Learn More <Info className="h-4 w-4" />
+              Learn More <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
           
@@ -136,7 +136,7 @@ const Index = () => {
               className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 border border-blue-900/50 mt-auto flex items-center gap-2"
               onClick={() => openDialog('responses')}
             >
-              Learn More <Info className="h-4 w-4" />
+              Learn More <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
           
@@ -157,7 +157,7 @@ const Index = () => {
               className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/30 border border-cyan-900/50 mt-auto flex items-center gap-2"
               onClick={() => openDialog('analytics')}
             >
-              Learn More <Info className="h-4 w-4" />
+              Learn More <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
