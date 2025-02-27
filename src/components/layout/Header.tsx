@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, ArrowRight, Menu, LogOut, User, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TokenDisplay } from "./TokenDisplay";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +30,12 @@ export function Header({
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { toast } = useToast();
+
+  // Debug effect for checking authentication state
+  useEffect(() => {
+    console.log("Authentication state:", isAuthenticated);
+    console.log("Current user:", user);
+  }, [isAuthenticated, user]);
 
   const handleLogout = async () => {
     try {
@@ -69,7 +75,7 @@ export function Header({
   const hasAdminAccess = isAdmin || roleDisplay === "CEO";
 
   const handleLogin = () => {
-    console.log("Navigating to /auth");
+    console.log("Navigating to /auth from Header");
     navigate('/auth');
   };
 
@@ -227,6 +233,7 @@ export function Header({
               ) : (
                 <button
                   onClick={() => {
+                    console.log("Mobile login button clicked");
                     navigate('/auth');
                     setShowMobileMenu(false);
                   }}

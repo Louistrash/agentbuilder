@@ -7,6 +7,17 @@ import { useNavigate } from 'react-router-dom';
 const Index = () => {
   const navigate = useNavigate();
 
+  // Create handler functions for button clicks with console logging
+  const handleBuildAgentClick = () => {
+    console.log("Navigating to agent builder");
+    navigate('/agent-builder/free');
+  };
+
+  const handleLearnMoreClick = (path: string) => {
+    console.log(`Navigating to ${path}`);
+    navigate(path);
+  };
+
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col">
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -21,10 +32,18 @@ const Index = () => {
           
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
-              onClick={() => navigate('/agent-builder/free')}
+              onClick={handleBuildAgentClick}
               className="text-lg px-8 py-6 h-auto bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
             >
               <span className="text-xl">+</span> Build your First Agent (Free)
+            </Button>
+            
+            <Button 
+              variant="outline"
+              onClick={() => navigate('/auth')}
+              className="text-lg px-8 py-6 h-auto bg-white/5 text-white border-white/10 hover:bg-white/10"
+            >
+              Sign In
             </Button>
           </div>
         </div>
@@ -45,7 +64,7 @@ const Index = () => {
             <Button 
               variant="ghost" 
               className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-900/30 border border-indigo-900/50 mt-auto flex items-center gap-2"
-              onClick={() => navigate('/learn/build')}
+              onClick={() => handleLearnMoreClick('/learn/build')}
             >
               Learn More <ArrowRight className="h-4 w-4" />
             </Button>
@@ -66,7 +85,7 @@ const Index = () => {
             <Button 
               variant="ghost" 
               className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 border border-blue-900/50 mt-auto flex items-center gap-2"
-              onClick={() => navigate('/learn/responses')}
+              onClick={() => handleLearnMoreClick('/learn/responses')}
             >
               Learn More <ArrowRight className="h-4 w-4" />
             </Button>
@@ -87,7 +106,7 @@ const Index = () => {
             <Button 
               variant="ghost" 
               className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/30 border border-cyan-900/50 mt-auto flex items-center gap-2"
-              onClick={() => navigate('/learn/analytics')}
+              onClick={() => handleLearnMoreClick('/learn/analytics')}
             >
               Learn More <ArrowRight className="h-4 w-4" />
             </Button>
