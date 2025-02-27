@@ -7,7 +7,7 @@ import { useTokens } from "@/context/TokenContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { TokenPurchaseDialog } from "@/components/tokens/TokenPurchaseDialog";
-import { Bot, MessageSquare, ShoppingCart, Headphones, BrainCircuit, Lock } from "lucide-react";
+import { Bot, MessageSquare, ShoppingCart, Headphones, BrainCircuit, Lock, Coins } from "lucide-react";
 
 const AGENT_COST = 25; // Cost per agent in tokens
 
