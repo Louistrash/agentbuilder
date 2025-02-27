@@ -43,10 +43,10 @@ export function Header({
               )}
             </div>
             <div className="flex flex-col">
-              <h1 className="text-lg sm:text-xl font-heading font-semibold text-gradient">
+              <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                 Chat Agent Builder
               </h1>
-              <p className="text-xs sm:text-sm text-gray-400 hidden sm:block tracking-wide">
+              <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
                 Build. Deploy. Engage.
               </p>
             </div>
@@ -60,7 +60,7 @@ export function Header({
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate('/admin')}
-                className="text-gray-300 hover:text-white hover:bg-white/10 font-medium"
+                className="text-gray-300 hover:text-white hover:bg-white/10"
               >
                 <Settings className="h-4 w-4 mr-2" />
                 Admin
@@ -70,8 +70,9 @@ export function Header({
               variant="ghost"
               size="sm"
               onClick={() => navigate(user ? '/agents' : '/auth')}
-              className="text-gray-300 hover:text-white hover:bg-white/10 font-medium"
+              className="text-gray-300 hover:text-white hover:bg-white/10"
             >
+              {/* Changed button text to "Login | Sign Up" and added LogIn icon */}
               {user ? 'Dashboard' : (
                 <>
                   <LogIn className="h-4 w-4 mr-2" />
@@ -103,7 +104,7 @@ export function Header({
                     navigate('/admin');
                     setShowMobileMenu(false);
                   }}
-                  className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center font-medium"
+                  className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Admin
@@ -114,8 +115,9 @@ export function Header({
                   navigate(user ? '/agents' : '/auth');
                   setShowMobileMenu(false);
                 }}
-                className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center font-medium"
+                className="w-full px-4 py-2 text-sm text-left text-gray-300 hover:bg-white/10 flex items-center"
               >
+                {/* Updated mobile menu text to match desktop */}
                 {user ? 'Dashboard' : (
                   <>
                     <LogIn className="h-4 w-4 mr-2" />

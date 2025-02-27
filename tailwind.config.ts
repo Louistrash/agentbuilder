@@ -1,15 +1,15 @@
 
-import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -19,9 +19,6 @@ export default {
       },
     },
     extend: {
-      screens: {
-        'xs': '475px',
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -29,11 +26,14 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         admin: {
-          'card': '#161B22',
-          'border': '#30363D',
-          'accent-purple': '#9B87F5',
-          'accent-pink': '#EC4899',
-          'accent-blue': '#3B82F6',
+          background: "#0D1117",
+          card: "#161B22",
+          border: "#30363D",
+          accent: {
+            blue: "#1EAEDB",
+            purple: "#9b87f5",
+            pink: "#EC4899",
+          },
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -64,33 +64,47 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      backgroundImage: {
-        'gradient-card': 'linear-gradient(135deg, rgba(155, 135, 245, 0.1) 0%, rgba(30, 174, 219, 0.1) 100%)',
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-      },
-      borderRadius: {
-        lg: `var(--radius)`,
-        md: `calc(var(--radius) - 2px)`,
-        sm: "calc(var(--radius) - 4px)",
-      },
-      fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "system-ui", ...fontFamily.sans],
-        heading: ["Poppins", "Inter", ...fontFamily.sans],
-        mono: ["JetBrains Mono", ...fontFamily.mono],
-      },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+        "fade-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+        "fade-down": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
         },
+        "gradient-flow": {
+          "0%": {
+            backgroundPosition: "0% 50%",
+          },
+          "50%": {
+            backgroundPosition: "100% 50%",
+          },
+          "100%": {
+            backgroundPosition: "0% 50%",
+          },
+        }
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-up": "fade-up 0.5s ease-out",
+        "fade-down": "fade-down 0.5s ease-out",
+        "gradient-flow": "gradient-flow 3s ease infinite",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-card": "linear-gradient(to right bottom, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05))",
       },
     },
   },
