@@ -60,6 +60,15 @@ const categoryColors: Record<string, string> = {
   'integration': 'bg-pink-500/10 text-pink-500',
 };
 
+// Text color mapping for buttons
+const categoryTextColors: Record<string, string> = {
+  'automation': 'text-blue-400',
+  'communication': 'text-green-400',
+  'customization': 'text-purple-400',
+  'analytics': 'text-orange-400',
+  'integration': 'text-pink-400',
+};
+
 export function AddonsMarketplace() {
   const [addons, setAddons] = useState<Addon[]>([]);
   const [purchasedAddons, setPurchasedAddons] = useState<PurchasedAddon[]>([]);
@@ -231,7 +240,11 @@ export function AddonsMarketplace() {
             variant={selectedCategory === null ? "default" : "outline"}
             size="sm"
             onClick={() => setSelectedCategory(null)}
-            className={`min-w-[70px] rounded-md ${selectedCategory === null ? 'bg-[#222222] hover:bg-[#333333] text-white' : 'text-white hover:bg-[#222222] hover:text-white'}`}
+            className={`min-w-[70px] rounded-md ${
+              selectedCategory === null 
+                ? 'bg-[#222222] hover:bg-[#333333] text-[#1EAEDB] font-medium' 
+                : 'text-gray-300 hover:bg-[#222222] hover:text-[#1EAEDB] border-[#30363D]'
+            }`}
           >
             All
           </Button>
@@ -241,7 +254,11 @@ export function AddonsMarketplace() {
               variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className={`min-w-[100px] rounded-md ${selectedCategory === category ? 'bg-[#222222] hover:bg-[#333333] text-white' : 'text-white hover:bg-[#222222] hover:text-white'}`}
+              className={`min-w-[100px] rounded-md ${
+                selectedCategory === category 
+                  ? `bg-[#222222] hover:bg-[#333333] ${categoryTextColors[category]} font-medium` 
+                  : `text-gray-300 hover:bg-[#222222] hover:${categoryTextColors[category]} border-[#30363D]`
+              }`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </Button>
