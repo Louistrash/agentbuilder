@@ -1,6 +1,4 @@
-
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { AgentsList } from "@/components/agent/AgentsList";
 import { AdvancedConfig } from "@/components/agent/AdvancedConfig";
 import { TestInterface } from "@/components/agent/TestInterface";
@@ -11,17 +9,15 @@ import { Header } from "@/components/agent/Header";
 import { ProFeatures } from "@/components/agent/ProFeatures";
 import { AgentTemplates } from "@/components/agent/AgentTemplates";
 import { TokensCard } from "@/components/tokens/TokensCard";
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Users, SendHorizontal, Lock, Bot, Save, LogIn } from "lucide-react";
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Users, SendHorizontal, Lock, Bot } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { useAuth } from '@/lib/auth';
 
 interface Agent {
-  id: string | number; // Updated to accept both string and number types
+  id: number;
   name: string;
   description: string;
   type: string;
@@ -40,150 +36,46 @@ export default function AgentBuilder() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [showLoginDialog, setShowLoginDialog] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { user, isAuthenticated } = useAuth();
-  
-  // Parse URL parameters for agent saving
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const saveAgent = searchParams.get('saveAgent');
-    const agentDataParam = searchParams.get('agentData');
-    
-    if (saveAgent === 'true' && agentDataParam && isAuthenticated) {
-      try {
-        const agentData = JSON.parse(decodeURIComponent(agentDataParam));
-        saveAgentToDatabase(agentData);
-        // Clear the URL parameters
-        navigate('/agent-builder/free', { replace: true });
-      } catch (error) {
-        console.error('Error parsing agent data:', error);
-      }
-    }
-  }, [location, isAuthenticated]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchUserAvatar();
-      fetchUserAgents();
-    }
-  }, [isAuthenticated]);
+    fetchUserAvatar();
+  }, []);
 
   const fetchUserAvatar = async () => {
-    if (!user) return;
-    
     try {
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('avatar_url')
-        .eq('id', user.id)
-        .maybeSingle();
-      
-      if (error) {
-        console.error('Error fetching profile:', error);
-        return;
-      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('avatar_url, updated_at')
+          .eq('id', user.id)
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error fetching profile:', error);
+          return;
+        }
 
-      if (profile?.avatar_url) {
-        setAvatarUrl(profile.avatar_url);
+        if (profile?.avatar_url) {
+          setAvatarUrl(profile.avatar_url);
+        }
       }
     } catch (error) {
       console.error('Error fetching user avatar:', error);
     }
   };
 
-  const fetchUserAgents = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('chat_agents')
-        .select('*')
-        .eq('created_by', user.id);
-        
-      if (error) {
-        throw error;
-      }
-      
-      const formattedAgents = data.map(agent => ({
-        id: agent.id,
-        name: agent.name,
-        description: agent.description || '',
-        type: agent.name.toLowerCase().replace(' ', '_')
-      }));
-      
-      setAgents(formattedAgents);
-    } catch (error) {
-      console.error('Error fetching agents:', error);
-    }
-  };
-
-  const saveAgentToDatabase = async (agentData: Agent) => {
-    if (!user) return;
-    
-    try {
-      const { error } = await supabase
-        .from('chat_agents')
-        .insert([{
-          name: agentData.name,
-          description: agentData.description,
-          system_prompt: `You are ${agentData.name}, ${agentData.description}. Be helpful and concise in your responses.`,
-          created_by: user.id
-        }]);
-
-      if (error) throw error;
-
-      toast({
-        title: "Agent saved",
-        description: "Your agent has been saved successfully.",
-      });
-      
-      fetchUserAgents(); // Refresh the agents list
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to save agent. Please try again.",
-      });
-    }
-  };
-
   const handleCreateAgent = (template: { name: string; description: string; }) => {
     const newAgent: Agent = {
-      id: Date.now(), // This will be a number for client-side temporary agents
+      id: Date.now(),
       name: template.name,
       description: template.description,
       type: template.name.toLowerCase().replace(' ', '_')
     };
+    setAgents(prev => [...prev, newAgent]);
     setSelectedAgent(newAgent);
     setMessages([]);
-    
-    // If not authenticated, we don't add to the agents list
-    // until they save (which will prompt login)
-    if (isAuthenticated) {
-      setAgents(prev => [...prev, newAgent]);
-    }
-  };
-
-  const handleSaveAgent = () => {
-    if (!selectedAgent) return;
-    
-    if (isAuthenticated) {
-      saveAgentToDatabase(selectedAgent);
-    } else {
-      // Prompt the user to login to save their agent
-      setShowLoginDialog(true);
-    }
-  };
-
-  const handleLoginRedirect = () => {
-    if (!selectedAgent) return;
-    
-    // Encode the agent data to pass to the auth page
-    const agentData = encodeURIComponent(JSON.stringify(selectedAgent));
-    navigate(`/auth?redirectTo=${encodeURIComponent('/agent-builder/free')}&agentData=${agentData}`);
   };
 
   const handleSendMessage = async () => {
@@ -239,34 +131,23 @@ export default function AgentBuilder() {
         <div className="space-y-8">
           <Header />
           
-          {/* Avatar Upload - Only shown for authenticated users */}
-          {isAuthenticated && (
-            <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-              <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
-                <h2 className="text-lg font-semibold text-white">Your Chat Avatar</h2>
-              </div>
-              <div className="p-6">
-                <AvatarUpload 
-                  currentAvatarUrl={avatarUrl || undefined}
-                  onAvatarUpdate={(url) => setAvatarUrl(url)}
-                />
-              </div>
+          {/* Avatar Upload */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
+              <h2 className="text-lg font-semibold text-white">Your Chat Avatar</h2>
             </div>
-          )}
+            <div className="p-6">
+              <AvatarUpload 
+                currentAvatarUrl={avatarUrl || undefined}
+                onAvatarUpdate={(url) => setAvatarUrl(url)}
+              />
+            </div>
+          </div>
 
           {/* Agent Templates */}
           <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-            <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex justify-between items-center">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4">
               <h2 className="text-lg font-semibold text-white">Agent Templates</h2>
-              {selectedAgent && (
-                <Button 
-                  onClick={handleSaveAgent}
-                  className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 flex items-center gap-2"
-                >
-                  <Save className="w-4 h-4" />
-                  Save Agent
-                </Button>
-              )}
             </div>
             <div className="p-6">
               <AgentTemplates onCreateAgent={handleCreateAgent} />
@@ -352,26 +233,24 @@ export default function AgentBuilder() {
             </div>
           )}
 
-          {/* Agents List - Only shown for authenticated users */}
-          {isAuthenticated && agents.length > 0 && (
-            <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
-              <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-semibold text-white">Your Agents</h2>
-                  <button 
-                    onClick={() => setIsDialogOpen(true)}
-                    className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEC6A1]/10 text-[#FEC6A1] hover:bg-[#FEC6A1]/20 transition-colors"
-                  >
-                    <Users className="w-4 h-4" />
-                    <span>{agents.length}</span>
-                  </button>
-                </div>
-              </div>
-              <div className="p-6">
-                <AgentsList agents={agents} />
+          {/* Agents List */}
+          <div className="bg-[#161B22] rounded-xl border border-[#30363D] overflow-hidden">
+            <div className="border-b border-[#30363D] bg-[#1C2128] p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-semibold text-white">Your Agents</h2>
+                <button 
+                  onClick={() => setIsDialogOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEC6A1]/10 text-[#FEC6A1] hover:bg-[#FEC6A1]/20 transition-colors"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>{agents.length}</span>
+                </button>
               </div>
             </div>
-          )}
+            <div className="p-6">
+              <AgentsList agents={agents} />
+            </div>
+          </div>
 
           <ProFeatures />
 
@@ -435,7 +314,6 @@ export default function AgentBuilder() {
         </div>
       </div>
 
-      {/* Chat with Agents Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="bg-[#161B22] border border-[#30363D] text-white">
           <div className="p-4">
@@ -453,30 +331,6 @@ export default function AgentBuilder() {
               {agents.length === 0 && (
                 <p className="text-gray-400 text-center py-4">No agents created yet</p>
               )}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Login Dialog */}
-      <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
-        <DialogContent className="bg-[#161B22] border border-[#30363D] text-white">
-          <DialogTitle className="text-xl font-semibold">Login Required</DialogTitle>
-          <DialogDescription className="text-gray-400">
-            To save your agent configuration, you need to create an account or log in.
-          </DialogDescription>
-          <div className="space-y-4 pt-4">
-            <p className="text-sm text-gray-300">
-              Your agent has been created and is ready to use. Login now to save this agent to your account.
-            </p>
-            <div className="flex justify-center">
-              <Button 
-                onClick={handleLoginRedirect}
-                className="bg-white text-gray-900 hover:bg-gray-200 flex items-center gap-2"
-              >
-                <LogIn className="w-4 h-4" />
-                Login to Save
-              </Button>
             </div>
           </div>
         </DialogContent>

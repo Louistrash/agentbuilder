@@ -264,17 +264,14 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
     }
   };
 
-  // Fixed onClose handler that resets the step before closing
-  const handleClose = () => {
-    setCurrentStep(0); // Reset when dialog closes
-    onClose();
-  };
-
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-[#161B22] border border-[#30363D] text-white max-w-md md:max-w-lg backdrop-blur-lg shadow-2xl">
+    <Dialog open={isOpen} onOpenChange={() => {
+      setCurrentStep(0); // Reset when dialog closes
+      onClose();
+    }}>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-white">
+          <DialogTitle className="text-xl font-semibold">
             {content.title}
           </DialogTitle>
         </DialogHeader>
@@ -282,11 +279,11 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
         <div className="mt-4">
           <div className="flex items-center mb-4">
             {content.steps[currentStep].icon}
-            <h3 className="text-lg font-medium ml-3 text-white">
+            <h3 className="text-lg font-medium ml-3">
               {content.steps[currentStep].title}
             </h3>
           </div>
-          <p className="text-gray-400 mb-4">
+          <p className="text-gray-500 mb-4">
             {content.steps[currentStep].description}
           </p>
           
@@ -300,7 +297,7 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
               <div
                 key={index}
                 className={`h-1 flex-1 rounded-full transition-all ${
-                  index <= currentStep ? 'bg-[#1EAEDB]' : 'bg-gray-700'
+                  index <= currentStep ? 'bg-primary' : 'bg-gray-200'
                 }`}
               />
             ))}
@@ -311,15 +308,11 @@ export function FeatureOnboarding({ feature, isOpen, onClose }: FeatureOnboardin
           <div className="flex justify-between w-full">
             <Button
               variant="ghost"
-              onClick={handleClose}
-              className="text-gray-400 hover:text-white hover:bg-gray-800"
+              onClick={onClose}
             >
               Skip
             </Button>
-            <Button 
-              onClick={handleNext}
-              className="bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white"
-            >
+            <Button onClick={handleNext}>
               {currentStep < content.steps.length - 1 ? "Next" : "Get Started"}
             </Button>
           </div>

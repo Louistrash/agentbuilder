@@ -10,48 +10,34 @@ import {
   Link,
   CreditCard,
   BookOpen,
-  Shield,
-  LockIcon
+  Shield
 } from "lucide-react";
-import { useAdmin } from "@/hooks/useAdmin";
 
 interface MenuItemProps {
   icon: React.ReactNode;
   title: string;
   color: string;
   href: string;
-  requiresSuperAdmin?: boolean;
 }
 
-const MenuItem = ({ icon, title, color, href, requiresSuperAdmin = false }: MenuItemProps) => {
-  const { userRole } = useAdmin();
-  const isSuperAdmin = userRole === "admin";
-  const isDisabled = requiresSuperAdmin && !isSuperAdmin;
-
-  return (
-    <Card 
-      className={`border-[#30363D] p-4 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer w-[95%] ${isDisabled ? 'opacity-50' : ''}`}
-      onClick={() => {
-        if (!isDisabled) {
-          const element = document.getElementById(href);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        }
-      }}
-    >
-      <div className="flex items-center gap-2.5">
-        <div className={`w-7 h-7 rounded-lg ${color} flex items-center justify-center group-hover:bg-opacity-20 transition-colors`}>
-          {icon}
-        </div>
-        <span className="font-medium text-xs text-white group-hover:text-white/90 flex items-center gap-1">
-          {title}
-          {isDisabled && <LockIcon className="h-3 w-3 text-amber-500" />}
-        </span>
+const MenuItem = ({ icon, title, color, href }: MenuItemProps) => (
+  <Card 
+    className="border-[#30363D] p-4 bg-[#161B22] hover:bg-[#1C2128] transition-all duration-300 group cursor-pointer w-[95%]"
+    onClick={() => {
+      const element = document.getElementById(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }}
+  >
+    <div className="flex items-center gap-2.5">
+      <div className={`w-7 h-7 rounded-lg ${color} flex items-center justify-center group-hover:bg-opacity-20 transition-colors`}>
+        {icon}
       </div>
-    </Card>
-  );
-};
+      <span className="font-medium text-xs text-white group-hover:text-white/90">{title}</span>
+    </div>
+  </Card>
+);
 
 export function AdminMenu() {
   const menuItems = [
@@ -60,8 +46,7 @@ export function AdminMenu() {
       icon: <Users className="h-4 w-4 text-[#EC4899]" />,
       title: "Users & Roles",
       color: "bg-[#EC4899]/10",
-      href: "users",
-      requiresSuperAdmin: true
+      href: "users"
     },
     {
       icon: <Shield className="h-4 w-4 text-[#3B82F6]" />,
@@ -92,8 +77,7 @@ export function AdminMenu() {
       icon: <ShoppingBag className="h-4 w-4 text-[#F59E0B]" />,
       title: "Marketplace",
       color: "bg-[#F59E0B]/10",
-      href: "marketplace",
-      requiresSuperAdmin: true
+      href: "marketplace"
     },
     // Integrations & Analytics
     {
@@ -113,15 +97,13 @@ export function AdminMenu() {
       icon: <CreditCard className="h-4 w-4 text-[#EC4899]" />,
       title: "Billing",
       color: "bg-[#EC4899]/10",
-      href: "subscriptions",
-      requiresSuperAdmin: true
+      href: "subscriptions"
     },
     {
       icon: <Settings2 className="h-4 w-4 text-[#6366F1]" />,
       title: "Settings",
       color: "bg-[#6366F1]/10",
-      href: "general",
-      requiresSuperAdmin: true
+      href: "general"
     }
   ];
 
@@ -136,7 +118,6 @@ export function AdminMenu() {
               title={item.title}
               color={item.color}
               href={item.href}
-              requiresSuperAdmin={item.requiresSuperAdmin}
             />
           ))}
         </div>

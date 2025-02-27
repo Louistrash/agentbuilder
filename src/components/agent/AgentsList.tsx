@@ -6,7 +6,7 @@ import { Bot, Settings, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Agent {
-  id: string | number; // Updated to accept both string and number types
+  id: number;
   name: string;
   description: string;
   type: string;
@@ -19,7 +19,7 @@ interface AgentsListProps {
 export function AgentsList({ agents = [] }: AgentsListProps) {
   const navigate = useNavigate();
 
-  const handleAgentClick = (agentId: string | number) => {
+  const handleAgentClick = (agentId: number) => {
     navigate(`/agents/${agentId}/configure`);
   };
 

@@ -1,12 +1,12 @@
 
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Loader2 } from 'lucide-react';
+import { Loader2, LogIn } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -17,96 +17,34 @@ const Auth = () => {
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [isResetting, setIsResetting] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
-  
-  const searchParams = new URLSearchParams(location.search);
-  const redirectTo = searchParams.get('redirectTo') || '/';
-  const agentData = searchParams.get('agentData') 
-    ? JSON.parse(decodeURIComponent(searchParams.get('agentData') || '{}')) 
-    : null;
-
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        if (data.session) {
-          handleRedirectWithData();
-        }
-      } catch (error) {
-        console.error("Session check error:", error);
-      }
-    };
-    
-    checkSession();
-  }, []);
-
-  const handleRedirectWithData = () => {
-    try {
-      if (agentData) {
-        navigate(`${redirectTo}?saveAgent=true&agentData=${encodeURIComponent(JSON.stringify(agentData))}`);
-      } else {
-        navigate(redirectTo);
-      }
-    } catch (error) {
-      console.error("Redirect error:", error);
-      toast({
-        variant: "destructive",
-        title: "Navigation Error",
-        description: "There was a problem navigating after login",
-      });
-    }
-  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
+      const { error } = isSignUp 
+        ? await supabase.auth.signUp({ email, password })
+        : await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) throw error;
+
       if (isSignUp) {
-        // Sign up flow
-        const { error } = await supabase.auth.signUp({ 
-          email, 
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/`
-          }
-        });
-
-        if (error) throw error;
-
         toast({
           title: "Check your email",
           description: "We've sent you a confirmation link.",
         });
       } else {
-        // Sign in flow
-        const { data, error } = await supabase.auth.signInWithPassword({ 
-          email, 
-          password 
-        });
-
-        if (error) throw error;
-
-        if (data.user) {
-          toast({
-            title: "Login successful",
-            description: "Welcome back!",
-          });
-          
-          // Small delay to allow the toast to be seen
-          setTimeout(() => {
-            handleRedirectWithData();
-          }, 1000);
-        }
+        navigate('/');
       }
     } catch (error: any) {
-      console.error("Auth error:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "Authentication failed",
+        description: error.message,
       });
     } finally {
       setIsLoading(false);
@@ -116,16 +54,10 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     try {
-      const redirectURL = new URL(`${window.location.origin}/`);
-      if (agentData) {
-        redirectURL.searchParams.set('saveAgent', 'true');
-        redirectURL.searchParams.set('agentData', encodeURIComponent(JSON.stringify(agentData)));
-      }
-
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: redirectURL.toString()
+          redirectTo: `${window.location.origin}/`
         }
       });
 
@@ -134,7 +66,7 @@ const Auth = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "Google authentication failed",
+        description: error.message,
       });
       setIsGoogleLoading(false);
     }
@@ -158,7 +90,7 @@ const Auth = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "Failed to send reset email",
+        description: error.message,
       });
     } finally {
       setIsResetting(false);
@@ -172,7 +104,28 @@ const Auth = () => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 pt-20">
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center gap-3 mb-16">
+            <div className="w-10 h-10 rounded-2xl shadow-xl bg-[#1A1F2C] flex items-center justify-center overflow-hidden">
+              {!imageError ? (
+                <img
+                  src="https://mkjrtfoxnysmjdtikwqo.supabase.co/storage/v1/object/public/logos/logo.png"
+                  alt="Chat Agent Builder Logo"
+                  className="w-full h-full object-contain p-1"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="text-[#1EAEDB] font-bold text-xl">L</div>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <h1 className="text-xl font-semibold text-white">Chat Agent Builder</h1>
+              <p className="text-sm text-gray-400">Build. Deploy. Engage.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
@@ -183,12 +136,6 @@ const Auth = () => {
                 ? 'Join us to start building intelligent chat agents'
                 : 'Sign in to access your chat agents'}
             </p>
-            
-            {agentData && (
-              <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                <p className="text-white">Sign in to save your chat agent</p>
-              </div>
-            )}
           </div>
 
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl">
@@ -229,7 +176,7 @@ const Auth = () => {
                 <div className="w-full border-t border-white/10"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-transparent text-gray-400">
+                <span className="px-2 bg-[#131313] text-gray-400">
                   Or continue with email
                 </span>
               </div>
@@ -283,7 +230,7 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors"
               >
                 {isSignUp
                   ? 'Already have an account? Sign in'

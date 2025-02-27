@@ -1,178 +1,154 @@
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Target, Zap, BarChart3, Info } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { LearnMoreDialog } from '@/components/home/LearnMoreDialog';
-
-// Define content for the learn more dialogs
-const learnMoreContent = {
-  build: {
-    title: "Easy to Build Chat Agents",
-    description: "Create custom agents without coding",
-    content: (
-      <div className="space-y-4">
-        <p>Our intuitive builder interface makes it easy to create custom chat agents without any coding knowledge.</p>
-        <p>You can:</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-300">
-          <li>Choose from pre-built templates</li>
-          <li>Customize agent personality and responses</li>
-          <li>Add knowledge sources for your agent</li>
-          <li>Test your agent in real-time</li>
-          <li>Deploy with a single click</li>
-        </ul>
-        <p>Start with our free builder and upgrade to pro when you need advanced features.</p>
-      </div>
-    )
-  },
-  responses: {
-    title: "Smart AI Responses",
-    description: "How our AI technology works",
-    content: (
-      <div className="space-y-4">
-        <p>Our chat agents use advanced AI technology to provide intelligent and contextual responses to user queries.</p>
-        <p>Key features include:</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-300">
-          <li>Natural language understanding</li>
-          <li>Context awareness across conversations</li>
-          <li>Customizable response styles</li>
-          <li>Multi-turn conversation handling</li>
-          <li>Integration with your knowledge base</li>
-        </ul>
-        <p>Our AI is built on the latest language models and optimized for responsiveness and accuracy.</p>
-      </div>
-    )
-  },
-  analytics: {
-    title: "Analytics & Insights",
-    description: "Track and improve your chat agents",
-    content: (
-      <div className="space-y-4">
-        <p>Gain valuable insights into how users interact with your chat agents and use that data to continuously improve.</p>
-        <p>Our analytics platform provides:</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-300">
-          <li>User engagement metrics</li>
-          <li>Conversation flow analysis</li>
-          <li>Common questions and topics</li>
-          <li>Satisfaction scores</li>
-          <li>Performance benchmarks</li>
-        </ul>
-        <p>Use these insights to optimize your agents, improve user satisfaction, and achieve your goals.</p>
-      </div>
-    )
-  }
-};
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Plus, Brain, Zap, BarChart3 } from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { FeatureCard } from "@/components/home/FeatureCard";
+import { ProFeatures } from "@/components/home/ProFeatures";
+import { FeatureOnboarding } from "@/components/agent-builder/FeatureOnboarding";
+import { useAuth } from "@/lib/auth";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [dialogContent, setDialogContent] = useState<keyof typeof learnMoreContent | null>(null);
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [clickedCard, setClickedCard] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<string>('');
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
-  const openDialog = (contentKey: keyof typeof learnMoreContent) => {
-    setDialogContent(contentKey);
+  useEffect(() => {
+    fetchLogo();
+    setTimeout(() => setShowWelcome(true), 100);
+  }, []);
+
+  const fetchLogo = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('bot_settings')
+        .select('logo_url')
+        .single();
+      if (error) throw error;
+      setLogoUrl(data?.logo_url);
+    } catch (error) {
+      console.error('Error fetching logo:', error);
+    }
   };
 
-  const closeDialog = () => {
-    setDialogContent(null);
+  const handleCreateAgentClick = (type: 'free' | 'pro') => {
+    console.log(`Navigating to ${type} agent builder`);
+    navigate(`/agent-builder/${type}`);
   };
+
+  const handleFeatureClick = (feature: string) => {
+    setClickedCard(feature);
+    setSelectedFeature(feature);
+    setShowOnboarding(true);
+  };
+
+  const handleOnboardingClose = () => {
+    setShowOnboarding(false);
+    navigate('/agents', { state: { feature: selectedFeature } });
+  };
+
+  const features = [
+    {
+      id: 'build',
+      title: 'Easy to Build',
+      description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
+      demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
+      icon: <Brain className="h-6 w-6 text-[#8B5CF6] filter drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#8B5CF6]/5 to-transparent',
+      bgColor: 'bg-black/20'
+    },
+    {
+      id: 'smart',
+      title: 'Smart Responses',
+      description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
+      demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
+      icon: <Zap className="h-6 w-6 text-[#D946EF] filter drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#D946EF]/5 to-transparent',
+      bgColor: 'bg-black/20'
+    },
+    {
+      id: 'analytics',
+      title: 'Analytics & Insights',
+      description: 'Track performance and gather insights to continuously improve your chat agents.',
+      demoContent: 'View sample analytics and see how you can optimize your chat agents.',
+      icon: <BarChart3 className="h-6 w-6 text-[#0EA5E9] filter drop-shadow-[0_0_8px_rgba(14,165,233,0.5)]" />,
+      gradientClasses: 'bg-gradient-to-tr from-[#0EA5E9]/5 to-transparent',
+      bgColor: 'bg-black/20'
+    }
+  ];
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] flex flex-col">
-      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
-            Create Intelligent Chat Agents
-          </h1>
-          <p className="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto">
-            Try out our free agent builder. Create and test AI agents without signing in. You'll only need
-            to sign in when you want to save your work!
-          </p>
-          
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              onClick={() => navigate('/agent-builder/free')}
-              className="text-lg px-8 py-6 h-auto bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
-            >
-              <span className="text-xl">+</span> Build your First Agent (Free)
-            </Button>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
-          {/* Easy to Build */}
-          <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl p-8 flex flex-col">
-            <div className="w-12 h-12 bg-indigo-900/50 rounded-lg flex items-center justify-center mb-6">
-              <Target className="h-6 w-6 text-indigo-400" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">Easy to Build</h3>
-            <p className="text-gray-400 mb-4">
-              Create custom chat agents with our intuitive builder interface. No coding required.
-            </p>
-            <p className="text-gray-500 text-sm mb-8">
-              Try our drag-and-drop interface and see how easy it is to create your first AI agent.
-            </p>
-            <Button 
-              variant="ghost" 
-              className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-900/30 border border-indigo-900/50 mt-auto flex items-center gap-2"
-              onClick={() => openDialog('build')}
-            >
-              Learn More <Info className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {/* Smart Responses */}
-          <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl p-8 flex flex-col">
-            <div className="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-6">
-              <Zap className="h-6 w-6 text-blue-400" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">Smart Responses</h3>
-            <p className="text-gray-400 mb-4">
-              Leverage advanced AI to provide intelligent and contextual responses to user queries.
-            </p>
-            <p className="text-gray-500 text-sm mb-8">
-              Experience real-time AI responses powered by cutting-edge language models.
-            </p>
-            <Button 
-              variant="ghost" 
-              className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 border border-blue-900/50 mt-auto flex items-center gap-2"
-              onClick={() => openDialog('responses')}
-            >
-              Learn More <Info className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {/* Analytics & Insights */}
-          <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl p-8 flex flex-col">
-            <div className="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-6">
-              <BarChart3 className="h-6 w-6 text-cyan-400" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">Analytics & Insights</h3>
-            <p className="text-gray-400 mb-4">
-              Track performance and gather insights to continuously improve your chat agents.
-            </p>
-            <p className="text-gray-500 text-sm mb-8">
-              View sample analytics and see how you can optimize your chat agents.
-            </p>
-            <Button 
-              variant="ghost" 
-              className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/30 border border-cyan-900/50 mt-auto flex items-center gap-2"
-              onClick={() => openDialog('analytics')}
-            >
-              Learn More <Info className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#1A1F2C] text-white overflow-x-hidden">
+      <Header logoUrl={logoUrl} />
 
-      {/* Dialog for Learn More content */}
-      {dialogContent && (
-        <LearnMoreDialog
-          isOpen={!!dialogContent}
-          onClose={closeDialog}
-          title={learnMoreContent[dialogContent].title}
-          description={learnMoreContent[dialogContent].description}
-          content={learnMoreContent[dialogContent].content}
-        />
-      )}
+      <main className="relative">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+          <div className="text-center mb-8 sm:mb-12 animate-fade-up">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
+              Create Intelligent Chat Agents
+            </h2>
+            <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
+              Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
+            </p>
+            <div className="flex flex-col gap-3 max-w-md mx-auto">
+              <Button
+                size="default"
+                onClick={() => handleCreateAgentClick('free')}
+                className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Create Your First Agent (Free)
+              </Button>
+              <Button
+                size="default"
+                variant="outline"
+                onClick={() => handleCreateAgentClick('pro')}
+                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Access Pro Features
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {features.map((feature) => (
+              <FeatureCard
+                key={feature.id}
+                feature={feature.id}
+                title={feature.title}
+                description={feature.description}
+                demoContent={feature.demoContent}
+                icon={feature.icon}
+                onClick={() => handleFeatureClick(feature.id)}
+                isHovered={hoveredCard === feature.id}
+                onMouseEnter={() => setHoveredCard(feature.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                isClicked={clickedCard === feature.id}
+                gradientClasses={feature.gradientClasses}
+                bgColor={feature.bgColor}
+              />
+            ))}
+          </div>
+
+          <ProFeatures />
+        </div>
+      </main>
+
+      <FeatureOnboarding
+        feature={selectedFeature}
+        isOpen={showOnboarding}
+        onClose={handleOnboardingClose}
+      />
     </div>
   );
 };
