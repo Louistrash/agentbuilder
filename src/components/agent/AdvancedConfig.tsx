@@ -1,10 +1,18 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BrainCircuit, Database, FileCode, Dices, Server } from "lucide-react";
+import { BrainCircuit, Database, FileCode, Dices, Server, Lock } from "lucide-react";
+import { useTokens } from "@/context/TokenContext";
+import { TokenPurchaseDialog } from "@/components/tokens/TokenPurchaseDialog";
 
 export function AdvancedConfig() {
+  const { tokens } = useTokens();
+  const [showTokenDialog, setShowTokenDialog] = React.useState(false);
+
+  const handleProFeatureClick = () => {
+    setShowTokenDialog(true);
+  };
+
   return (
     <div className="space-y-6">
       <Tabs defaultValue="model">
@@ -32,7 +40,10 @@ export function AdvancedConfig() {
             <div>
               <h3 className="text-white font-medium mb-2">Model Selection</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3 border border-[#30363D] rounded-lg bg-[#1C2128] flex items-start gap-2">
+                <div className="p-3 border border-[#30363D] rounded-lg bg-[#1C2128] flex items-start gap-2 relative group">
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Lock className="w-5 h-5 text-white" />
+                  </div>
                   <Dices className="w-5 h-5 text-[#FEC6A1] mt-0.5" />
                   <div>
                     <h4 className="text-sm font-medium text-white">GPT-4 Turbo</h4>
@@ -52,7 +63,11 @@ export function AdvancedConfig() {
             <div>
               <h3 className="text-white font-medium mb-2">Advanced Parameters</h3>
               <div className="grid grid-cols-1 gap-3">
-                <div className="p-3 border border-[#30363D] rounded-lg bg-[#1C2128] space-y-2">
+                <div className="p-3 border border-[#30363D] rounded-lg bg-[#1C2128] space-y-2 relative group">
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                       onClick={handleProFeatureClick}>
+                    <Lock className="w-5 h-5 text-white" />
+                  </div>
                   <div className="flex justify-between items-center">
                     <h4 className="text-sm font-medium text-white">Temperature</h4>
                     <span className="text-xs font-medium bg-[#30363D] px-2 py-0.5 rounded text-gray-300">0.7</span>
@@ -63,7 +78,8 @@ export function AdvancedConfig() {
                     max="2"
                     step="0.1"
                     defaultValue="0.7"
-                    className="w-full"
+                    className="w-full opacity-50 cursor-not-allowed"
+                    disabled
                   />
                   <p className="text-xs text-gray-400">Controls randomness: lower values are more focused, higher values more creative.</p>
                 </div>
@@ -80,7 +96,11 @@ export function AdvancedConfig() {
               <p className="text-sm text-gray-400">
                 Upload your documents, websites, and knowledge bases to train this agent on your specific content.
               </p>
-              <Button className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 border-0">
+              <Button 
+                className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 border-0"
+                onClick={handleProFeatureClick}
+              >
+                <Lock className="w-4 h-4 mr-2" />
                 Unlock Pro Feature
               </Button>
             </div>
@@ -95,7 +115,11 @@ export function AdvancedConfig() {
               <p className="text-sm text-gray-400">
                 Enable your agent to run code snippets and execute functions on demand.
               </p>
-              <Button className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 border-0">
+              <Button 
+                className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 border-0"
+                onClick={handleProFeatureClick}
+              >
+                <Lock className="w-4 h-4 mr-2" />
                 Unlock Pro Feature
               </Button>
             </div>
@@ -110,13 +134,23 @@ export function AdvancedConfig() {
               <p className="text-sm text-gray-400">
                 Connect your agent to external APIs for real-time data and actions.
               </p>
-              <Button className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 border-0">
+              <Button 
+                className="bg-[#FEC6A1]/20 text-[#FEC6A1] hover:bg-[#FEC6A1]/30 border-0"
+                onClick={handleProFeatureClick}
+              >
+                <Lock className="w-4 h-4 mr-2" />
                 Unlock Pro Feature
               </Button>
             </div>
           </div>
         </TabsContent>
       </Tabs>
+
+      <TokenPurchaseDialog
+        open={showTokenDialog}
+        onClose={() => setShowTokenDialog(false)}
+        message="Upgrade to Pro to access advanced features and customization options."
+      />
     </div>
   );
 }

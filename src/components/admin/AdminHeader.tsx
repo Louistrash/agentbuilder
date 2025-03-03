@@ -1,50 +1,53 @@
-
-import { Rocket } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export function AdminHeader() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
-  const [imageError, setImageError] = useState(false);
+  const defaultLogoUrl = "/logo.png";
 
   useEffect(() => {
-    const fetchLogo = async () => {
-      const { data, error } = await supabase
-        .from('bot_settings')
-        .select('logo_url')
-        .single();
-
-      if (!error && data) {
-        setLogoUrl(data.logo_url);
-      }
-    };
-
     fetchLogo();
   }, []);
 
+  const fetchLogo = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('bot_settings')
+        .select('logo_url')
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching logo:', error);
+      }
+
+      if (data?.logo_url) {
+        setLogoUrl(data.logo_url);
+      }
+    } catch (error) {
+      console.error('Error fetching logo:', error);
+    }
+  };
+
   return (
-    <div className="bg-[#1A1F2C]/50 border-b border-[#1EAEDB]/10 py-6 px-8">
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-[#1A1F2C] flex items-center justify-center overflow-hidden border border-[#1EAEDB]/10">
-          {logoUrl && !imageError ? (
-            <img
-              src={logoUrl}
-              alt="Platform Logo"
-              className="w-full h-full object-cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <Rocket className="w-6 h-6 text-[#1EAEDB]" />
-          )}
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-            Admin Dashboard
-          </h1>
-          <p className="text-sm text-gray-400">
-            Manage your platform settings and configurations
-          </p>
-        </div>
+    <div className="bg-[#0D1117] border-b border-[#30363D] py-3">
+      <div className="container mx-auto px-4">
+        <Link to="/" className="flex items-center w-fit">
+          <img 
+            src={logoUrl || defaultLogoUrl} 
+            alt="Platform Logo" 
+            className="h-8 w-auto mr-2"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = defaultLogoUrl;
+              // If default logo also fails, use text-only fallback
+              target.onerror = () => {
+                target.style.display = 'none';
+              };
+            }}
+          />
+          <span className="text-2xl font-bold text-[#1EAEDB]">AI Agent</span>
+        </Link>
       </div>
     </div>
   );

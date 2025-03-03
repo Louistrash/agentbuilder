@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
@@ -18,49 +17,29 @@ export const useUsers = () => {
   
   const fetchUsers = async (): Promise<User[]> => {
     try {
-      // First get users from the profiles table
+      // Get profiles with their roles
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id');
+        .select(`
+          id,
+          email:auth.users!id(email),
+          created_at:auth.users!id(created_at),
+          user_roles(role)
+        `);
       
       if (profilesError) {
-        console.error('Error fetching profiles:', profilesError);
         throw profilesError;
       }
 
-      // Get their roles from the user_roles table
-      const { data: userRoles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('user_id, role');
+      // Transform the data into the expected format
+      const users = profiles.map(profile => ({
+        id: profile.id,
+        email: profile.email?.[0]?.email || '',
+        created_at: profile.created_at?.[0]?.created_at || '',
+        roles: profile.user_roles?.map(r => r.role as UserRole) || []
+      }));
 
-      if (rolesError) {
-        console.error('Error fetching user roles:', rolesError);
-        throw rolesError;
-      }
-
-      // Fetch user details for each profile
-      const userPromises = profiles.map(async (profile) => {
-        const { data: userData, error: userError } = await supabase.auth.admin.getUserById(profile.id);
-        if (userError) {
-          console.error('Error fetching user:', userError);
-          return null;
-        }
-        
-        const roles = userRoles
-          ?.filter(r => r.user_id === profile.id)
-          ?.map(r => r.role as UserRole) || [];
-
-        return {
-          id: profile.id,
-          email: userData?.user?.email || '',
-          created_at: userData?.user?.created_at || '',
-          roles: roles
-        };
-      });
-
-      const users = (await Promise.all(userPromises)).filter((user): user is User => user !== null);
       return users;
-      
     } catch (error) {
       console.error('Error in fetchUsers:', error);
       toast({
@@ -110,12 +89,6 @@ export const useUsers = () => {
 
       if (profilesError) throw profilesError;
 
-      // Then delete from auth.users
-      for (const userId of userIds) {
-        const { error } = await supabase.auth.admin.deleteUser(userId);
-        if (error) throw error;
-      }
-      
       toast({
         title: "Success",
         description: `Deleted ${userIds.length} user(s) successfully`,

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,72 +10,114 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LogIn, UserPlus, ChevronLeft } from "lucide-react";
 
-const CEO_EMAIL = "patricknieborg@me.com";
-
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
-      // If it's the CEO, redirect to admin dashboard
-      if (user.email === CEO_EMAIL) {
-        console.log("CEO user detected in useEffect, redirecting to admin");
-        navigate("/admin");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     }
   }, [user, navigate]);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const validateForm = () => {
     if (!email || !password) {
       toast({
         title: "Missing fields",
         description: "Please fill in all required fields.",
         variant: "destructive",
       });
-      return;
+      return false;
     }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    // Basic password validation
+    if (password.length < 6) {
+      toast({
+        title: "Invalid password",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
     
     try {
       setIsLoading(true);
+      setError(null);
       
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
       });
       
       if (error) throw error;
       
+      // Check if profile exists
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+
+      if (profileError && profileError.code === 'PGRST116') {
+        // Profile doesn't exist, create it
+        const { error: createError } = await supabase
+          .from('profiles')
+          .insert({
+            id: data.user.id,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            tokens: 60
+          });
+
+        if (createError) throw createError;
+
+        // Record initial token transaction
+        await supabase
+          .from('token_transactions')
+          .insert({
+            profile_id: data.user.id,
+            amount: 60,
+            transaction_type: 'credit',
+            description: 'Welcome bonus tokens'
+          });
+      }
+
       toast({
         title: "Welcome back!",
         description: "You've successfully logged in.",
       });
       
-      // Ensure CEO has admin role and redirect appropriately
-      if (data?.user) {
-        if (data.user.email === CEO_EMAIL) {
-          console.log("CEO user detected, ensuring admin role");
-          await ensureCEOAdminRole(data.user.id);
-          console.log("Redirecting CEO to admin dashboard");
-          navigate("/admin");
-        } else {
-          navigate("/");
-        }
-      }
+      navigate("/");
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
         title: "Login failed",
-        description: error.message || "There was a problem with your login.",
+        description: "Invalid email or password. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -84,84 +125,110 @@ const Auth = () => {
     }
   };
 
-  const ensureCEOAdminRole = async (userId: string) => {
-    try {
-      console.log("Ensuring CEO admin role for user ID:", userId);
-      
-      // First update the profiles table to set is_admin to true
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ is_admin: true })
-        .eq('id', userId);
-      
-      if (profileError) {
-        console.error('Error updating profiles:', profileError);
-      }
-      
-      // Check if user already has admin role
-      const { data: existingRole, error: roleCheckError } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
-        .maybeSingle();
-      
-      if (roleCheckError) {
-        console.error('Error checking existing role:', roleCheckError);
-      }
-      
-      // If not, add admin role
-      if (!existingRole) {
-        console.log("No existing admin role found, adding role");
-        const { error: insertError } = await supabase
-          .from('user_roles')
-          .insert({ user_id: userId, role: 'admin' });
-        
-        if (insertError) {
-          console.error('Error inserting admin role:', insertError);
-        }
-      } else {
-        console.log("Existing admin role found:", existingRole);
-      }
-    } catch (error) {
-      console.error('Error ensuring CEO admin role:', error);
-    }
-  };
-
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!validateForm()) return;
+    
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password: password.trim(),
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth`,
+        }
+      });
+      
+      if (error) throw error;
+
+      if (data?.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: data.user.id,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            tokens: 60
+          });
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+          throw profileError;
+        }
+
+        const { error: tokenError } = await supabase
+          .from('token_transactions')
+          .insert({
+            profile_id: data.user.id,
+            amount: 60,
+            transaction_type: 'credit',
+            description: 'Welcome bonus tokens'
+          });
+
+        if (tokenError) {
+          console.error('Error creating token transaction:', tokenError);
+        }
+      }
+      
       toast({
-        title: "Missing fields",
-        description: "Please fill in all required fields.",
+        title: "Account created",
+        description: "Your account has been created successfully. You can now sign in.",
+      });
+      
+      setActiveTab("login");
+      setEmail("");
+      setPassword("");
+      
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      
+      let errorMessage = "There was a problem creating your account.";
+      if (error.message.includes("already registered")) {
+        errorMessage = "This email is already registered. Please try logging in instead.";
+      }
+      
+      toast({
+        title: "Signup failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address to reset your password.",
         variant: "destructive",
       });
       return;
     }
-    
+
     try {
       setIsLoading(true);
+      setError(null);
       
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/auth?type=recovery`,
       });
       
       if (error) throw error;
       
       toast({
-        title: "Account created",
-        description: "Your account has been created successfully. Please check your email for verification.",
+        title: "Password Reset Email Sent",
+        description: "Please check your email for the password reset link.",
       });
-      
-      // Switch to login tab
-      setActiveTab("login");
     } catch (error: any) {
-      console.error("Signup error:", error);
+      console.error("Password reset error:", error);
       toast({
-        title: "Signup failed",
-        description: error.message || "There was a problem creating your account.",
+        title: "Password Reset Failed",
+        description: "Failed to send password reset email. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -172,11 +239,16 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     try {
       setIsLoading(true);
+      setError(null);
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
         }
       });
       
@@ -186,7 +258,7 @@ const Auth = () => {
       console.error("Google login error:", error);
       toast({
         title: "Google Login Failed",
-        description: error.message || "There was a problem signing in with Google.",
+        description: "There was a problem signing in with Google.",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -258,6 +330,17 @@ const Auth = () => {
                       className="bg-[#161B22] border-[#30363D] text-white"
                     />
                   </div>
+                  <div className="flex justify-end">
+                    <Button
+                      type="button"
+                      variant="link"
+                      onClick={handleForgotPassword}
+                      className="text-sm text-[#1EAEDB] hover:text-[#1EAEDB]/90 p-0 h-auto font-normal"
+                      disabled={isLoading}
+                    >
+                      Forgot password?
+                    </Button>
+                  </div>
                 </CardContent>
                 
                 <CardFooter className="flex flex-col gap-4 p-4">
@@ -299,7 +382,7 @@ const Auth = () => {
                     disabled={isLoading}
                   >
                     <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                      <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                      <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
                       <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
                       <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
                       <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
@@ -376,7 +459,7 @@ const Auth = () => {
                     disabled={isLoading}
                   >
                     <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                      <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                      <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
                       <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
                       <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
                       <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />

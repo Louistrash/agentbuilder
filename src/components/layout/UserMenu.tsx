@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,13 +14,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, User, UserCog, Shield } from "lucide-react";
-
-const CEO_EMAIL = "patricknieborg@me.com";
+import { LogOut, Settings, Shield, UserCog, Crown, Sparkles } from "lucide-react";
 
 export const UserMenu = () => {
   const { user } = useAuth();
-  const { isAdmin, isCEO } = useAdmin();
+  const { isAdmin, isProAdmin, isSuperAdmin } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +50,26 @@ export const UserMenu = () => {
     return user.email.charAt(0).toUpperCase();
   };
 
-  const isCEOUser = user.email === CEO_EMAIL || isCEO;
+  const getDashboardLink = () => {
+    if (isSuperAdmin) return "/super-admin";
+    if (isProAdmin) return "/pro-admin";
+    if (isAdmin) return "/admin";
+    return "/dashboard";
+  };
+
+  const getUserRole = () => {
+    if (isSuperAdmin) return "Super Admin";
+    if (isProAdmin) return "Pro Admin";
+    if (isAdmin) return "Admin";
+    return null;
+  };
+
+  const getRoleIcon = () => {
+    if (isSuperAdmin) return <Crown className="h-3 w-3 mr-1" />;
+    if (isProAdmin) return <Sparkles className="h-3 w-3 mr-1" />;
+    if (isAdmin) return <Shield className="h-3 w-3 mr-1" />;
+    return null;
+  };
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -74,54 +90,27 @@ export const UserMenu = () => {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium">{user.email}</p>
-            {isCEOUser && (
+            {getUserRole() && (
               <p className="text-xs text-[#1EAEDB] flex items-center">
-                <Shield className="h-3 w-3 mr-1" />
-                CEO Account
+                {getRoleIcon()}
+                {getUserRole()}
               </p>
             )}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-[#30363D]" />
         
-        {isCEOUser && (
-          <>
-            <DropdownMenuItem
-              className="cursor-pointer text-white hover:bg-[#161B22] focus:bg-[#161B22]"
-              onClick={() => {
-                setIsOpen(false);
-                navigate("/admin");
-              }}
-            >
-              <Shield className="mr-2 h-4 w-4" />
-              <span>Admin Dashboard</span>
-            </DropdownMenuItem>
-            
-            <DropdownMenuItem
-              className="cursor-pointer text-white hover:bg-[#161B22] focus:bg-[#161B22]"
-              onClick={() => {
-                setIsOpen(false);
-                navigate("/pro-admin");
-              }}
-            >
-              <UserCog className="mr-2 h-4 w-4" />
-              <span>PRO Admin</span>
-            </DropdownMenuItem>
-            
-            <DropdownMenuSeparator className="bg-[#30363D]" />
-          </>
-        )}
-        
         <DropdownMenuItem
           className="cursor-pointer text-white hover:bg-[#161B22] focus:bg-[#161B22]"
           onClick={() => {
             setIsOpen(false);
-            navigate("/profile");
+            navigate(getDashboardLink());
           }}
         >
-          <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+          <UserCog className="mr-2 h-4 w-4" />
+          <span>Dashboard</span>
         </DropdownMenuItem>
+
         <DropdownMenuItem
           className="cursor-pointer text-white hover:bg-[#161B22] focus:bg-[#161B22]"
           onClick={() => {
@@ -132,6 +121,7 @@ export const UserMenu = () => {
           <Settings className="mr-2 h-4 w-4" />
           <span>Settings</span>
         </DropdownMenuItem>
+
         <DropdownMenuSeparator className="bg-[#30363D]" />
         <DropdownMenuItem
           className="cursor-pointer text-white hover:bg-[#161B22] focus:bg-[#161B22]"

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,39 +34,36 @@ const Index = () => {
       const { data, error } = await supabase
         .from('bot_settings')
         .select('logo_url')
-        .single();
-      if (error) throw error;
-      setLogoUrl(data?.logo_url);
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching logo:', error);
+      }
+      
+      if (data?.logo_url) {
+        setLogoUrl(data.logo_url);
+      }
     } catch (error) {
       console.error('Error fetching logo:', error);
     }
   };
 
-  const handleCreateAgentClick = (type: 'free' | 'pro') => {
-    console.log(`Navigating to ${type} agent builder`);
-    
-    // If this is the free agent, trigger the token animation
-    if (type === 'free' && user) {
-      // Show token animation
+  const handleCreateAgentClick = () => {
+    if (user) {
       setShowTokenAnimation(true);
+      animateTokenChange(60);
       
-      // Animate tokens from 0 to 50
-      animateTokenChange(50);
-      
-      // Display toast message
       toast({
         title: "Tokens Added!",
-        description: "You've received 50 tokens to create your first agent.",
+        description: "You've received 60 tokens to create agents and add features.",
         variant: "default",
       });
       
-      // Navigate after a brief delay to allow animation to be seen
       setTimeout(() => {
-        navigate(`/agent-builder/${type}`);
+        navigate('/agent-builder/free');
       }, 1500);
     } else {
-      // Navigate immediately for pro or when not logged in
-      navigate(`/agent-builder/${type}`);
+      navigate('/auth');
     }
   };
 
@@ -85,9 +81,9 @@ const Index = () => {
   const features = [
     {
       id: 'build',
-      title: 'Easy to Build',
-      description: 'Create custom chat agents with our intuitive builder interface. No coding required.',
-      demoContent: 'Try our drag-and-drop interface and see how easy it is to create your first AI agent.',
+      title: 'Create Two Agents',
+      description: 'Build two custom chat agents with your 60 tokens (30 tokens each) or one agent with extra features.',
+      demoContent: 'Use our easy interface to create your AI agents - no coding needed!',
       icon: <Brain className="h-6 w-6 text-[#8B5CF6] filter drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]" />,
       gradientClasses: 'bg-gradient-to-tr from-[#8B5CF6]/5 to-transparent',
       bgColor: 'bg-black/20'
@@ -95,24 +91,23 @@ const Index = () => {
     {
       id: 'smart',
       title: 'Smart Responses',
-      description: 'Leverage advanced AI to provide intelligent and contextual responses to user queries.',
-      demoContent: 'Experience real-time AI responses powered by cutting-edge language models.',
+      description: 'Add analytics (15 tokens) or custom training (20 tokens) to enhance your agent.',
+      demoContent: 'Customize your agent with additional features using your token balance.',
       icon: <Zap className="h-6 w-6 text-[#D946EF] filter drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]" />,
       gradientClasses: 'bg-gradient-to-tr from-[#D946EF]/5 to-transparent',
       bgColor: 'bg-black/20'
     },
     {
       id: 'analytics',
-      title: 'Analytics & Insights',
-      description: 'Track performance and gather insights to continuously improve your chat agents.',
-      demoContent: 'View sample analytics and see how you can optimize your chat agents.',
+      title: 'Basic Analytics',
+      description: 'Track basic performance metrics for 15 tokens to understand how your chat agents are performing.',
+      demoContent: 'View essential analytics to optimize your chat agents.',
       icon: <BarChart3 className="h-6 w-6 text-[#0EA5E9] filter drop-shadow-[0_0_8px_rgba(14,165,233,0.5)]" />,
       gradientClasses: 'bg-gradient-to-tr from-[#0EA5E9]/5 to-transparent',
       bgColor: 'bg-black/20'
     }
   ];
 
-  // Token animation overlay
   const TokenAnimationOverlay = () => {
     if (!showTokenAnimation) return null;
     
@@ -122,9 +117,9 @@ const Index = () => {
           <div className="w-20 h-20 rounded-full bg-[#1EAEDB]/10 flex items-center justify-center mb-4">
             <Zap className="h-10 w-10 text-[#1EAEDB] animate-pulse" />
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2">50 Tokens Added!</h3>
+          <h3 className="text-2xl font-bold text-white mb-2">60 Tokens Added!</h3>
           <p className="text-gray-400 text-center mb-6">
-            You've received 50 tokens to create your first AI agent. Enjoy building!
+            You've received 60 tokens to create agents and add features. Create two agents or one agent with extra features!
           </p>
           <div className="w-full bg-[#30363D] h-2 rounded-full overflow-hidden">
             <div className="bg-gradient-to-r from-[#1EAEDB] to-[#8B5CF6] h-full rounded-full animate-progress"></div>
@@ -142,28 +137,19 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
           <div className="text-center mb-8 sm:mb-12 animate-fade-up">
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-[#1EAEDB] via-white to-[#1EAEDB]/70 bg-clip-text text-transparent">
-              Create Intelligent Chat Agents
+              Create Your Free AI Chat Agents
             </h2>
             <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
-              Build, customize, and deploy AI chat agents for your business. Enhance customer engagement with intelligent conversations.
+              Get started with 60 free tokens - enough for two agents or one agent with extra features!
             </p>
             <div className="flex flex-col gap-3 max-w-md mx-auto">
               <Button
                 size="default"
-                onClick={() => handleCreateAgentClick('free')}
+                onClick={handleCreateAgentClick}
                 className="w-full bg-[#1EAEDB] hover:bg-[#1EAEDB]/90 text-white transition-all duration-300 h-12 rounded-xl font-medium text-base shadow-lg shadow-[#1EAEDB]/25 transform hover:scale-[1.02]"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 Create Your First Agent (Free)
-              </Button>
-              <Button
-                size="default"
-                variant="outline"
-                onClick={() => handleCreateAgentClick('pro')}
-                className="w-full bg-transparent backdrop-blur-sm border-2 border-[#1EAEDB]/20 text-white hover:bg-[#1EAEDB]/10 hover:border-[#1EAEDB]/30 transition-all duration-300 h-12 rounded-xl font-medium text-base transform hover:scale-[1.02]"
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                Access Pro Features
               </Button>
             </div>
           </div>
@@ -198,7 +184,6 @@ const Index = () => {
         onClose={handleOnboardingClose}
       />
 
-      {/* Token animation overlay */}
       <TokenAnimationOverlay />
     </div>
   );
